@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="color-scheme" content="dark" />
+
+	<meta name="description" content="Test your knowledge about geography with this country quiz!" />
+	<meta name="og:image" content="/media/white-circle.png" />
+
+	<link rel="manifest" href="./manifest.webmanifest" />
+	<link rel="stylesheet" href="./style.css" />
+
+	<link rel="modulepreload" href="./js/test.js" />
+	<script type="module" src="./js/script.js"></script>
+
+	<title>Country Quiz</title>
+</head>
+
+<body>
+	<input type="checkbox" id="theme-toggle" hidden />
+
+	<actual-content>
+		<nav>
+			<button title="Toggle color scheme" class="theme-toggler">
+				<label for="theme-toggle"></label>
+			</button>
+			<button title="Pop out window" style="transform: scaleY(-1)">
+				⇲︎
+			</button>
+			<button title="Enable fullscreen">
+				⛶︎
+			</button>
+		</nav>
+
+		<noscript>
+			⚠&#xFE0E; Please enable JavaScript to use this site.
+		</noscript>
+
+		<main>
+			<test>
+				<canvas></canvas>
+				<style>
+					main, test {
+						display: flex;
+						flex-direction: column;
+					}
+					test, canvas {
+						flex-grow: 1;
+					}
+				</style>
+			</test>
+		</main>
+	</actual-content>
+</body>
+
+</html>

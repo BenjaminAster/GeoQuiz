@@ -1,0 +1,11 @@
+{
+	"name": "Country Quiz",
+	"start_url": "./",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "/media/white-circle.png",
+			"sizes": "512x512"
+		}
+	]
+}
