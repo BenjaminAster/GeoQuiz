@@ -17,16 +17,46 @@ console.log(test);
 		const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("canvas");
 		const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 
-		canvas.width = canvas.clientWidth;
-		canvas.height = canvas.clientHeight;
+		{
+			const resize = () => {
+				canvas.width = canvas.clientWidth;
+				canvas.height = canvas.clientHeight;
+			};
+
+			resize();
+
+			window.addEventListener("resize", resize);
+		}
 
 		let mouseX: number = 0;
 		let mouseY: number = 0;
 
+		let centerX: number = 0;
+		let centerY: number = 0;
+		let zoom: number = 0;
+		const scalePerZoom: number = 1.5;
+
 		window.addEventListener("mousemove", (evt: MouseEvent) => {
-			mouseX = evt.clientX - canvas.offsetLeft;
-			mouseY = evt.clientY - canvas.offsetTop;
+			// @ts-ignore
+			mouseX = evt.layerX;
+			// @ts-ignore
+			mouseY = evt.layerY;
 		});
+
+		window.addEventListener("wheel", (evt: WheelEvent) => {
+			// @ts-ignore
+			const [x, y]: [number, number] = [evt.layerX, evt.layerY];
+
+			const pointX = (x / (canvas.width / 2) - 1) / ((scalePerZoom ** zoom) / 180) + centerX;
+			const pointY = (y / (canvas.height / 2) - 1) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180) + centerY;
+
+			const delta = evt.deltaY / 100;
+			zoom -= delta;
+
+			centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
+			centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
+		});
+
 		{
 			const draw = () => {
 				ctx.strokeStyle = "white";
@@ -38,7 +68,7 @@ console.log(test);
 
 				for (const country of countryBorders) {
 					const geometry: Record<string, any> = country.geometry;
-					const coordinates: number[][][] = (() => {
+					const coordinates: [number, number][][][] = (() => {
 						switch (geometry.type) {
 							case ("Polygon"): return [geometry.coordinates];
 							case ("MultiPolygon"): return geometry.coordinates;
@@ -48,9 +78,16 @@ console.log(test);
 
 					for (const polygon of coordinates) {
 						ctx.beginPath();
-						for (const point of polygon[0]) {
-							ctx.lineTo((180 + point[0]) * 4, (90 - point[1]) * 4);
-							// ctx.lineTo((0 + point[0]) * 40, (50 - point[1]) * 40);
+						// @ ts-ignore
+						for (const [x, y] of polygon[0]) {
+							ctx.lineTo(
+								(
+									(x - centerX) * (scalePerZoom ** zoom) / 180 + 1
+								) * canvas.width / 2,
+								(
+									(y - centerY) * (canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180 + 1
+								) * canvas.height / 2,
+							);
 						}
 						ctx.closePath();
 						if (ctx.isPointInPath(mouseX, mouseY)) {
@@ -67,32 +104,6 @@ console.log(test);
 
 			draw();
 		}
-		// {
-		// 	const austriaCoordinates: number[][] = countryBorders.find(({ properties }) => properties.name === "Austria").geometry.coordinates[0][0];
-
-		// 	ctx.beginPath();
-		// 	ctx.strokeStyle = "white";
-		// 	ctx.lineWidth = 2;
-
-		// 	for (const coordinate of austriaCoordinates) {
-		// 		ctx.lineTo((coordinate[0] - 9) * 30, (coordinate[1] - 50) * -30);
-		// 	}
-
-		// 	const point = [(13 - 9) * 30, (47 - 50) * -30] as const;
-
-		// 	console.log(ctx.isPointInPath(...point));
-
-		// 	ctx.stroke();
-		// 	ctx.closePath();
-
-		// 	ctx.beginPath();
-		// 	ctx.fillStyle = "red";
-		// 	ctx.ellipse(...point, 2, 2, 0, 0, 2 * Math.PI);
-		// 	ctx.fill();
-		// 	ctx.closePath();
-
-		// 	console.log(austriaCoordinates);
-		// }
 	}
 
 })();
