@@ -12,6 +12,10 @@ deno run --unstable --allow-net --allow-read --allow-write=. index.deno.ts
 
 */
 
+/* 
+https://laprovence.carto.com/tables/world_country_borders_kml/public/map
+ */
+
 (async () => {
 	// let data: Record<string, any> = JSON.parse(await Deno.readTextFile("./data.json"));
 	let data: Record<string, any> = {};

@@ -36,11 +36,16 @@ console.log(test);
 		let zoom: number = 0;
 		const scalePerZoom: number = 1.5;
 
-		window.addEventListener("mousemove", (evt: MouseEvent) => {
+		window.addEventListener("pointermove", (evt: MouseEvent) => {
 			// @ts-ignore
 			mouseX = evt.layerX;
 			// @ts-ignore
 			mouseY = evt.layerY;
+
+			if (evt.buttons === 1) {
+				centerX -= (evt.movementX / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
+				centerY += (evt.movementY / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+			}
 		});
 
 		window.addEventListener("wheel", (evt: WheelEvent) => {
@@ -57,116 +62,6 @@ console.log(test);
 			centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
 		});
 
-		{
-			let eventArray: boolean[] = [];
-
-			for (const [i, eventName] of [
-				"abort",
-				"animationcancel",
-				"animationend",
-				"animationiteration",
-				"animationstart",
-				"auxclick",
-				"beforeinput",
-				"blur",
-				"canplay",
-				"canplaythrough",
-				"change",
-				"click",
-				"close",
-				"compositionend",
-				"compositionstart",
-				"compositionupdate",
-				"contextmenu",
-				"cuechange",
-				"dblclick",
-				"drag",
-				"dragend",
-				"dragenter",
-				"dragleave",
-				"dragover",
-				"dragstart",
-				"drop",
-				"durationchange",
-				"emptied",
-				"ended",
-				"error",
-				"focus",
-				"focusin",
-				"focusout",
-				"formdata",
-				"gotpointercapture",
-				"input",
-				"invalid",
-				"keydown",
-				"keypress",
-				"keyup",
-				"load",
-				"loadeddata",
-				"loadedmetadata",
-				"loadstart",
-				"lostpointercapture",
-				"mousedown",
-				"mouseenter",
-				"mouseleave",
-				"mousemove",
-				"mouseout",
-				"mouseover",
-				"mouseup",
-				"pause",
-				"play",
-				"playing",
-				"pointercancel",
-				"pointerdown",
-				"pointerenter",
-				"pointerleave",
-				"pointermove",
-				"pointerout",
-				"pointerover",
-				"pointerup",
-				"progress",
-				"ratechange",
-				"reset",
-				"resize",
-				"scroll",
-				"securitypolicyviolation",
-				"seeked",
-				"seeking",
-				"select",
-				"selectionchange",
-				"selectstart",
-				"stalled",
-				"submit",
-				"suspend",
-				"timeupdate",
-				"toggle",
-				"touchcancel",
-				"touchend",
-				"touchmove",
-				"touchstart",
-				"transitioncancel",
-				"transitionend",
-				"transitionrun",
-				"transitionstart",
-				"volumechange",
-				"waiting",
-				"webkitanimationend",
-				"webkitanimationiteration",
-				"webkitanimationstart",
-				"webkittransitionend",
-				"wheel",
-			].entries()) {
-				eventArray.push(false);
-				window.addEventListener(eventName, (evt: Event) => {
-					eventArray[i] = true;
-				});
-			}
-
-			setInterval(() => {
-				console.log(eventArray.map((evt) => evt ? "#" : ".").join(""));
-				eventArray.fill(false);
-			}, 100);
-		}
 
 		{
 			const draw = () => {
