@@ -58,6 +58,117 @@ console.log(test);
 		});
 
 		{
+			let eventArray: boolean[] = [];
+
+			for (const [i, eventName] of [
+				"abort",
+				"animationcancel",
+				"animationend",
+				"animationiteration",
+				"animationstart",
+				"auxclick",
+				"beforeinput",
+				"blur",
+				"canplay",
+				"canplaythrough",
+				"change",
+				"click",
+				"close",
+				"compositionend",
+				"compositionstart",
+				"compositionupdate",
+				"contextmenu",
+				"cuechange",
+				"dblclick",
+				"drag",
+				"dragend",
+				"dragenter",
+				"dragleave",
+				"dragover",
+				"dragstart",
+				"drop",
+				"durationchange",
+				"emptied",
+				"ended",
+				"error",
+				"focus",
+				"focusin",
+				"focusout",
+				"formdata",
+				"gotpointercapture",
+				"input",
+				"invalid",
+				"keydown",
+				"keypress",
+				"keyup",
+				"load",
+				"loadeddata",
+				"loadedmetadata",
+				"loadstart",
+				"lostpointercapture",
+				"mousedown",
+				"mouseenter",
+				"mouseleave",
+				"mousemove",
+				"mouseout",
+				"mouseover",
+				"mouseup",
+				"pause",
+				"play",
+				"playing",
+				"pointercancel",
+				"pointerdown",
+				"pointerenter",
+				"pointerleave",
+				"pointermove",
+				"pointerout",
+				"pointerover",
+				"pointerup",
+				"progress",
+				"ratechange",
+				"reset",
+				"resize",
+				"scroll",
+				"securitypolicyviolation",
+				"seeked",
+				"seeking",
+				"select",
+				"selectionchange",
+				"selectstart",
+				"stalled",
+				"submit",
+				"suspend",
+				"timeupdate",
+				"toggle",
+				"touchcancel",
+				"touchend",
+				"touchmove",
+				"touchstart",
+				"transitioncancel",
+				"transitionend",
+				"transitionrun",
+				"transitionstart",
+				"volumechange",
+				"waiting",
+				"webkitanimationend",
+				"webkitanimationiteration",
+				"webkitanimationstart",
+				"webkittransitionend",
+				"wheel",
+			].entries()) {
+				eventArray.push(false);
+				window.addEventListener(eventName, (evt: Event) => {
+					eventArray[i] = true;
+				});
+			}
+
+			setInterval(() => {
+				console.log(eventArray.map((evt) => evt ? "#" : ".").join(""));
+				eventArray.fill(false);
+			}, 100);
+		}
+
+		{
 			const draw = () => {
 				ctx.strokeStyle = "white";
 				ctx.lineWidth = 1;
