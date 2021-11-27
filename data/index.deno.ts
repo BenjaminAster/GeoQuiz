@@ -96,7 +96,7 @@ https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 				/\<svg\b.*\<\/svg\>/
 			)?.[0] as string;
 
-			const cityStates: string[] = [
+			const cityStates: string[] = [ // don't have a 'capital' field on Wikipedia
 				"Vatican City",
 				"Singapore",
 			];

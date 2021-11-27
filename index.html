@@ -6,7 +6,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="color-scheme" content="dark" />
 
-	<meta name="description" content="Test your knowledge about geography with this country quiz!" />
+	<base href="./" />
+
+	<meta name="description"
+		content="Test your knowledge about geography with this country quiz!" />
 	<meta name="og:image" content="/media/white-circle.png" />
 
 	<link rel="manifest" href="./manifest.webmanifest" />
@@ -51,22 +54,36 @@
 		</noscript>
 
 		<main>
-			<h2 data-text="mainHeader"></h2>
+			<section>
+				<h2 data-text="mainHeader"></h2>
 
-			<p data-text="description"></p>
+				<p data-text="description"></p>
+			</section>
 
-			<h3 data-text="chooseLanguage"></h3>
+			<section>
+				<h3 data-text="chooseLanguage"></h3>
 
-			<language-select>
-				<template>
-					<button data-action="select-language">
-						<language-code data-notranslate="languageCode"></language-code>
-						<language-name data-content="languageName"></language-name>
-					</button>
-				</template>
-			</language-select>
+				<language-select>
+					<template>
+						<button>
+							<language-code data-notranslate="languageCode"></language-code>
+							<language-name data-content="languageName"></language-name>
+						</button>
+					</template>
+				</language-select>
+			</section>
 
-			<test data-text="test.testtest.anotherTest"></test>
+			<section>
+				<h3 data-text="chooseContinent"></h3>
+
+				<continent-select>
+					<template>
+						<button>
+							<continent-name data-content="continentName"></continent-name>
+						</button>
+					</template>
+				</continent-select>
+			</section>
 
 			<!-- <test>
 				<canvas></canvas>

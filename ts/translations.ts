@@ -5,7 +5,7 @@ export default {
 		de: "Länder-Quiz",
 	},
 	description: {
-		de: "Lerne die Namen, geografische Positionen, Flaggen und Hauptstädte der Länder der Welt!",
+		de: "Lerne die Namen, geografischen Positionen, Flaggen und Hauptstädte der Länder der Welt!",
 		en: "Learn the names, geographical positions, flags and capitals of the countries of the world!",
 	},
 	chooseLanguage: {
