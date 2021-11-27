@@ -12,8 +12,10 @@
 	<link rel="manifest" href="./manifest.webmanifest" />
 	<link rel="stylesheet" href="./style.css" />
 
-	<link rel="modulepreload" href="./js/test.js" />
-	<script type="module" src="./js/script.js"></script>
+	<link rel="modulepreload" href="./js/translations.js" />
+	<link rel="modulepreload" href="./js/languages.js" />
+	<link rel="modulepreload" href="./js/worldMap.js" />
+	<script defer type="module" src="./js/script.js"></script>
 
 	<title>Country Quiz</title>
 </head>
@@ -23,27 +25,24 @@
 
 	<actual-content>
 		<nav>
-			<button title="Toggle color scheme" class="theme-toggler">
+			<button data-action="toggle-theme" title="Toggle color scheme" class="theme-toggler">
 				<label for="theme-toggle"></label>
 			</button>
-			<button title="Pop out window" style="transform: scaleY(-1)">
+			<button data-action="pop-out-window" title="Pop out window" style="transform: scaleY(-1)">
 				⇲︎
 			</button>
-			<button title="Enable fullscreen">
+			<button data-action="toggle-fullscreen" title="Enable fullscreen">
 				⛶︎
 			</button>
-			<button title="Install App">
+			<button data-action="install-app" title="Install App">
 				⭳︎
 			</button>
-			<button title="Reload">
+			<button data-action="reload" title="Reload">
 				↻︎
 			</button>
-			<button title="Install App" style="position: relative">
+			<button data-action="share" title="Share" style="position: relative">
 				<span style="position: absolute; transform: rotate(-90deg)">⛬︎</span>
-				<!-- <span style="position: absolute; transform: rotate(-90deg)">𖡺︎</span> -->
-				<!-- <span style="position: absolute; transform: translate(-1px, -2px)">ᐸ︎</span> -->
 				<span style="position: absolute; transform: scale(1.1) translate(0, -2px)">ᐸ︎</span>
-				<!-- <span style="position: absolute; transform: translateX(-1px)">&lt;</span> -->
 			</button>
 		</nav>
 
@@ -52,7 +51,24 @@
 		</noscript>
 
 		<main>
-			<test>
+			<h2 data-text="mainHeader"></h2>
+
+			<p data-text="description"></p>
+
+			<h3 data-text="chooseLanguage"></h3>
+
+			<language-select>
+				<template>
+					<button data-action="select-language">
+						<div data-notranslate="languageCode"></div>
+						<div data-content="languageName"></div>
+					</button>
+				</template>
+			</language-select>
+
+			<test data-text="test.testtest.anotherTest"></test>
+
+			<!-- <test>
 				<canvas></canvas>
 				<style>
 					main,
@@ -67,7 +83,7 @@
 					}
 
 				</style>
-			</test>
+			</test> -->
 		</main>
 	</actual-content>
 </body>
