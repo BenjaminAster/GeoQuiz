@@ -3,6 +3,7 @@ import {
 	DOMParser,
 	HTMLDocument,
 	Element,
+	NodeList,
 	Node,
 } from "https://deno.land/x/deno_dom@v0.1.15-alpha/deno-dom-wasm.ts";
 
@@ -18,7 +19,7 @@ https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 
 (async () => {
 	// let data: Record<string, any> = JSON.parse(await Deno.readTextFile("./data.json"));
-	let data: Record<string, any> = {};
+	// let data: Record<string, any> = {};
 
 	const wikipediaCountryList = await (await globalThis.fetch(`https://en.wikipedia.org/wiki/List_of_sovereign_states`)).text();
 
@@ -56,7 +57,9 @@ https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 		return countries;
 	})();
 
-	// countries = countries.slice(0, 3);
+	// countries = countries.slice(0, 3); // for testing
+
+	let finishedCountries: number = 0;
 
 	countries = await Promise.all(
 		countries.map(async (country: Record<string, any>): Promise<Record<string, any>> => {
@@ -70,6 +73,10 @@ https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 			const document: HTMLDocument = parser.parseFromString(pageHTML, "text/html") as HTMLDocument;
 
 			const countryName = document.querySelector("h1#firstHeading")?.textContent;
+
+			const countryNameGerman = ([...document.querySelectorAll("nav#p-lang ul li") as NodeList] as Element[])?.find(
+				(li: Element) => li.textContent.trim() === "Deutsch"
+			)?.querySelector("a")?.getAttribute("title")?.trim()?.replace(/ – German$/, "");
 
 			const tbody: Element = document.querySelector("table.infobox tbody") as Element;
 
@@ -85,38 +92,64 @@ https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 
 			const originalFlagSVG: string = await (await globalThis.fetch(flagImageURL)).text();
 
-			const flagSVG: string = (
-				await (await globalThis.fetch(flagImageURL)).text()
-			)?.replaceAll(/[\r\n\t]/g, "").match(/\<svg .*\<\/svg\>/)?.[0] as string;
+			const flagSVG: string = originalFlagSVG?.replaceAll(/[\r\n]/g, "").replaceAll(/[\t]/g, " ").match(
+				/\<svg\b.*\<\/svg\>/
+			)?.[0] as string;
+
+			const cityStates: string[] = [
+				"Vatican City",
+				"Singapore",
+			];
 
 			const [capital, capitalWikipediaURLName] = ((): [string, string] => {
+				if (cityStates.includes(countryName as string)) {
+					return [countryName as string, wikipediaURLName];
+				}
 				const link: Element = rows.find(
-					(row: Element) => row?.textContent?.match(/Capital/)
-				)?.querySelector("td a") as Element;
+					(row: Element) => row?.textContent?.toLowerCase().match(/capital/)
+				)?.querySelector(`td a:not([class="image"])`) as Element;
 				return [link?.textContent, link?.getAttribute("href")?.replace(/^\/wiki\//, "") as string];
 			})();
 
+			const capitalGerman = ([...parser.parseFromString(await (await globalThis.fetch(
+				`https://en.wikipedia.org/wiki/${capitalWikipediaURLName}`
+			)).text(), "text/html")?.querySelectorAll("nav#p-lang ul li") as NodeList] as Element[])?.find(
+				(li: Element) => li.textContent.trim() === "Deutsch"
+			)?.querySelector("a")?.getAttribute("title")?.trim()?.replace(/ – German$/, "");
+
 			const returnObject = {
-				countryName,
+				name: {
+					en: countryName,
+					de: countryNameGerman,
+				},
 				wikipediaURLName,
 				flagFilePageURL,
 				flagImageURL,
-				flagSVG,
-				capital,
+				capital: {
+					en: capital,
+					de: capitalGerman,
+				},
 				capitalWikipediaURLName,
+				flagSVG,
 			};
 
-			if (Object.keys(returnObject).length !== 7) {
+			console.log(returnObject);
+
+			if (Object.keys(returnObject).length !== Object.keys(JSON.parse(JSON.stringify(returnObject))).length) {
 				throw new Error(countryName);
 			}
 
-			console.log(countryName);
+			finishedCountries++;
+
+			console.log(`${countryName} (${finishedCountries}/${countries.length})`);
 
 			return returnObject;
 		})
 	);
 
-	data.countries = countries;
+	// data.countries = countries;
 
-	await Deno.writeTextFile("./data.json", JSON.stringify(data, null, "\t"));
+	await Deno.writeTextFile("./data.json", JSON.stringify(countries, null, "\t"));
+	await Deno.writeTextFile("./data.min.json", JSON.stringify(countries));
 })();
+

@@ -32,6 +32,19 @@
 			<button title="Enable fullscreen">
 				⛶︎
 			</button>
+			<button title="Install App">
+				⭳︎
+			</button>
+			<button title="Reload">
+				↻︎
+			</button>
+			<button title="Install App" style="position: relative">
+				<span style="position: absolute; transform: rotate(-90deg)">⛬︎</span>
+				<!-- <span style="position: absolute; transform: rotate(-90deg)">𖡺︎</span> -->
+				<!-- <span style="position: absolute; transform: translate(-1px, -2px)">ᐸ︎</span> -->
+				<span style="position: absolute; transform: scale(1.1) translate(0, -2px)">ᐸ︎</span>
+				<!-- <span style="position: absolute; transform: translateX(-1px)">&lt;</span> -->
+			</button>
 		</nav>
 
 		<noscript>
@@ -42,13 +55,17 @@
 			<test>
 				<canvas></canvas>
 				<style>
-					main, test {
+					main,
+					test {
 						display: flex;
 						flex-direction: column;
 					}
-					test, canvas {
+
+					test,
+					canvas {
 						flex-grow: 1;
 					}
+
 				</style>
 			</test>
 		</main>

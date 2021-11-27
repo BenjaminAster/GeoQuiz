@@ -3,6 +3,7 @@ import { test } from "./test.js";
 console.log(1);
 console.log(test);
 
+navigator.serviceWorker.register("./service-worker.js", { scope: "./", type: "module" });
 
 (async () => {
 
@@ -10,7 +11,6 @@ console.log(test);
 		// country borders test
 
 		const countryBorders: Record<string, any>[] = (await (await fetch(
-			// "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
 			"./data/borders.min.json"
 		)).json()).features;
 
