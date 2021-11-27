@@ -5,7 +5,7 @@
 input#theme-toggle {
 	&:not(:checked) ~ actual-content {
 		--is-light: 0;
-		label {
+		label[for="theme-toggle"] {
 			&::before {
 				content: "🌙\fe0e";
 			}
@@ -13,7 +13,7 @@ input#theme-toggle {
 	}
 	&:checked ~ actual-content {
 		--is-light: 1;
-		label {
+		label[for="theme-toggle"] {
 			&::before {
 				content: "☀\fe0e";
 			}
@@ -21,8 +21,8 @@ input#theme-toggle {
 	}
 }
 
-$fromDark: #000102;
-$toDark: #fdfeff;
+$fromDark: #000104;
+$toDark: #fbfcff;
 
 $fromLight: white;
 $toLight: black;

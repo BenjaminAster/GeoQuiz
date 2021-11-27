@@ -24,6 +24,12 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		installPromptEvent = event;
 	});
 
+	const updateThemeColor = () => {
+		(document.querySelector("meta[name=theme-color]") as HTMLMetaElement).content = window.getComputedStyle(
+			document.querySelector("actual-content")
+		)?.getPropertyValue("--col-18");
+	}
+
 	const actions: Record<string, () => void> = {
 		toggleTheme() {
 			const colorSchemeMeta: HTMLMetaElement = document.querySelector("meta[name=color-scheme]");
@@ -31,6 +37,8 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			colorSchemeMeta.content = colorSchemes[
 				+!colorSchemes.indexOf(colorSchemeMeta.getAttribute("content"))
 			];
+
+			window.setTimeout(updateThemeColor);
 		},
 		popOutWindow() {
 			window.open(location.href, "_blank", "location=yes");
@@ -75,7 +83,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 
 	if (location.hostname === "localhost") {
 		window.addEventListener("keydown", (evt: KeyboardEvent) => {
-			if (evt.key === "F5") {
+			if (evt.key === "F5" && !evt.ctrlKey) {
 				evt.preventDefault();
 				actions.refresh();
 			}
@@ -105,6 +113,40 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			setLanguage(language);
 			container.querySelector(".selected")?.classList.remove("selected");
 			button.classList.add("selected");
+		});
+
+		container.append(clone);
+	}
+}
+
+{
+	// continents:
+
+	const container: HTMLElement = document.querySelector("continent-select");
+	const getClone = getTemplateCloner(container);
+
+	const continents: string[] = [
+		"africa",
+		"northAmerica",
+		"southAmerica",
+		"asia",
+		"europe",
+		"oceania",
+	];
+
+	for (const continent of continents) {
+		const clone = getClone({
+			continentName: `continents.${continent}`,
+		});
+
+		let button = clone.firstElementChild;
+		let selectedContinents = new Set();
+
+		button.addEventListener("click", (evt: MouseEvent) => {
+			button.classList.toggle("selected");
+			selectedContinents.has(continent) ? (
+				selectedContinents.delete(continent)
+			) : selectedContinents.add(continent);
 		});
 
 		container.append(clone);

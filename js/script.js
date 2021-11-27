@@ -6,11 +6,15 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 	window.addEventListener("beforeinstallprompt", (event) => {
 		installPromptEvent = event;
 	});
+	const updateThemeColor = () => {
+		document.querySelector("meta[name=theme-color]").content = window.getComputedStyle(document.querySelector("actual-content"))?.getPropertyValue("--col-18");
+	};
 	const actions = {
 		toggleTheme() {
 			const colorSchemeMeta = document.querySelector("meta[name=color-scheme]");
 			const colorSchemes = ["dark", "light"];
 			colorSchemeMeta.content = colorSchemes[+!colorSchemes.indexOf(colorSchemeMeta.getAttribute("content"))];
+			window.setTimeout(updateThemeColor);
 		},
 		popOutWindow() {
 			window.open(location.href, "_blank", "location=yes");
@@ -55,7 +59,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 	}
 	if (location.hostname === "localhost") {
 		window.addEventListener("keydown", (evt) => {
-			if (evt.key === "F5") {
+			if (evt.key === "F5" && !evt.ctrlKey) {
 				evt.preventDefault();
 				actions.refresh();
 			}
@@ -79,6 +83,30 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			setLanguage(language);
 			container.querySelector(".selected")?.classList.remove("selected");
 			button.classList.add("selected");
+		});
+		container.append(clone);
+	}
+}
+{
+	const container = document.querySelector("continent-select");
+	const getClone = getTemplateCloner(container);
+	const continents = [
+		"africa",
+		"northAmerica",
+		"southAmerica",
+		"asia",
+		"europe",
+		"oceania",
+	];
+	for (const continent of continents) {
+		const clone = getClone({
+			continentName: `continents.${continent}`,
+		});
+		let button = clone.firstElementChild;
+		let selectedContinents = new Set();
+		button.addEventListener("click", (evt) => {
+			button.classList.toggle("selected");
+			selectedContinents.has(continent) ? (selectedContinents.delete(continent)) : selectedContinents.add(continent);
 		});
 		container.append(clone);
 	}

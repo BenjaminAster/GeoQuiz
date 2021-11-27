@@ -2,7 +2,7 @@ import translations, { languages } from './translations.js';
 let chosenLanguage = languages[Math.max(0, languages.indexOf(localStorage.getItem("language")))];
 export const translateElement = (element) => {
 	for (const child of [...element.querySelectorAll("[data-text]")]) {
-		child.textContent = child.getAttribute("data-text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
+		child.innerHTML = child.getAttribute("data-text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
 	}
 	return element;
 };
@@ -19,7 +19,7 @@ export const getTemplateCloner = (container) => {
 			else {
 				element = clone.querySelector(`[data-notranslate="${key}"]`);
 				if (element) {
-					element.textContent = value;
+					element.innerHTML = value;
 				}
 			}
 		}

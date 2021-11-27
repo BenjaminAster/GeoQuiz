@@ -9,8 +9,8 @@ export default {
 		en: "Learn the names, geographical positions, flags and capitals of the countries of the world!",
 	},
 	chooseLanguage: {
-		en: "Choose a language",
-		de: "Wähle eine Sprache",
+		en: "Choose a language:",
+		de: "Wähle eine Sprache:",
 	},
 	languages: {
 		en: {
@@ -20,6 +20,50 @@ export default {
 		de: {
 			en: "German",
 			de: "Deutsch"
+		},
+	},
+	continents: {
+		africa: {
+			en: "Africa",
+			de: "Afrika",
+		},
+		northAmerica: {
+			en: "North America",
+			de: "Nordamerika",
+		},
+		southAmerica: {
+			en: "South America",
+			de: "Südamerika",
+		},
+		asia: {
+			en: "Asia",
+			de: "Asien",
+		},
+		europe: {
+			en: "Europe",
+			de: "Europa",
+		},
+		oceania: {
+			en: "Oceania",
+			de: "Ozeanien",
+		},
+		chooseContinent: {
+			en: "Choose your continents:",
+			de: "Wähle deine Kontinente:",
+		},
+		selectAll: {
+			en: "Select all",
+			de: "Alle auswählen",
+		},
+	},
+	footer: {
+		madeWithLove: {
+			en: `Made with <span style=color:red>❤</span> by Benjamin Aster`,
+			de: `Mit <span style=color:red>❤</span> gemacht von Benjamin Aster`,
+		},
+		viewOnGitHub: {
+			en: "View on GitHub",
+			de: "Auf GitHub ansehen",
 		},
 	},
 };

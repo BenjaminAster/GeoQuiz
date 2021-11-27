@@ -7,7 +7,7 @@ let chosenLanguage = languages[Math.max(0,
 
 export const translateElement = <T extends HTMLElement | DocumentFragment>(element: T) => {
 	for (const child of [...(element.querySelectorAll("[data-text]") as any as HTMLElement[])]) {
-		child.textContent = (child.getAttribute("data-text") as string).split(".").reduce(
+		child.innerHTML = (child.getAttribute("data-text") as string).split(".").reduce(
 			(obj, crr) => obj?.[crr], translations
 		)?.[chosenLanguage];
 	}
@@ -27,7 +27,7 @@ export const getTemplateCloner = (container: HTMLElement) => {
 			} else {
 				element = clone.querySelector(`[data-notranslate="${key}"]`);
 				if (element) {
-					element.textContent = value;
+					element.innerHTML = value;
 				}
 			}
 		}
