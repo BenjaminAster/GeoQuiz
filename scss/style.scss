@@ -8,6 +8,8 @@ sass scss:. --watch --embed-source-map
 
 */
 
+$transitionDuration: 0.2s;
+
 :root {
 }
 
@@ -74,6 +76,35 @@ nav {
 
 		vertical-align: top;
 
+		transition: background-color $transitionDuration, color $transitionDuration;
+
+		&:hover {
+			background-color: var(--green);
+			color: var(--col-0);
+		}
+
+		// &::before {
+		// 	transition: background-color $transitionDuration;
+		// 	position: absolute;
+		// 	content: "";
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	inset: 0;
+		// 	display: block;
+		// 	border-radius: inherit;
+		// 	background-color: transparent;
+		// 	pointer-events: none;
+		// }
+
+		// &:hover::before {
+		// 	background-color: var(--green-bg);
+		// }
+
+		// &:active {
+		// 	background-color: var(--green);
+		// 	color: var(--col-0);
+		// }
+
 		&:not(:last-of-type) {
 			position: relative;
 			&::after {
@@ -96,12 +127,37 @@ nav {
 	}
 }
 
+language-select {
+	button {
+		display: inline-block;
+		min-width: 6rem;
+		background-color: var(--col-3);
+		color: var(--col-c);
+		padding: 0.5rem;
+		border: 2px solid var(--col-c) {
+			radius: 0.7rem;
+		}
+
+		language-code {
+			display: block;
+			font-size: 2rem;
+			font-weight: bold;
+		}
+
+		&.selected {
+			background-color: var(--blue-bg);
+			color: var(--blue);
+			border-color: var(--blue);
+		}
+	}
+}
+
 noscript {
 	display: block;
 	margin-top: 0.5rem;
 	padding: 0.5rem;
 	background-color: var(--red-bg);
-	$borderWidth: 3px;
+	$borderWidth: 2px;
 	color: #{darkLight(salmon, darkRed)};
 	border: $borderWidth solid var(--red) {
 		radius: 1rem;

@@ -48,8 +48,8 @@ actual-content {
   --extr-bg: rgb(calc(var(--is-light)*255),calc(var(--is-light)*255),calc(var(--is-light)*255));
   --blue: rgb(calc(var(--is-light)*30),calc(191 - var(--is-light)*47),255);
   --blue-bg: rgba(calc(var(--is-light)*30),calc(191 - var(--is-light)*47),255,0.15);
-  --green: rgb(calc(85 - var(--is-light)*85),calc(255 - var(--is-light)*127),calc(119 - var(--is-light)*119));
-  --green-bg: rgba(calc(85 - var(--is-light)*85),calc(255 - var(--is-light)*127),calc(119 - var(--is-light)*119),0.15);
+  --green: rgb(0,calc(255 - var(--is-light)*127),calc(127 - var(--is-light)*127));
+  --green-bg: rgba(0,calc(255 - var(--is-light)*127),calc(127 - var(--is-light)*127),0.15);
   --red: rgb(255,0,0);
   --red-bg: rgba(255,0,0,0.15);
 }
@@ -112,6 +112,11 @@ nav > button {
   border-radius: 0.5em;
   color: var(--col-e);
   vertical-align: top;
+  transition: background-color 0.2s, color 0.2s;
+}
+nav > button:hover {
+  background-color: var(--green);
+  color: var(--col-0);
 }
 nav > button:not(:last-of-type) {
   position: relative;
@@ -132,13 +137,33 @@ nav > button:not(:last-of-type)::after {
   transform: translateX(calc((calc(0.6rem + 2px) + 2px) / 2));
 }
 
+language-select button {
+  display: inline-block;
+  min-width: 6rem;
+  background-color: var(--col-3);
+  color: var(--col-c);
+  padding: 0.5rem;
+  border: 2px solid var(--col-c);
+  border-radius: 0.7rem;
+}
+language-select button language-code {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+}
+language-select button.selected {
+  background-color: var(--blue-bg);
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
 noscript {
   display: block;
   margin-top: 0.5rem;
   padding: 0.5rem;
   background-color: var(--red-bg);
   color: rgb(calc(250 - var(--is-light)*111),calc(128 - var(--is-light)*128),calc(114 - var(--is-light)*114));
-  border: 3px solid var(--red);
+  border: 2px solid var(--red);
   border-radius: 1rem;
 }
 
@@ -149,4 +174,4 @@ button.theme-toggler label {
   place-items: center;
 }
 
-/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22scss/_colors.scss%22,%22scss/style.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22;AAKC;EACC;;AAEC;EACC;;AAIH;EACC;;AAEC;EACC;;;AAYJ;EACC;EAWC;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAUD;EAIA;EACA;EAIA;EACA;EAIA;EACA;;;AC9DD;;AAAA;;AAAA;AASA;EACC;;;AAGD;EACC;EACA;EACA;EACA;EACA;;AAEA;EACC;EACA;;;AAIF;EACC;EACA;EACA;EACA;EACA;EACA;;AAEA;EACC;;;AAIF;EACC;EACA;EACA;EACA;EAGA,KADM;EAEN;EACC;;AAGD;EACC;EAEA;EACA;EACA;EACA;EACA;EACA;EACA;EAEA;EACA;EAEA;EACA;EACA;EACA;EAEA;;AAEA;EACC;;AACA;EACC;EACA;EAEA;EACA;EACA;EACA;EACA,OAtCW;EAuCX;EACA;EACA;EACA;EACA;EACA;;;AAMJ;EACC;EACA;EACA;EACA;EAEA;EACA;EACC;;;AAKD;EACC;EACA;EACA;EACA%22,%22file%22:%22style.css%22%7D */
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22scss/_colors.scss%22,%22scss/style.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22;AAKC;EACC;;AAEC;EACC;;AAIH;EACC;;AAEC;EACC;;;AAYJ;EACC;EAWC;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAMC;EAND;EAUD;EAIA;EACA;EAIA;EACA;EAIA;EACA;;;AC9DD;;AAAA;;AAAA;AAWA;EACC;;;AAGD;EACC;EACA;EACA;EACA;EACA;;AAEA;EACC;EACA;;;AAIF;EACC;EACA;EACA;EACA;EACA;EACA;;AAEA;EACC;;;AAIF;EACC;EACA;EACA;EACA;EAGA,KADM;EAEN;EACC;;AAGD;EACC;EAEA;EACA;EACA;EACA;EACA;EACA;EACA;EAEA;EACA;EAEA;EACA;EACA;EACA;EAEA;EAEA;;AAEA;EACC;EACA;;AAyBD;EACC;;AACA;EACC;EACA;EAEA;EACA;EACA;EACA;EACA,OAnEW;EAoEX;EACA;EACA;EACA;EACA;EACA;;;AAOH;EACC;EACA;EACA;EACA;EACA;EACA;EACC;;AAGD;EACC;EACA;EACA;;AAGD;EACC;EACA;EACA;;;AAKH;EACC;EACA;EACA;EACA;EAEA;EACA;EACC;;;AAKD;EACC;EACA;EACA;EACA%22,%22file%22:%22style.css%22%7D */

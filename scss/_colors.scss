@@ -56,7 +56,7 @@ actual-content {
 	--blue: #{darkLight($blueDark, $blueLight)};
 	--blue-bg: #{darkLight(rgba($blueDark, 15%), rgba($blueLight, 15%))};
 
-	$greenDark: #5f7;
+	$greenDark: springGreen;
 	$greenLight: green;
 	--green: #{darkLight($greenDark, $greenLight)};
 	--green-bg: #{darkLight(rgba($greenDark, 15%), rgba($greenLight, 15%))};

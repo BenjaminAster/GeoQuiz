@@ -10,3 +10,11 @@ self.addEventListener("fetch", (evt) => {
 		})()
 	})());
 });
+
+self.addEventListener("message", async (evt) => {
+	if (evt.data === "refresh") {
+		await self.caches.delete(cacheName);
+		evt.source.postMessage("refresh");
+	}
+});
+

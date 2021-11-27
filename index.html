@@ -25,19 +25,19 @@
 
 	<actual-content>
 		<nav>
-			<button data-action="toggle-theme" title="Toggle color scheme" class="theme-toggler">
+			<button data-action="toggleTheme" title="Toggle color scheme" class="theme-toggler">
 				<label for="theme-toggle"></label>
 			</button>
-			<button data-action="pop-out-window" title="Pop out window" style="transform: scaleY(-1)">
+			<button data-action="popOutWindow" title="Pop out window" style="transform: scaleY(-1)">
 				⇲︎
 			</button>
-			<button data-action="toggle-fullscreen" title="Enable fullscreen">
+			<button data-action="toggleFullscreen" title="Enable fullscreen">
 				⛶︎
 			</button>
-			<button data-action="install-app" title="Install App">
+			<button data-action="installApp" title="Install App">
 				⭳︎
 			</button>
-			<button data-action="reload" title="Reload">
+			<button data-action="refresh" title="Refresh Site">
 				↻︎
 			</button>
 			<button data-action="share" title="Share" style="position: relative">
@@ -60,8 +60,8 @@
 			<language-select>
 				<template>
 					<button data-action="select-language">
-						<div data-notranslate="languageCode"></div>
-						<div data-content="languageName"></div>
+						<language-code data-notranslate="languageCode"></language-code>
+						<language-name data-content="languageName"></language-name>
 					</button>
 				</template>
 			</language-select>
