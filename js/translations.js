@@ -65,6 +65,16 @@ export default {
 			de: "Auf GitHub ansehen",
 		},
 	},
+	mobileWarning: {
+		header: {
+			en: "Doesn't work on mobile!",
+			de: "Funktioniert nicht auf mobilen Geräten!",
+		},
+		text: {
+			en: "This quiz is not designed to work on mobile devices. Please use a desktop device instead.",
+			de: "Dieses Quiz funktioniert nicht auf mobilen Geräten. Bitte nutze stattdessen ein Desktop-Gerät.",
+		},
+	}
 };
 export const languages = [
 	"en",

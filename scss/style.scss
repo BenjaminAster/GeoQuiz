@@ -15,12 +15,12 @@ sass scss:. --watch --embed-source-map
 
 * {
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
 }
 
 body {
 	font-family: system-ui;
 	margin: 0;
-	width: 100vw;
 	min-height: 100vh;
 	overflow-x: hidden;
 
@@ -31,7 +31,7 @@ body {
 }
 
 button,
-button > label {
+label {
 	cursor: pointer;
 }
 
@@ -51,5 +51,5 @@ p {
 }
 
 a {
-	color: #{darkLight(lightSkyBlue, blue)};
+	color: var(--link-blue);
 }

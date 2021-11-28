@@ -1,5 +1,5 @@
 import translations, { languages } from './translations.js';
-let chosenLanguage = languages[Math.max(0, languages.indexOf(localStorage.getItem("language")))];
+let chosenLanguage = localStorage.getItem("language") || (navigator.languages.join().includes("de") && "de") || languages[0];
 export const translateElement = (element) => {
 	for (const child of [...element.querySelectorAll("[data-text]")]) {
 		child.innerHTML = child.getAttribute("data-text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];

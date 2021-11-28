@@ -1,9 +1,9 @@
 
 import translations, { languages } from './translations.js';
 
-let chosenLanguage = languages[Math.max(0,
-	languages.indexOf(localStorage.getItem("language"))
-)];
+let chosenLanguage = localStorage.getItem("language") || (
+	navigator.languages.join().includes("de") && "de"
+) || languages[0];
 
 export const translateElement = <T extends HTMLElement | DocumentFragment>(element: T) => {
 	for (const child of [...(element.querySelectorAll("[data-text]") as any as HTMLElement[])]) {

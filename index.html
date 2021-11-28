@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" color-scheme="dark">
 
 <head>
 	<meta charset="UTF-8" />
@@ -26,73 +26,87 @@
 </head>
 
 <body>
-	<input type="checkbox" id="theme-toggle" hidden />
+	<noscript>
+		⚠ Please enable JavaScript to use this site.
 
-	<actual-content>
-		<nav>
-			<button data-action="toggleTheme" title="Toggle color scheme" class="theme-toggler">
-				<label for="theme-toggle"></label>
-			</button>
-			<button data-action="popOutWindow" title="Pop out window" style="transform: scaleY(-1)">
-				⇲︎
-			</button>
-			<button data-action="toggleFullscreen" title="Enable fullscreen">
-				⛶︎
-			</button>
-			<button data-action="installApp" title="Install App">
-				⭳︎
-			</button>
-			<button data-action="refresh" title="Refresh Site">
-				↻︎
-			</button>
-			<button data-action="share" title="Share" style="position: relative">
-				<span style="position: absolute; transform: rotate(-90deg)">⛬︎</span>
-				<span style="position: absolute; transform: scale(1.1) translate(0, -2px)">ᐸ︎</span>
-			</button>
-		</nav>
+		<style>
+			nav,
+			main,
+			footer {
+				display: none;
+			}
 
-		<noscript>
-			⚠&#xFE0E; Please enable JavaScript to use this site.
-		</noscript>
+		</style>
+	</noscript>
 
-		<main>
-			<information>
-				<h2 data-text="mainHeader"></h2>
+	<nav>
+		<button data-action="toggleTheme" title="Toggle color scheme" id="theme-toggler">
 
-				<p data-text="description"></p>
-			</information>
+		</button>
+		<button data-action="popOutWindow" title="Pop out window" style="transform: scaleY(-1)">
+			⇲︎
+		</button>
+		<button data-action="toggleFullscreen" title="Enable fullscreen">
+			⛶︎
+		</button>
+		<button data-action="installApp" title="Install App">
+			⭳︎
+		</button>
+		<button data-action="refresh" title="Refresh Site">
+			↻︎
+		</button>
+		<button data-action="share" title="Share" style="position: relative">
+			<span style="position: absolute; transform: rotate(-90deg)">⛬︎</span>
+			<span style="position: absolute; transform: scale(1.1) translate(0, -2px)">ᐸ︎</span>
+		</button>
+	</nav>
 
-			<languages>
-				<h3 data-text="chooseLanguage"></h3>
+	<main>
+		<mobile-warning>
+			<h2>
+				<warning-sign>⚠</warning-sign>
+				<span data-text="mobileWarning.header"></span>
+			</h2>
+			<p data-text="mobileWarning.text"></p>
+		</mobile-warning>
 
-				<language-select>
-					<template>
-						<button>
-							<language-code data-notranslate="languageCode"></language-code>
-							<language-name data-content="languageName"></language-name>
-						</button>
-					</template>
-				</language-select>
-			</languages>
+		<information>
+			<h2 data-text="mainHeader"></h2>
 
-			<continents>
-				<h3 data-text="continents.chooseContinent"></h3>
+			<p data-text="description"></p>
+		</information>
 
-				<label class="selectAll">
-					<input type="checkbox">
-					<span data-text="continents.selectAll"></span>
-				</label>
+		<languages>
+			<h3 data-text="chooseLanguage"></h3>
 
-				<continent-select>
-					<template>
-						<button>
-							<continent-name data-content="continentName"></continent-name>
-						</button>
-					</template>
-				</continent-select>
-			</continents>
+			<language-select>
+				<template>
+					<button>
+						<language-code data-notranslate="languageCode"></language-code>
+						<language-name data-content="languageName"></language-name>
+					</button>
+				</template>
+			</language-select>
+		</languages>
 
-			<!-- <test>
+		<continents>
+			<h3 data-text="continents.chooseContinent"></h3>
+
+			<label class="select-all">
+				<input type="checkbox" data-action="selectAll">
+				<span data-text="continents.selectAll"></span>
+			</label>
+
+			<continent-select>
+				<template>
+					<button>
+						<continent-name data-content="continentName"></continent-name>
+					</button>
+				</template>
+			</continent-select>
+		</continents>
+
+		<!-- <test>
 				<canvas></canvas>
 				<style>
 					main,
@@ -108,14 +122,13 @@
 
 				</style>
 			</test> -->
-		</main>
+	</main>
 
-		<footer>
-			<span data-text="footer.madeWithLove"></span>
-			&bull;
-			<a data-text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Countries-Quiz"></a>
-		</footer>
-	</actual-content>
+	<footer>
+		<span data-text="footer.madeWithLove"></span>
+		&bull;
+		<a data-text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Countries-Quiz"></a>
+	</footer>
 </body>
 
 </html>

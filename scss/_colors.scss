@@ -2,24 +2,24 @@
 
 @import "functions-mixins";
 
-input#theme-toggle {
-	&:not(:checked) ~ actual-content {
-		--is-light: 0;
-		label[for="theme-toggle"] {
-			&::before {
-				content: "🌙\fe0e";
-			}
-		}
-	}
-	&:checked ~ actual-content {
-		--is-light: 1;
-		label[for="theme-toggle"] {
-			&::before {
-				content: "☀\fe0e";
-			}
-		}
-	}
-}
+// input#theme-toggle {
+// 	&:not(:checked) ~ actual-content {
+// 		--is-light: 0;
+// 		label[for="theme-toggle"] {
+// 			&::before {
+// 				content: "🌙\fe0e";
+// 			}
+// 		}
+// 	}
+// 	&:checked ~ actual-content {
+// 		--is-light: 1;
+// 		label[for="theme-toggle"] {
+// 			&::before {
+// 				content: "☀\fe0e";
+// 			}
+// 		}
+// 	}
+// }
 
 $fromDark: #000104;
 $toDark: #fbfcff;
@@ -27,42 +27,63 @@ $toDark: #fbfcff;
 $fromLight: white;
 $toLight: black;
 
-actual-content {
-	--is-light: 0;
-
+@mixin colors($scheme) {
 	$hexList: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c, d, e, f);
-	$max: length($hexList) - 1;
+	$max: 15;
 
 	@for $i from 0 through $max {
 		$hexNum: nth($hexList, $i + 1);
 
-		$darkCol: mix($toDark, $fromDark, math.div($i * 100%, $max));
-		$lightCol: mix($toLight, $fromLight, math.div($i * 100%, $max));
-
-		--col-#{$hexNum}: #{darkLight($darkCol, $lightCol)};
+		@if ($scheme == "dark") {
+			--col-#{$hexNum}: #{mix($toDark, $fromDark, math.div($i * 100%, $max))};
+		} @else if ($scheme == "light") {
+			--col-#{$hexNum}: #{mix($toLight, $fromLight, math.div($i * 100%, $max))};
+		}
 
 		@if ($i != $max) {
-			$darkCol: mix($toDark, $fromDark, math.div(($i + 0.5) * 100%, $max));
-			$lightCol: mix($toLight, $fromLight, math.div(($i + 0.5) * 100%, $max));
-
-			--col-#{$hexNum}8: #{darkLight($darkCol, $lightCol)};
+			@if ($scheme == "dark") {
+				--col-#{$hexNum}8: #{mix($toDark, $fromDark, math.div(($i + 0.5) * 100%, $max))};
+			} @else if ($scheme == "light") {
+				--col-#{$hexNum}8: #{mix($toLight, $fromLight, math.div(($i + 0.5) * 100%, $max))};
+			}
 		}
 	}
 
-	--extr-bg: #{darkLight(black, white)};
+	@if ($scheme == "dark") {
+		--blue: deepSkyBlue;
+		--blue-bg: #{rgba(deepSkyBlue, 15%)};
+		--green: springGreen;
+		--green-bg: #{rgba(springGreen, 15%)};
+		--red: red;
+		--red-bg: #{rgba(red, 15%)};
+		--cover-disabled: #111a;
+		--link-blue: lightSkyBlue;
+	} @else if ($scheme == "light") {
+		--blue: dodgerBlue;
+		--blue-bg: #{rgba(dodgerBlue, 15%)};
+		--green: green;
+		--green-bg: #{rgba(green, 15%)};
+		--red: red;
+		--red-bg: #{rgba(red, 15%)};
+		--cover-disabled: #eeea;
+		--link-blue: blue;
+	}
 
-	$blueDark: deepSkyBlue;
-	$blueLight: dodgerBlue;
-	--blue: #{darkLight($blueDark, $blueLight)};
-	--blue-bg: #{darkLight(rgba($blueDark, 15%), rgba($blueLight, 15%))};
+	button#theme-toggler {
+		&::before {
+			@if ($scheme == "dark") {
+				content: "🌙\fe0e";
+			} @else if ($scheme == "light") {
+				content: "☀\fe0e";
+			}
+		}
+	}
+}
 
-	$greenDark: springGreen;
-	$greenLight: green;
-	--green: #{darkLight($greenDark, $greenLight)};
-	--green-bg: #{darkLight(rgba($greenDark, 15%), rgba($greenLight, 15%))};
+:root {
+	@include colors("dark");
+}
 
-	$redDark: red;
-	$redLight: red;
-	--red: #{darkLight($redDark, $redLight)};
-	--red-bg: #{darkLight(rgba($redDark, 15%), rgba($redLight, 15%))};
+:root[color-scheme="light"] {
+	@include colors("light");
 }
