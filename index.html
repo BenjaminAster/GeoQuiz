@@ -7,6 +7,7 @@
 	<meta name="color-scheme" content="dark" />
 
 	<meta name="theme-color" content="#000000" />
+	<meta name="robots" content="all" />
 
 	<base href="./" />
 
@@ -17,6 +18,7 @@
 	<link rel="manifest" href="./manifest.webmanifest" />
 	<link rel="stylesheet" href="./style.css" />
 
+	<link rel="modulepreload" href="./js/game.js" />
 	<link rel="modulepreload" href="./js/translations.js" />
 	<link rel="modulepreload" href="./js/languages.js" />
 	<link rel="modulepreload" href="./js/worldMap.js" />
@@ -65,19 +67,19 @@
 		<mobile-warning>
 			<h2>
 				<warning-sign>⚠</warning-sign>
-				<span data-text="mobileWarning.header"></span>
+				<span data-text="mobileWarning.header">&nbsp;</span>
 			</h2>
-			<p data-text="mobileWarning.text"></p>
+			<p data-text="mobileWarning.text">&nbsp;</p>
 		</mobile-warning>
 
 		<information>
-			<h2 data-text="mainHeader"></h2>
+			<h2 data-text="mainHeader">&nbsp;</h2>
 
-			<p data-text="description"></p>
+			<p data-text="description">&nbsp;</p>
 		</information>
 
 		<languages>
-			<h3 data-text="chooseLanguage"></h3>
+			<h3 data-text="chooseLanguage">&nbsp;</h3>
 
 			<language-select>
 				<template>
@@ -90,11 +92,11 @@
 		</languages>
 
 		<continents>
-			<h3 data-text="continents.chooseContinent"></h3>
+			<h3 data-text="continents.chooseContinent">&nbsp;</h3>
 
 			<label class="select-all">
 				<input type="checkbox" data-action="selectAll">
-				<span data-text="continents.selectAll"></span>
+				<span data-text="continents.selectAll">&nbsp;</span>
 			</label>
 
 			<continent-select>

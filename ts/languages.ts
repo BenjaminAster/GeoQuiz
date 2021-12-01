@@ -7,9 +7,33 @@ let chosenLanguage = localStorage.getItem("language") || (
 
 export const translateElement = <T extends HTMLElement | DocumentFragment>(element: T) => {
 	for (const child of [...(element.querySelectorAll("[data-text]") as any as HTMLElement[])]) {
-		child.innerHTML = (child.getAttribute("data-text") as string).split(".").reduce(
+		// const originalHTML: string = child.innerHTML.trim();
+		const HTML: string = (child.getAttribute("data-text") as string).split(".").reduce(
 			(obj, crr) => obj?.[crr], translations
 		)?.[chosenLanguage];
+
+		const originalText: string = child.textContent;
+		const text: string = new DOMParser().parseFromString(HTML, "text/html").body.textContent;
+
+		const animationFrames: number = 20;
+		for (let i: number = 0; i <= animationFrames; i++) {
+			window.setTimeout(() => {
+				if (i < animationFrames) {
+					const textContent = text.slice(
+						0, text.length * i / animationFrames
+					) + originalText.slice(
+						originalText.length * i / animationFrames, originalText.length
+					);
+					if (textContent.trim()) {
+						child.textContent = textContent;
+					} else {
+						child.innerHTML = "&nbsp;";
+					}
+				} else {
+					child.innerHTML = HTML;
+				}
+			}, i * 200 / animationFrames);
+		}
 	}
 	return element;
 }

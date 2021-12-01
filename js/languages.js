@@ -2,7 +2,26 @@ import translations, { languages } from './translations.js';
 let chosenLanguage = localStorage.getItem("language") || (navigator.languages.join().includes("de") && "de") || languages[0];
 export const translateElement = (element) => {
 	for (const child of [...element.querySelectorAll("[data-text]")]) {
-		child.innerHTML = child.getAttribute("data-text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
+		const HTML = child.getAttribute("data-text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
+		const originalText = child.textContent;
+		const text = new DOMParser().parseFromString(HTML, "text/html").body.textContent;
+		const animationFrames = 20;
+		for (let i = 0; i <= animationFrames; i++) {
+			window.setTimeout(() => {
+				if (i < animationFrames) {
+					const textContent = text.slice(0, text.length * i / animationFrames) + originalText.slice(originalText.length * i / animationFrames, originalText.length);
+					if (textContent.trim()) {
+						child.textContent = textContent;
+					}
+					else {
+						child.innerHTML = "&nbsp;";
+					}
+				}
+				else {
+					child.innerHTML = HTML;
+				}
+			}, i * 200 / animationFrames);
+		}
 	}
 	return element;
 };
