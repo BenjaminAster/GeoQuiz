@@ -19,6 +19,14 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 )?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 
 {
+	// Safari warning:
+
+	if (browser === "safari") {
+		document.querySelector<HTMLElement>("safari-warning").hidden = false;
+	}
+}
+
+{
 	// nav buttons & PWA:
 
 	let installPromptEvent: any;
@@ -37,8 +45,8 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		localStorage.setItem("color-scheme", colorScheme);
 
 		document.documentElement.setAttribute("color-scheme", colorScheme);
-		(document.querySelector("meta[name=color-scheme]") as HTMLMetaElement).content = colorScheme;
-		(document.querySelector("meta[name=theme-color]") as HTMLMetaElement).content = (
+		document.querySelector<HTMLMetaElement>("meta[name=color-scheme]").content = colorScheme;
+		document.querySelector<HTMLMetaElement>("meta[name=theme-color]").content = (
 			window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
 		);
 	}
@@ -109,7 +117,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 
 	setLanguage();
 
-	const container: HTMLElement = document.querySelector("language-select");
+	const container: HTMLElement = document.querySelector("languages options-select");
 	const getClone = getTemplateCloner(container);
 
 	for (const language of languages) {
@@ -131,3 +139,5 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		container.append(clone);
 	}
 }
+
+

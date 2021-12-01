@@ -4,12 +4,12 @@ import {
 } from "./languages.js";
 
 
-{
+let selectedContinents: { _: Set<string> } = (() => {
 	// continents:
 
 	const continentsContainer: HTMLElement = document.querySelector("continents");
 
-	const continentSelect: HTMLElement = document.querySelector("continent-select");
+	const continentSelect: HTMLElement = continentsContainer.querySelector("options-select");
 	const getClone = getTemplateCloner(continentSelect);
 
 	const continents: string[] = [
@@ -85,9 +85,105 @@ import {
 			}
 		}
 	});
-}
 
-{
-	
-}
+	return selectedContinents;
+})();
+
+
+let selectedQuestionMode: { _: string } = (() => {
+	// question mode:
+
+	const questionModeSelect: HTMLElement = document.querySelector("question-mode options-select");
+	const getClone = getTemplateCloner(questionModeSelect);
+
+	const questionModes: string[] = [
+		"countryName",
+		"countryNameAndFlag",
+		"flag",
+	];
+
+	let selectedQuestionMode = {
+		__: questionModes[0],
+		get _() {
+			return this.__;
+		},
+		set _(value: string) {
+			this.__ = value;
+		},
+	};
+
+	for (const questionMode of questionModes) {
+		const clone = getClone({
+			questionMode: `questionMode.${questionMode}`,
+		});
+
+		let button = clone.firstElementChild;
+		if (questionMode === selectedQuestionMode._) {
+			button.classList.add("selected");
+		}
+
+		button.addEventListener("click", (evt: MouseEvent) => {
+			questionModeSelect.querySelector(".selected")?.classList.remove("selected");
+			button.classList.add("selected");
+			selectedQuestionMode._ = questionMode;
+		});
+
+		questionModeSelect.append(clone);
+	}
+
+	return selectedQuestionMode;
+})();
+
+
+
+let selectedAnswerMode: { _: string } = (() => {
+	// question mode:
+
+	const answerModeSelect: HTMLElement = document.querySelector("answer-mode options-select");
+	const getClone = getTemplateCloner(answerModeSelect);
+
+	const anserModes: string[] = [
+		"showOnMap",
+		// "typeName",
+	];
+
+	let selectedAnswerMode = {
+		__: anserModes[0],
+		get _() {
+			return this.__;
+		},
+		set _(value: string) {
+			this.__ = value;
+		},
+	};
+
+	for (const answerMode of anserModes) {
+		const clone = getClone({
+			answerMode: `answerMode.${answerMode}`,
+		});
+
+		let button = clone.firstElementChild;
+		if (answerMode === selectedAnswerMode._) {
+			button.classList.add("selected");
+		}
+
+		button.addEventListener("click", (evt: MouseEvent) => {
+			answerModeSelect.querySelector(".selected")?.classList.remove("selected");
+			button.classList.add("selected");
+			selectedAnswerMode._ = answerMode;
+		});
+
+		answerModeSelect.append(clone);
+	}
+
+	return selectedAnswerMode;
+})();
+
+
+document.querySelector("button[data-action=startQuiz]").addEventListener(
+	"click", (evt: MouseEvent) => {
+		document.querySelector<HTMLElement>("start-screen").hidden = true;
+		document.querySelector<HTMLElement>("game").hidden = false;
+	}
+);
 

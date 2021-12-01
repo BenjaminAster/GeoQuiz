@@ -1,26 +1,5 @@
 @use "sass:math";
 
-@import "functions-mixins";
-
-// input#theme-toggle {
-// 	&:not(:checked) ~ actual-content {
-// 		--is-light: 0;
-// 		label[for="theme-toggle"] {
-// 			&::before {
-// 				content: "🌙\fe0e";
-// 			}
-// 		}
-// 	}
-// 	&:checked ~ actual-content {
-// 		--is-light: 1;
-// 		label[for="theme-toggle"] {
-// 			&::before {
-// 				content: "☀\fe0e";
-// 			}
-// 		}
-// 	}
-// }
-
 $fromDark: #000104;
 $toDark: #fbfcff;
 

@@ -75,7 +75,53 @@ export default {
 			en: "This quiz is not designed to work on mobile devices. Please use a desktop device instead.",
 			de: "Dieses Quiz funktioniert nicht auf mobilen Geräten. Bitte nutze stattdessen ein Desktop-Gerät.",
 		},
-	}
+	},
+	safariWarning: {
+		header: {
+			en: "Please don't use Safari!",
+			de: "Bitte benutze nicht Safari!",
+		},
+		text: {
+			de: "Vermutlich funktioniert diese Seite auf Safari nicht richtig. Das Problem: Safari unterstützt viele modernen Web-Technologien nicht, und Apple gibt mir keine Möglichkeit, meine Webseiten auf Safari auszutesten, da Safari nur auf MacOS erhältlich ist. Also bitte sei so lieb und verwende irgendeinen anderen Browser.",
+			en: "This site probably doesn't work right on Safari. The problem: Safari doesn't support modern web technologies, and Apple doesn't give me a way to test my web pages on Safari, because Safari is only available on MacOS. So please be so kind and use any other browser.",
+		},
+	},
+	questionMode: {
+		chooseMode: {
+			en: "Choose what should be displayed:",
+			de: "Wähle aus, was angezeigt werden soll:",
+		},
+		countryName: {
+			en: "country name",
+			de: "Ländername",
+		},
+		countryNameAndFlag: {
+			en: "country name and flag",
+			de: "Ländername und Flagge",
+		},
+		flag: {
+			en: "flag",
+			de: "Flagge",
+		},
+	},
+	answerMode: {
+		chooseMode: {
+			en: "Choose how you want to answer:",
+			de: "Wähle aus, wie du antworten willst:",
+		},
+		showOnMap: {
+			en: "find country on world map",
+			de: "Land auf Weltkarte finden",
+		},
+		typeName: {
+			en: "type the country name",
+			de: "Ländernamen eingeben",
+		},
+	},
+	startQuiz: {
+		en: "Start quiz",
+		de: "Quiz starten",
+	},
 };
 
 export const languages = [
