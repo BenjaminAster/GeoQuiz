@@ -130,8 +130,11 @@ let selectedAnswerMode = (() => {
 	}
 	return selectedAnswerMode;
 })();
-document.querySelector("[data-action=startQuiz]").addEventListener("click", (evt) => {
-	document.querySelector("start-screen").hidden = true;
-	document.querySelector("game").hidden = false;
-});
+{
+	document.querySelector("main").setAttribute("data-game-state", "start");
+	document.querySelector("[data-action=startQuiz]").addEventListener("click", (evt) => {
+		document.querySelector("start-screen").hidden = true;
+		document.querySelector("game").hidden = false;
+	});
+}
 //# sourceMappingURL=game.js.map

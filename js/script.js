@@ -1,7 +1,7 @@
 import { getTemplateCloner, languages, setLanguage, getLanguage, } from "./languages.js";
 import "./game.js";
 if (!new URL(location.href).searchParams.has("no-sw")) {
-	navigator.serviceWorker.register("./service-worker.js", { scope: "./", type: "module" });
+	navigator.serviceWorker.register("./service-worker.js", { scope: "./" });
 }
 const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand))?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 {
@@ -20,7 +20,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		localStorage.setItem("color-scheme", colorScheme);
 		document.documentElement.setAttribute("color-scheme", colorScheme);
 		document.querySelector("meta[name=color-scheme]").content = colorScheme;
-		document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18"));
+		document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
 	};
 	setColorScheme(localStorage.getItem("color-scheme") ?? "dark");
 	const actions = {
@@ -44,12 +44,18 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			await installPromptEvent?.userChoice;
 		},
 		async refresh() {
-			const serviceWorker = await navigator.serviceWorker.ready;
-			const unregisterAndReload = async () => {
-				await serviceWorker.unregister();
+			const unregisterAndReload = async (success) => {
+				if (!success) {
+					window.setTimeout(async () => {
+						await window.fetch("/clear-site-data/", { cache: "no-store" });
+						location.reload();
+					}, 1000);
+				}
+				await serviceWorker?.unregister?.();
 				location.reload();
 			};
-			window.setTimeout(unregisterAndReload, 1000);
+			window.setTimeout(() => unregisterAndReload(false), 1000);
+			const serviceWorker = await navigator.serviceWorker.ready;
 			await new Promise(async (resolve) => {
 				navigator.serviceWorker.addEventListener("message", (evt) => {
 					if (evt.data === "refresh") {
@@ -58,7 +64,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 				});
 				serviceWorker.active.postMessage("refresh");
 			});
-			await unregisterAndReload();
+			await unregisterAndReload(true);
 		},
 		share() {
 			navigator.share?.({
@@ -101,5 +107,8 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		});
 		container.append(clone);
 	}
+}
+{
+	document.body.setAttribute("data-loaded", "");
 }
 //# sourceMappingURL=script.js.map

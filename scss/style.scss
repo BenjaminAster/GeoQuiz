@@ -3,15 +3,38 @@
 
 /*
 
-sass scss:. --watch --embed-source-map
+sass scss:. --watch --style=compressed
 
 */
 
-start-screen {
-	&:not([hidden]) {
-		display: block;
+body {
+	&:not([data-loaded]) {
+		:is(main, footer) {
+			display: none;
+		}
+	}
+}
+
+main {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+
+	&[data-game-state="start"] {
+		start-screen {
+			display: block;
+		}
 	}
 
+	&[data-game-state="game"] {
+		game {
+			display: block;
+		}
+	}
+}
+
+start-screen {
+	display: none;
 	padding: 0.2rem 0.5rem;
 	flex-grow: 1;
 
@@ -48,10 +71,9 @@ nav {
 	gap: $gap;
 	border-radius: 1rem;
 
-	
 	& > button {
 		--mirror: 0;
-		
+
 		padding: 0;
 		border: none;
 		// border: 1px solid var(--green-bg);
@@ -238,7 +260,6 @@ start-quiz {
 		font-weight: bold;
 		font-size: 1.2rem;
 		border: none;
-		// border-radius: 0.5em;
 		border-radius: inherit;
 		transition: 0.2s background-color, 0.2s color;
 
@@ -250,9 +271,7 @@ start-quiz {
 }
 
 game {
-	&:not([hidden]) {
-		display: flex;
-	}
+	display: none;
 	flex-direction: column;
 	flex-grow: 1;
 	position: relative;

@@ -10,6 +10,12 @@ import {
 
 import "./game.js";
 
+/*
+
+cd ts && tsc -b -w
+
+*/
+
 if (!new URL(location.href).searchParams.has("no-sw")) {
 	navigator.serviceWorker.register("./service-worker.js", { scope: "./" });
 }
@@ -48,7 +54,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		document.querySelector<HTMLMetaElement>("meta[name=color-scheme]").content = colorScheme;
 		document.querySelector<HTMLMetaElement>("meta[name=theme-color]").content = (
 			window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
-		);
+		).trim();
 	}
 
 	setColorScheme(localStorage.getItem("color-scheme") ?? "dark");
@@ -72,12 +78,18 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			await installPromptEvent?.userChoice;
 		},
 		async refresh() {
-			const serviceWorker = await navigator.serviceWorker.ready;
-			const unregisterAndReload = async () => {
-				await serviceWorker.unregister();
+			const unregisterAndReload = async (success: boolean) => {
+				if (!success) {
+					window.setTimeout(async () => {
+						await window.fetch("/clear-site-data/", { cache: "no-store" });
+						location.reload();
+					}, 1000);
+				}
+				await serviceWorker?.unregister?.();
 				location.reload();
 			};
-			window.setTimeout(unregisterAndReload, 1000);
+			window.setTimeout(() => unregisterAndReload(false), 1000);
+			const serviceWorker = await navigator.serviceWorker.ready;
 			await new Promise<void>(async (resolve) => {
 				navigator.serviceWorker.addEventListener("message", (evt: MessageEvent) => {
 					if (evt.data === "refresh") {
@@ -86,7 +98,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 				});
 				serviceWorker.active.postMessage("refresh");
 			});
-			await unregisterAndReload();
+			await unregisterAndReload(true);
 		},
 		share() {
 			navigator.share?.({
@@ -140,4 +152,6 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 	}
 }
 
-
+{
+	document.body.setAttribute("data-loaded", "");
+}

@@ -179,11 +179,12 @@ let selectedAnswerMode: { _: string } = (() => {
 	return selectedAnswerMode;
 })();
 
-
-document.querySelector("[data-action=startQuiz]").addEventListener(
-	"click", (evt: MouseEvent) => {
-		document.querySelector<HTMLElement>("start-screen").hidden = true;
-		document.querySelector<HTMLElement>("game").hidden = false;
-	}
-);
-
+{
+	document.querySelector("main").setAttribute("data-game-state", "start");
+	document.querySelector("[data-action=startQuiz]").addEventListener(
+		"click", (evt: MouseEvent) => {
+			document.querySelector<HTMLElement>("start-screen").hidden = true;
+			document.querySelector<HTMLElement>("game").hidden = false;
+		}
+	);
+}
