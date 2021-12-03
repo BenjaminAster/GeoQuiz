@@ -11,7 +11,7 @@ import {
 import "./game.js";
 
 if (!new URL(location.href).searchParams.has("no-sw")) {
-	navigator.serviceWorker.register("./service-worker.js", { scope: "./", type: "module" });
+	navigator.serviceWorker.register("./service-worker.js", { scope: "./" });
 }
 
 const browser: string = (navigator as any).userAgentData?.brands?.find(

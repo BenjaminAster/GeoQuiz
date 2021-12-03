@@ -42,11 +42,11 @@
 	</noscript>
 
 	<nav>
-		<button data-action="toggleTheme" title="Toggle color scheme" id="theme-toggler">
-
-		</button>
-		<button data-action="popOutWindow" title="Pop out window" style="transform: scaleY(-1)">
-			⇲︎
+		<button data-action="toggleTheme" title="Toggle color scheme" id="theme-toggler"></button>
+		<button data-action="popOutWindow" title="Pop out window">
+			<span style="transform: scaleX(-1)">
+				⇱︎
+			</span>
 		</button>
 		<button data-action="toggleFullscreen" title="Enable fullscreen">
 			⛶︎
@@ -147,7 +147,9 @@
 		</start-screen>
 
 		<game hidden>
+			<before-canvas></before-canvas>
 			<canvas></canvas>
+			<after-canvas></after-canvas>
 		</game>
 
 		<!-- <test>

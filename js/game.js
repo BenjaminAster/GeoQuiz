@@ -130,7 +130,7 @@ let selectedAnswerMode = (() => {
 	}
 	return selectedAnswerMode;
 })();
-document.querySelector("button[data-action=startQuiz]").addEventListener("click", (evt) => {
+document.querySelector("[data-action=startQuiz]").addEventListener("click", (evt) => {
 	document.querySelector("start-screen").hidden = true;
 	document.querySelector("game").hidden = false;
 });

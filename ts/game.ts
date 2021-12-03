@@ -180,7 +180,7 @@ let selectedAnswerMode: { _: string } = (() => {
 })();
 
 
-document.querySelector("button[data-action=startQuiz]").addEventListener(
+document.querySelector("[data-action=startQuiz]").addEventListener(
 	"click", (evt: MouseEvent) => {
 		document.querySelector<HTMLElement>("start-screen").hidden = true;
 		document.querySelector<HTMLElement>("game").hidden = false;
