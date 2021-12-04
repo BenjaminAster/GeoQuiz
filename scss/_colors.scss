@@ -31,33 +31,32 @@ $toLight: black;
 	@if ($scheme == "dark") {
 		$blue: deepSkyBlue;
 		--blue: #{$blue};
-		--blue-bg: #{rgba($blue, 15%)};
+		--blue-bg: #{rgba($blue, 20%)};
 
 		$green: springGreen;
 		--green: #{$green};
-		--green-bg: #{rgba($green, 15%)};
+		--green-bg: #{rgba($green, 20%)};
 
 		$red: red;
 		--red: #{$red};
-		--red-bg: #{rgba($red, 15%)};
+		--red-bg: #{rgba($red, 20%)};
 
-		--cover-disabled: #111a;
+		--transparent-cover: #1118;
 		--link-blue: lightSkyBlue;
 	} @else if ($scheme == "light") {
-		// $blue: dodgerBlue;
-		$blue: blue;
+		$blue: mediumBlue;
 		--blue: #{$blue};
-		--blue-bg: #{rgba($blue, 15%)};
+		--blue-bg: #{rgba($blue, 20%)};
 
 		$green: seaGreen;
 		--green: #{$green};
-		--green-bg: #{rgba($green, 15%)};
+		--green-bg: #{rgba($green, 20%)};
 
 		$red: red;
 		--red: #{$red};
-		--red-bg: #{rgba($red, 15%)};
+		--red-bg: #{rgba($red, 20%)};
 
-		--cover-disabled: #eeea;
+		--transparent-cover: #eee8;
 		--link-blue: blue;
 	}
 

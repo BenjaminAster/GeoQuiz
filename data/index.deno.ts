@@ -13,7 +13,31 @@ deno run --unstable --allow-net --allow-read --allow-write=. index.deno.ts
 
 */
 
-// https://laprovence.carto.com/tables/world_country_borders_kml/public/map
+/*
+
+// no South Sudan:
+https://laprovence.carto.com/tables/world_country_borders_kml/public/map
+
+// 23 MB:
+https://datahub.io/core/geo-countries
+
+// No Tuvalu:
+https://geojson-maps.ash.ms/
+
+// No Tuvalu:
+https://exploratory.io/map
+
+// 12 MB:
+https://rtr.carto.com/tables/world_countries_geojson/public/map
+
+// No Vatican City:
+https://github.com/simonepri/geo-maps/blob/master/info/countries-land.md
+
+// Too small:
+https://www.highcharts.com/docs/maps/map-collection
+
+*/
+
 
 (async () => {
 	// let data: Record<string, any> = JSON.parse(await Deno.readTextFile("./data.json"));
@@ -152,33 +176,70 @@ deno run --unstable --allow-net --allow-read --allow-write=. index.deno.ts
 });
 
 (async () => {
-	const borders = JSON.parse(await Deno.readTextFile("./countries-datahub.geo.json"));
-	const data = JSON.parse(await Deno.readTextFile("./data.json"));
-
-	// console.log(data);
+	// const borders = JSON.parse(await Deno.readTextFile("./exploratory.io/world.geo.json"));
+	// const borders = JSON.parse(await Deno.readTextFile("./geojson.io/world.geo.json"));
+	// const borders = JSON.parse(await Deno.readTextFile("./rtr.carto.com/world.geo.json"));
 
 	// const borderCountries: string[] = borders.features.map(({ properties: { name } }: any) => name.trim()).sort();
-	const borderCountries: string[] = borders.features.map(({ properties: { ADMIN } }: any) => ADMIN.trim()).sort();
-	const dataCountries: string[] = data.map(({ name: { en } }: any) => en.trim()).sort();
+	// const borderCountries: string[] = borders.features.map(({ properties: { name_long } }: any) => name_long.trim()).sort();
+	// const borderCountries: string[] = borders.features.map(({ properties: { ADMIN } }: any) => ADMIN.trim()).sort();
+	// const borderCountries: string[] = borders.features.map(({ properties: { NAME_LONG } }: any) => NAME_LONG.trim()).sort();
 
-	const inBoth: string[] = borderCountries.filter((country: string) => dataCountries.includes(country));
-	const onlyInBorders: string[] = borderCountries.filter((country: string) => !dataCountries.includes(country));
-	const onlyInData: string[] = dataCountries.filter((country: string) => !borderCountries.includes(country));
+
+	const borders = JSON.parse(await Deno.readTextFile("./geojson-maps.ash.ms/world-medium.geo.json"));
+	const data = JSON.parse(await Deno.readTextFile("./data.json"));
 
 	const nameDifferences: Record<string, string> = {
-		"Bosnia and Herzegovina": "Bosnia and Herzegovina",
-		"Danish Realm": "Denmark",
-		"Democratic Republic of the Congo": "Democratic Republic of Congo",
-		"Eswatini": "Swaziland",
-		"Federated States of Micronesia": "Micronesia",
-		"Georgia (Country)": "Georgia",
-		"Ivory Coast": "Cote d'Ivoire",
-		"Kingdom of the Netherlands": "Netherlands",
-		"Myanmar": "Burma",
-		"North Macedonia": "Macedonia",
-		"Republic of Ireland": "Ireland",
-		"Sahrawi Arab Democratic Republic": "Western Sahara",
+		"Denmark": "Danish Realm",
+		"Gambia": "The Gambia",
+		"Georgia (Country)": "Georgia (country)",
+		"Georgia": "Georgia (country)",
+		"Guinea Bissau": "Guinea-Bissau",
+		"Ireland": "Republic of Ireland",
+		"Netherlands": "Kingdom of the Netherlands",
+		"Macedonia": "North Macedonia",
+		"Republic of Serbia": "Serbia",
+		"Republic of Congo": "Republic of the Congo",
+		"Sao Tome and Principe": "São Tomé and Príncipe",
+		"Swaziland": "Eswatini",
+		"United Republic of Tanzania": "Tanzania",
+		"United States of America": "United States",
+		"Vatican": "Vatican City",
+		"Western Sahara": "Sahrawi Arab Democratic Republic",
 	};
+
+	const borderCountries: string[] = borders.features.map(
+		({ properties: { sovereignt } }: any) => nameDifferences[sovereignt] ?? sovereignt
+	).sort();
+	const dataCountries: string[] = data.map(({ name: { en } }: any) => en.trim()).sort();
+
+	const inBoth: string[] = borderCountries.filter(
+		(country: string) => dataCountries.includes(country)
+	);
+	const onlyInBorders: string[] = borderCountries.filter(
+		(country: string) => !dataCountries.includes(country)
+	);
+	const onlyInData: string[] = dataCountries.filter(
+		(country: string) => !borderCountries.includes(country)
+	);
+
+	// const nameDifferences: Record<string, string> = {
+	// 	"Bosnia and Herzegovina": "Bosnia and Herzegovina",
+	// 	"Danish Realm": "Denmark",
+	// 	"Democratic Republic of the Congo": "Democratic Republic of Congo",
+	// 	"Eswatini": "Swaziland",
+	// 	"Federated States of Micronesia": "Micronesia",
+	// 	"Georgia (Country)": "Georgia",
+	// 	"Ivory Coast": "Cote d'Ivoire",
+	// 	"Kingdom of the Netherlands": "Netherlands",
+	// 	"Myanmar": "Burma",
+	// 	"North Macedonia": "Macedonia",
+	// 	"Republic of Ireland": "Ireland",
+	// 	"Sahrawi Arab Democratic Republic": "Western Sahara",
+	// };
+
+
+	let countriesPolygons: Record<string, [number, number][][]> = {};
 
 	await Deno.writeTextFile("./borders-data-diff.json", JSON.stringify({ inBoth, onlyInBorders, onlyInData }, null, "\t"));
 

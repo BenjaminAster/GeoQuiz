@@ -1,8 +1,11 @@
 export default (async () => {
 	{
-		const countryBorders = (await (await fetch("./data/countries-land-1km.geo.json")).json()).features;
-		const canvas = document.querySelector("game canvas");
-		const ctx = canvas.getContext("2d");
+		const countryBorders = (await (await fetch("./data/geojson-maps.ash.ms/world-medium.geo.json")).json()).features;
+		const canvas = document.querySelector("canvas");
+		const ctx = canvas.getContext("2d", { alpha: false });
+		const background = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
+		const foreground = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")).trim();
+		ctx.getImageData(0, 0, 1, 1);
 		{
 			const resize = () => {
 				canvas.width = canvas.clientWidth;
@@ -36,11 +39,12 @@ export default (async () => {
 		});
 		{
 			const draw = () => {
-				ctx.strokeStyle = "white";
+				ctx.strokeStyle = foreground;
+				ctx.fillStyle = background;
 				ctx.lineWidth = 1;
 				ctx.lineCap = "round";
 				ctx.lineJoin = "round";
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
 				for (const country of countryBorders) {
 					const geometry = country.geometry;
 					const coordinates = (() => {

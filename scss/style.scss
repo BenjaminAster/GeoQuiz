@@ -153,12 +153,12 @@ options-select {
 		background-color: var(--col-28);
 		color: var(--col-c);
 		padding: 0.5rem;
-		border: 2px solid currentColor {
+		border: none {
 			radius: 1rem;
 		}
 		padding: 0.8em 1em;
 
-		transition: 0.2s background-color, 0.2s color, 0.2s border-color;
+		transition: 0.2s background-color, 0.2s color;
 
 		&.selected {
 			background-color: var(--blue-bg);
@@ -177,11 +177,13 @@ continents {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		padding: 0.5rem;
+		padding: 0.5rem {
+			inline-end: 0.8rem;
+		}
 		background-color: var(--col-28);
 		accent-color: var(--blue);
 		transition: 0.2s background-color, 0.2s border-color;
-		border: 2px solid transparent {
+		border: none {
 			radius: 1rem;
 		}
 
@@ -202,14 +204,13 @@ continents {
 	options-select {
 		button {
 			position: relative;
-			box-sizing: border-box;
 			&::before {
 				transition: 0.2s background-color;
 				content: "";
 				position: absolute;
-				inset: -2px;
-				inline-size: calc(100% + 4px);
-				block-size: calc(100% + 4px);
+				inset: 0;
+				inline-size: 100%;
+				block-size: 100%;
 				border-radius: inherit;
 			}
 		}
@@ -217,13 +218,12 @@ continents {
 
 	&.all-selected {
 		label.select-all {
-			border-color: var(--blue);
 			background-color: var(--blue-bg);
 		}
 
 		options-select {
 			button::before {
-				background-color: var(--cover-disabled);
+				background-color: var(--transparent-cover);
 			}
 		}
 	}
@@ -238,6 +238,7 @@ languages {
 				display: block;
 				font-size: 2rem;
 				font-weight: bold;
+				// font-weight: 500;
 			}
 		}
 	}
@@ -255,8 +256,9 @@ start-quiz {
 		inline-size: min(100%, 30rem);
 		font-weight: bold;
 		font-size: 1.2rem;
-		border: none;
-		border-radius: inherit;
+		border: none {
+			radius: inherit;
+		}
 		transition: 0.2s background-color, 0.2s color;
 
 		&:hover {
@@ -271,6 +273,7 @@ game {
 	flex-direction: column;
 	flex-grow: 1;
 	position: relative;
+	user-select: none;
 
 	:is(before-canvas, after-canvas) {
 		display: flex;
@@ -300,12 +303,12 @@ game {
 noscript {
 	display: block;
 	margin: 0.5rem;
-	padding: 0.5rem;
+	padding: 0.5rem 0.7rem;
 	background-color: var(--red-bg);
 	$borderWidth: 2px;
 	color: #{darkLight(salmon, darkRed)};
-	border: $borderWidth solid var(--red) {
-		radius: 1rem;
+	border: none {
+		radius: 0.8rem;
 	}
 }
 

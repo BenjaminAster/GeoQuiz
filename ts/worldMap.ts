@@ -4,14 +4,37 @@ export default (async () => {
 		// country borders test
 
 		const countryBorders: Record<string, any>[] = (await (await fetch(
-			// "./data/borders.min.json"
-			// "./data/custom-large.geo.json"
-			// "./data/countries-datahub.geo.json"
-			"./data/countries-land-1km.geo.json"
+			"./data/geojson-maps.ash.ms/world-medium.geo.json"
+			// "./data/github.com-simonepri/world-1m.geo.json"
+			// "./data/world.geo.json"
+			// "./data/exploratory.io/world.geo.json"
 		)).json()).features;
 
-		const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
-		const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+		// const canvasElement: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
+		// const elementCtx: CanvasRenderingContext2D = canvasElement.getContext("2d");
+
+		// const canvas: HTMLCanvasElement = document.createElement("canvas");
+		// canvas.width = canvasElement.width;
+		// canvas.height = canvasElement.height;
+		// const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
+
+		const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("canvas");
+		const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
+		// const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: true });
+
+		// ctx.drawImage(canvas, 0, 0, 960, 540, 0, 0, 1920, 1080);
+		// // Force the drawImage call to be evaluated within this benchmark code:
+		// createImageBitmap(canvas, 0, 0, 1, 1).then(() => deferred.resolve());
+
+		const background: string = (
+			window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
+		).trim();
+
+		const foreground: string = (
+			window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")
+		).trim();
+
+		ctx.getImageData(0, 0, 1, 1);
 
 		{
 			const resize = () => {
@@ -61,12 +84,14 @@ export default (async () => {
 
 		{
 			const draw = () => {
-				ctx.strokeStyle = "white";
+				ctx.strokeStyle = foreground;
+				ctx.fillStyle = background;
 				ctx.lineWidth = 1;
 				ctx.lineCap = "round";
 				ctx.lineJoin = "round";
 
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				// ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 				for (const country of countryBorders) {
 					const geometry: Record<string, any> = country.geometry;
@@ -100,6 +125,16 @@ export default (async () => {
 
 					}
 				}
+
+				// canvasElement.style.backgroundImage = `url(${canvas.toDataURL("image/png")})`;
+				// ctx.getImageData(0, 0, 1, 1);
+				// elementCtx.getImageData(0, 0, 1, 1);
+
+				// elementCtx.drawImage(canvas, 0, 0);
+				// await createImageBitmap(canvas, 0, 0, 1, 1);
+				// await createImageBitmap(canvasElement, 0, 0, 1, 1);
+
+				// console.log(canvas.toDataURL("image/png"));
 
 				window.requestAnimationFrame(draw);
 			};
