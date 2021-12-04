@@ -1,7 +1,7 @@
-(async () => {
+export default (async () => {
 	{
-		const countryBorders = (await (await fetch("./data/borders.min.json")).json()).features;
-		const canvas = document.querySelector("canvas");
+		const countryBorders = (await (await fetch("./data/countries-land-1km.geo.json")).json()).features;
+		const canvas = document.querySelector("game canvas");
 		const ctx = canvas.getContext("2d");
 		{
 			const resize = () => {
@@ -68,5 +68,5 @@
 			draw();
 		}
 	}
-})();
+});
 //# sourceMappingURL=worldMap.js.map

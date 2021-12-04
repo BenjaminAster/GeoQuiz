@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no" />
 	<meta name="color-scheme" content="dark" />
 
 	<meta name="theme-color" content="#000000" />
@@ -68,27 +68,27 @@
 			<mobile-warning>
 				<h2>
 					<warning-sign>⚠</warning-sign>
-					<span data-text="mobileWarning.header">&nbsp;</span>
+					<span data-text="mobileWarning.header"></span>
 				</h2>
-				<p data-text="mobileWarning.text">&nbsp;</p>
+				<p data-text="mobileWarning.text"></p>
 			</mobile-warning>
 
 			<safari-warning hidden>
 				<h2>
 					<warning-sign>⚠</warning-sign>
-					<span data-text="safariWarning.header">&nbsp;</span>
+					<span data-text="safariWarning.header"></span>
 				</h2>
-				<p data-text="safariWarning.text">&nbsp;</p>
+				<p data-text="safariWarning.text"></p>
 			</safari-warning>
 
 			<information>
-				<h2 data-text="mainHeader">&nbsp;</h2>
+				<h2 data-text="mainHeader"></h2>
 
-				<p data-text="description">&nbsp;</p>
+				<p data-text="description"></p>
 			</information>
 
 			<languages>
-				<h3 data-text="chooseLanguage">&nbsp;</h3>
+				<h3 data-text="chooseLanguage"></h3>
 
 				<options-select>
 					<template>
@@ -101,11 +101,11 @@
 			</languages>
 
 			<continents>
-				<h3 data-text="continents.chooseContinent">&nbsp;</h3>
+				<h3 data-text="continents.chooseContinent"></h3>
 
 				<label class="select-all">
 					<input type="checkbox" data-action="selectAll">
-					<span data-text="continents.selectAll">&nbsp;</span>
+					<span data-text="continents.selectAll"></span>
 				</label>
 
 				<options-select>
@@ -118,7 +118,7 @@
 			</continents>
 
 			<question-mode>
-				<h3 data-text="questionMode.chooseMode">&nbsp;</h3>
+				<h3 data-text="questionMode.chooseMode"></h3>
 
 				<options-select>
 					<template>
@@ -130,7 +130,7 @@
 			</question-mode>
 
 			<answer-mode>
-				<h3 data-text="answerMode.chooseMode">&nbsp;</h3>
+				<h3 data-text="answerMode.chooseMode"></h3>
 
 				<options-select>
 					<template>
@@ -142,14 +142,19 @@
 			</answer-mode>
 
 			<start-quiz>
-				<button data-action="startQuiz" data-text="startQuiz">&nbsp;</button>
+				<button data-action="startQuiz" data-text="startQuiz"></button>
 			</start-quiz>
 		</start-screen>
 
 		<game>
-			<before-canvas></before-canvas>
-			<canvas></canvas>
-			<after-canvas></after-canvas>
+			<before-canvas>
+				<flag>flag</flag>
+				<country>country</country>
+			</before-canvas>
+			<canvas-container>
+				<canvas></canvas>
+			</canvas-container>
+			<after-canvas>&lt;after-canvas&gt;</after-canvas>
 		</game>
 
 		<!-- <test>

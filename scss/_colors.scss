@@ -29,21 +29,34 @@ $toLight: black;
 	}
 
 	@if ($scheme == "dark") {
-		--blue: deepSkyBlue;
-		--blue-bg: #{rgba(deepSkyBlue, 15%)};
-		--green: springGreen;
-		--green-bg: #{rgba(springGreen, 15%)};
-		--red: red;
-		--red-bg: #{rgba(red, 15%)};
+		$blue: deepSkyBlue;
+		--blue: #{$blue};
+		--blue-bg: #{rgba($blue, 15%)};
+
+		$green: springGreen;
+		--green: #{$green};
+		--green-bg: #{rgba($green, 15%)};
+
+		$red: red;
+		--red: #{$red};
+		--red-bg: #{rgba($red, 15%)};
+
 		--cover-disabled: #111a;
 		--link-blue: lightSkyBlue;
 	} @else if ($scheme == "light") {
-		--blue: dodgerBlue;
-		--blue-bg: #{rgba(dodgerBlue, 15%)};
-		--green: green;
-		--green-bg: #{rgba(green, 15%)};
-		--red: red;
-		--red-bg: #{rgba(red, 15%)};
+		// $blue: dodgerBlue;
+		$blue: blue;
+		--blue: #{$blue};
+		--blue-bg: #{rgba($blue, 15%)};
+
+		$green: seaGreen;
+		--green: #{$green};
+		--green-bg: #{rgba($green, 15%)};
+
+		$red: red;
+		--red: #{$red};
+		--red-bg: #{rgba($red, 15%)};
+
 		--cover-disabled: #eeea;
 		--link-blue: blue;
 	}

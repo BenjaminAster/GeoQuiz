@@ -1,13 +1,16 @@
 
-(async () => {
+export default (async () => {
 	{
 		// country borders test
 
 		const countryBorders: Record<string, any>[] = (await (await fetch(
-			"./data/borders.min.json"
+			// "./data/borders.min.json"
+			// "./data/custom-large.geo.json"
+			// "./data/countries-datahub.geo.json"
+			"./data/countries-land-1km.geo.json"
 		)).json()).features;
 
-		const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("canvas");
+		const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
 		const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 
 		{
@@ -104,5 +107,4 @@
 			draw();
 		}
 	}
-})();
-
+});

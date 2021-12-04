@@ -1,7 +1,7 @@
 import { getTemplateCloner, languages, setLanguage, getLanguage, } from "./languages.js";
 import "./game.js";
 if (!new URL(location.href).searchParams.has("no-sw")) {
-	navigator.serviceWorker.register("./service-worker.js", { scope: "./" });
+	navigator.serviceWorker?.register("./service-worker.js", { scope: "./" });
 }
 const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand))?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 {
@@ -44,27 +44,18 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			await installPromptEvent?.userChoice;
 		},
 		async refresh() {
-			const unregisterAndReload = async (success) => {
-				if (!success) {
-					window.setTimeout(async () => {
-						await window.fetch("/clear-site-data/", { cache: "no-store" });
-						location.reload();
-					}, 1000);
-				}
-				await serviceWorker?.unregister?.();
-				location.reload();
-			};
-			window.setTimeout(() => unregisterAndReload(false), 1000);
-			const serviceWorker = await navigator.serviceWorker.ready;
 			await new Promise(async (resolve) => {
-				navigator.serviceWorker.addEventListener("message", (evt) => {
-					if (evt.data === "refresh") {
-						resolve();
-					}
-				});
-				serviceWorker.active.postMessage("refresh");
+				window.setTimeout(resolve, 500);
+				window.caches.delete(new URL((await navigator.serviceWorker?.ready).scope).pathname);
+				resolve();
 			});
-			await unregisterAndReload(true);
+			await new Promise(async (resolve) => {
+				window.setTimeout(resolve, 500);
+				await (await navigator.serviceWorker?.ready)?.unregister?.();
+				resolve();
+			});
+			await window.fetch("/clear-site-data/", { cache: "no-store" });
+			location.reload(true);
 		},
 		share() {
 			navigator.share?.({

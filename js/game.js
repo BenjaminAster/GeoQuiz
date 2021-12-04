@@ -1,4 +1,5 @@
 import { getTemplateCloner } from "./languages.js";
+import worldMap from "./worldMap.js";
 let selectedContinents = (() => {
 	const continentsContainer = document.querySelector("continents");
 	const continentSelect = continentsContainer.querySelector("options-select");
@@ -133,8 +134,13 @@ let selectedAnswerMode = (() => {
 {
 	document.querySelector("main").setAttribute("data-game-state", "start");
 	document.querySelector("[data-action=startQuiz]").addEventListener("click", (evt) => {
-		document.querySelector("start-screen").hidden = true;
-		document.querySelector("game").hidden = false;
+		document.querySelector("main").setAttribute("data-game-state", "game");
+		worldMap();
+		document.addEventListener("touchmove", (evt) => {
+			if (evt.touches.length > 1) {
+				evt.preventDefault();
+			}
+		}, { passive: false });
 	});
 }
 //# sourceMappingURL=game.js.map

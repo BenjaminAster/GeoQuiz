@@ -1,9 +1,5 @@
 :root {
-	min-height: 100vh;
-	display: block;
-
-	display: flex;
-	flex-direction: column;
+	min-block-size: 100vh;
 }
 
 * {
@@ -15,8 +11,8 @@ body {
 	font-family: system-ui, sans-serif, Arial, "Segoe UI", "Lucida Grande", "Helvetica Neue",
 		Helvetica;
 	margin: 0;
-	min-height: 100vh;
-	overflow-x: hidden;
+	min-block-size: 100vh;
+	overflow-inline: hidden;
 
 	display: flex;
 	flex-direction: column;
@@ -50,8 +46,8 @@ a {
 }
 
 ::-webkit-scrollbar {
-	width: 1rem;
-	height: 1rem;
+	inline-size: 1rem;
+	block-size: 1rem;
 
 	&-button {
 		&:start:increment {
@@ -65,8 +61,8 @@ a {
 	&-thumb,
 	&-button {
 		background-color: var(--col-4);
-		width: 1rem;
-		height: 1rem;
+		inline-size: 1rem;
+		block-size: 1rem;
 
 		border: 0.25rem solid transparent {
 			radius: 0.5rem;

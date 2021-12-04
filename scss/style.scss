@@ -28,7 +28,7 @@ main {
 
 	&[data-game-state="game"] {
 		game {
-			display: block;
+			display: flex;
 		}
 	}
 }
@@ -75,19 +75,19 @@ nav {
 		--mirror: 0;
 
 		padding: 0;
-		border: none;
-		// border: 1px solid var(--green-bg);
 		aspect-ratio: 1/1;
 		box-sizing: content-box;
 		display: grid;
 		place-items: center;
 
-		width: 1.6em;
-		height: 1.6em;
+		inline-size: 1.4em;
+		block-size: 1.4em;
 
 		font-size: 1.5rem;
 		background-color: var(--green-bg);
-		border-radius: 0.5em;
+		border: none {
+			radius: 0.7rem;
+		}
 		color: var(--col-e);
 
 		vertical-align: top;
@@ -103,19 +103,15 @@ nav {
 			position: relative;
 			&::after {
 				content: "";
-				// background-color: var(--green);
 				background-color: var(--green-bg);
-				$verticalMargin: 0.35em;
+				$verticalMargin: 0.35rem;
 				margin: #{$verticalMargin} 0;
-				height: calc(100% - #{$verticalMargin} * 2);
-				width: $borderWidth;
-				// width: 3px;
-				border-radius: 1em;
+				block-size: calc(100% - #{$verticalMargin} * 2);
+				inline-size: $borderWidth;
+				border-radius: 1rem;
 				position: absolute;
 				inset-inline-end: 0;
-				// transform: translateX(calc((#{$gap} + #{$borderWidth}) / 2));
 				transform: translateX(#{($gap + $borderWidth) / 2});
-				// transform: translateX(calc((#{$gap} + 3px) / 2));
 			}
 		}
 	}
@@ -135,8 +131,8 @@ nav {
 	warning-sign {
 		font-weight: normal;
 		display: inline-block;
-		width: 1.4em;
-		height: 1.4em;
+		block-size: 1.4em;
+		inline-size: 1.4em;
 		display: inline-grid;
 		place-items: center;
 		border-radius: 0.3em;
@@ -177,7 +173,7 @@ options-select {
 
 continents {
 	label.select-all {
-		width: fit-content;
+		inline-size: fit-content;
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
@@ -194,8 +190,8 @@ continents {
 		}
 
 		input[type="checkbox"] {
-			width: 1.5em;
-			height: 1.5em;
+			inline-size: 1.5em;
+			block-size: 1.5em;
 		}
 	}
 
@@ -212,8 +208,8 @@ continents {
 				content: "";
 				position: absolute;
 				inset: -2px;
-				width: calc(100% + 4px);
-				height: calc(100% + 4px);
+				inline-size: calc(100% + 4px);
+				block-size: calc(100% + 4px);
 				border-radius: inherit;
 			}
 		}
@@ -236,7 +232,7 @@ continents {
 languages {
 	options-select {
 		button {
-			min-width: 6rem;
+			min-inline-size: 6rem;
 
 			language-code {
 				display: block;
@@ -256,7 +252,7 @@ start-quiz {
 		padding: 0.8em 1em;
 		background-color: var(--green);
 		color: var(--col-0);
-		width: min(100%, 30rem);
+		inline-size: min(100%, 30rem);
 		font-weight: bold;
 		font-size: 1.2rem;
 		border: none;
@@ -276,16 +272,28 @@ game {
 	flex-grow: 1;
 	position: relative;
 
-	canvas {
-		display: block;
-		// position: relative;
-		position: absolute;
-		// aspect-ratio: auto;
+	:is(before-canvas, after-canvas) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		place-items: center;
+		min-block-size: 4rem;
+		font-size: 2rem;
+	}
+
+	canvas-container {
+		position: relative;
+
 		flex-grow: 1;
-		// width: min-content;
-		// height: min-content;
-		width: 100%;
-		height: 100%;
+		flex-direction: column;
+
+		canvas {
+			display: block;
+			position: absolute;
+			inline-size: 100%;
+			block-size: 100%;
+		}
 	}
 }
 
@@ -304,8 +312,8 @@ noscript {
 button.theme-toggler {
 	label {
 		display: grid;
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		place-items: center;
 	}
 }

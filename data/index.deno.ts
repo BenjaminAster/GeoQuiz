@@ -13,9 +13,7 @@ deno run --unstable --allow-net --allow-read --allow-write=. index.deno.ts
 
 */
 
-/* 
-https://laprovence.carto.com/tables/world_country_borders_kml/public/map
- */
+// https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 
 (async () => {
 	// let data: Record<string, any> = JSON.parse(await Deno.readTextFile("./data.json"));
@@ -151,5 +149,38 @@ https://laprovence.carto.com/tables/world_country_borders_kml/public/map
 
 	await Deno.writeTextFile("./data.json", JSON.stringify(countries, null, "\t"));
 	await Deno.writeTextFile("./data.min.json", JSON.stringify(countries));
+});
+
+(async () => {
+	const borders = JSON.parse(await Deno.readTextFile("./countries-datahub.geo.json"));
+	const data = JSON.parse(await Deno.readTextFile("./data.json"));
+
+	// console.log(data);
+
+	// const borderCountries: string[] = borders.features.map(({ properties: { name } }: any) => name.trim()).sort();
+	const borderCountries: string[] = borders.features.map(({ properties: { ADMIN } }: any) => ADMIN.trim()).sort();
+	const dataCountries: string[] = data.map(({ name: { en } }: any) => en.trim()).sort();
+
+	const inBoth: string[] = borderCountries.filter((country: string) => dataCountries.includes(country));
+	const onlyInBorders: string[] = borderCountries.filter((country: string) => !dataCountries.includes(country));
+	const onlyInData: string[] = dataCountries.filter((country: string) => !borderCountries.includes(country));
+
+	const nameDifferences: Record<string, string> = {
+		"Bosnia and Herzegovina": "Bosnia and Herzegovina",
+		"Danish Realm": "Denmark",
+		"Democratic Republic of the Congo": "Democratic Republic of Congo",
+		"Eswatini": "Swaziland",
+		"Federated States of Micronesia": "Micronesia",
+		"Georgia (Country)": "Georgia",
+		"Ivory Coast": "Cote d'Ivoire",
+		"Kingdom of the Netherlands": "Netherlands",
+		"Myanmar": "Burma",
+		"North Macedonia": "Macedonia",
+		"Republic of Ireland": "Ireland",
+		"Sahrawi Arab Democratic Republic": "Western Sahara",
+	};
+
+	await Deno.writeTextFile("./borders-data-diff.json", JSON.stringify({ inBoth, onlyInBorders, onlyInData }, null, "\t"));
+
 })();
 
