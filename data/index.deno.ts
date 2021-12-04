@@ -40,8 +40,7 @@ https://www.highcharts.com/docs/maps/map-collection
 
 
 (async () => {
-	// let data: Record<string, any> = JSON.parse(await Deno.readTextFile("./data.json"));
-	// let data: Record<string, any> = {};
+	// Scrape data from Wikipedia:
 
 	const wikipediaCountryList = await (await globalThis.fetch(`https://en.wikipedia.org/wiki/List_of_sovereign_states`)).text();
 
@@ -171,77 +170,101 @@ https://www.highcharts.com/docs/maps/map-collection
 
 	// data.countries = countries;
 
-	await Deno.writeTextFile("./data.json", JSON.stringify(countries, null, "\t"));
-	await Deno.writeTextFile("./data.min.json", JSON.stringify(countries));
+	await Deno.writeTextFile("./wikipedia-data.json", JSON.stringify(countries, null, "\t"));
 });
 
 (async () => {
-	// const borders = JSON.parse(await Deno.readTextFile("./exploratory.io/world.geo.json"));
-	// const borders = JSON.parse(await Deno.readTextFile("./geojson.io/world.geo.json"));
-	// const borders = JSON.parse(await Deno.readTextFile("./rtr.carto.com/world.geo.json"));
+	// Generate JSON file:
 
-	// const borderCountries: string[] = borders.features.map(({ properties: { name } }: any) => name.trim()).sort();
-	// const borderCountries: string[] = borders.features.map(({ properties: { name_long } }: any) => name_long.trim()).sort();
-	// const borderCountries: string[] = borders.features.map(({ properties: { ADMIN } }: any) => ADMIN.trim()).sort();
-	// const borderCountries: string[] = borders.features.map(({ properties: { NAME_LONG } }: any) => NAME_LONG.trim()).sort();
-
-
-	const borders = JSON.parse(await Deno.readTextFile("./geojson-maps.ash.ms/world-medium.geo.json"));
-	const data = JSON.parse(await Deno.readTextFile("./data.json"));
+	const borders = JSON.parse(await Deno.readTextFile(
+		"./geojson-maps.ash.ms/world-medium.geo.json"
+	));
+	const data = JSON.parse(await Deno.readTextFile("./wikipedia-data.json"));
 
 	const nameDifferences: Record<string, string> = {
-		"Denmark": "Danish Realm",
-		"Gambia": "The Gambia",
-		"Georgia (Country)": "Georgia (country)",
-		"Georgia": "Georgia (country)",
-		"Guinea Bissau": "Guinea-Bissau",
-		"Ireland": "Republic of Ireland",
-		"Netherlands": "Kingdom of the Netherlands",
-		"Macedonia": "North Macedonia",
-		"Republic of Serbia": "Serbia",
-		"Republic of Congo": "Republic of the Congo",
-		"Sao Tome and Principe": "São Tomé and Príncipe",
-		"Swaziland": "Eswatini",
-		"United Republic of Tanzania": "Tanzania",
-		"United States of America": "United States",
-		"Vatican": "Vatican City",
-		"Western Sahara": "Sahrawi Arab Democratic Republic",
+		"Danish Realm": "Denmark",
+		"The Gambia": "Gambia",
+		"Georgia (country)": "Georgia",
+		"Guinea-Bissau": "Guinea Bissau",
+		"Republic of Ireland": "Ireland",
+		"Kingdom of the Netherlands": "Netherlands",
+		"North Macedonia": "Macedonia",
+		"Serbia": "Republic of Serbia",
+		"Republic of the Congo": "Republic of Congo",
+		"São Tomé and Príncipe": "Sao Tome and Principe",
+		"Eswatini": "Swaziland",
+		"Tanzania": "United Republic of Tanzania",
+		"United States": "United States of America",
+		"Vatican City": "Vatican",
+		"Sahrawi Arab Democratic Republic": "Western Sahara",
 	};
 
-	const borderCountries: string[] = borders.features.map(
-		({ properties: { sovereignt } }: any) => nameDifferences[sovereignt] ?? sovereignt
-	).sort();
-	const dataCountries: string[] = data.map(({ name: { en } }: any) => en.trim()).sort();
+	const newData: any[] = [];
 
-	const inBoth: string[] = borderCountries.filter(
-		(country: string) => dataCountries.includes(country)
-	);
-	const onlyInBorders: string[] = borderCountries.filter(
-		(country: string) => !dataCountries.includes(country)
-	);
-	const onlyInData: string[] = dataCountries.filter(
-		(country: string) => !borderCountries.includes(country)
-	);
+	for (const country of data) {
+		const countryName: string = country.name.en;
 
-	// const nameDifferences: Record<string, string> = {
-	// 	"Bosnia and Herzegovina": "Bosnia and Herzegovina",
-	// 	"Danish Realm": "Denmark",
-	// 	"Democratic Republic of the Congo": "Democratic Republic of Congo",
-	// 	"Eswatini": "Swaziland",
-	// 	"Federated States of Micronesia": "Micronesia",
-	// 	"Georgia (Country)": "Georgia",
-	// 	"Ivory Coast": "Cote d'Ivoire",
-	// 	"Kingdom of the Netherlands": "Netherlands",
-	// 	"Myanmar": "Burma",
-	// 	"North Macedonia": "Macedonia",
-	// 	"Republic of Ireland": "Ireland",
-	// 	"Sahrawi Arab Democratic Republic": "Western Sahara",
-	// };
+		const differentCountryName: string = nameDifferences[countryName] ?? countryName;
 
+		const geoJSONCountries = borders.features.filter(({ properties: { sovereignt } }: any) => (
+			sovereignt.trim() === differentCountryName
+		));
 
-	let countriesPolygons: Record<string, [number, number][][]> = {};
+		const geoJSONSovereignt = geoJSONCountries.filter(
+			({ properties: { name_long, name_sort, formal_en, admin, sovereignt } }: any) => (
+				// name_sort === sovereignt
+				// ||
+				// name_long === sovereignt
+				// ||
+				// formal_en === sovereignt
 
-	await Deno.writeTextFile("./borders-data-diff.json", JSON.stringify({ inBoth, onlyInBorders, onlyInData }, null, "\t"));
+				admin === sovereignt
+			)
+		);
 
+		if (!geoJSONCountries.length) {
+			continue;
+		}
+
+		console.log(geoJSONCountries.length, geoJSONSovereignt.length);
+		console.log(geoJSONCountries.map(({ properties: { name_sort, name_long, formal_en, admin, sovereignt, type } }: any) => (
+			// [formal_en, admin, name_long, name_sort, sovereignt, type]
+			[admin, sovereignt, type]
+		)));
+
+		// const geoJSONSovereignt = borders.features.find(({ properties: { sovereignt } }: any) => (
+		// 	sovereignt.trim() === differentCountryName
+		// ));
+
+		// if (!geoJSONSovereignt) {
+		// 	continue;
+		// }
+
+		// if (geoJSONSovereignt.properties.type !== "Sovereign country") {
+
+		// }
+
+		// }
+
+		// console.log(geoJSONCountries.map(({ properties: { continent } }: any) => continent));
+
+		// newData.push({
+		// 	name: country.name,
+		// 	capital: country.capital,
+		// 	flagSVG: country.flagSVG,
+		// 	coordinates: [].concat(...geoJSONCountries.map(
+		// 		({ geometry: { type, coordinates } }: any) => {
+		// 			switch (type) {
+		// 				case ("Polygon"): return coordinates;
+		// 				case ("MultiPolygon"): return [].concat(...coordinates);
+		// 			}
+		// 		}
+		// 	)),
+		// 	continent: geoJSONCountries.map(({ properties: { continent } }: any) => continent),
+		// });
+	}
+
+	await Deno.writeTextFile("./data.json", JSON.stringify(newData, null, "\t"));
+	await Deno.writeTextFile("./data.min.json", JSON.stringify(newData));
 })();
 

@@ -3,12 +3,13 @@ export default (async () => {
 	{
 		// country borders test
 
-		const countryBorders: Record<string, any>[] = (await (await fetch(
-			"./data/geojson-maps.ash.ms/world-medium.geo.json"
+		const countriesData: Record<string, any>[] = (await (await fetch(
+			// "./data/geojson-maps.ash.ms/world-medium.geo.json"
 			// "./data/github.com-simonepri/world-1m.geo.json"
 			// "./data/world.geo.json"
 			// "./data/exploratory.io/world.geo.json"
-		)).json()).features;
+			"./data/data.min.json",
+		)).json());
 
 		// const canvasElement: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
 		// const elementCtx: CanvasRenderingContext2D = canvasElement.getContext("2d");
@@ -93,20 +94,22 @@ export default (async () => {
 				// ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-				for (const country of countryBorders) {
-					const geometry: Record<string, any> = country.geometry;
-					const coordinates: [number, number][][][] = (() => {
-						switch (geometry.type) {
-							case ("Polygon"): return [geometry.coordinates];
-							case ("MultiPolygon"): return geometry.coordinates;
-							default: throw new Error(`Unknown geometry type: ${geometry.type}`);
-						}
-					})();
+				for (const country of countriesData) {
+					// const geometry: Record<string, any> = country.geometry;
+					// const coordinates: [number, number][][][] = (() => {
+					// 	switch (geometry.type) {
+					// 		case ("Polygon"): return [geometry.coordinates];
+					// 		case ("MultiPolygon"): return geometry.coordinates;
+					// 		default: throw new Error(`Unknown geometry type: ${geometry.type}`);
+					// 	}
+					// })();
+
+					const coordinates: [number, number][][] = country.coordinates;
 
 					for (const polygon of coordinates) {
 						ctx.beginPath();
 						// @ ts-ignore
-						for (const [x, y] of polygon[0]) {
+						for (const [x, y] of polygon) {
 							ctx.lineTo(
 								(
 									(x - centerX) * (scalePerZoom ** zoom) / 180 + 1

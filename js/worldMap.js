@@ -1,6 +1,6 @@
 export default (async () => {
 	{
-		const countryBorders = (await (await fetch("./data/geojson-maps.ash.ms/world-medium.geo.json")).json()).features;
+		const countriesData = (await (await fetch("./data/data.min.json")).json());
 		const canvas = document.querySelector("canvas");
 		const ctx = canvas.getContext("2d", { alpha: false });
 		const background = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
@@ -45,18 +45,11 @@ export default (async () => {
 				ctx.lineCap = "round";
 				ctx.lineJoin = "round";
 				ctx.fillRect(0, 0, canvas.width, canvas.height);
-				for (const country of countryBorders) {
-					const geometry = country.geometry;
-					const coordinates = (() => {
-						switch (geometry.type) {
-							case ("Polygon"): return [geometry.coordinates];
-							case ("MultiPolygon"): return geometry.coordinates;
-							default: throw new Error(`Unknown geometry type: ${geometry.type}`);
-						}
-					})();
+				for (const country of countriesData) {
+					const coordinates = country.coordinates;
 					for (const polygon of coordinates) {
 						ctx.beginPath();
-						for (const [x, y] of polygon[0]) {
+						for (const [x, y] of polygon) {
 							ctx.lineTo(((x - centerX) * (scalePerZoom ** zoom) / 180 + 1) * canvas.width / 2, ((y - centerY) * (canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180 + 1) * canvas.height / 2);
 						}
 						ctx.closePath();
