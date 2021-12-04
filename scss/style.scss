@@ -1,6 +1,8 @@
 @use "colors";
 @use "global";
 
+@use "sass:math";
+
 /*
 
 sass scss:. --watch --style=compressed
@@ -115,7 +117,7 @@ nav {
 				border-radius: 1rem;
 				position: absolute;
 				inset-inline-end: 0;
-				transform: translateX(#{($gap + $borderWidth) / 2});
+				transform: translateX(#{math.div(($gap + $borderWidth), 2)});
 			}
 		}
 	}

@@ -56,7 +56,7 @@ export function initWorldMap(countriesData) {
 					}
 					ctx.closePath();
 					if (ctx.isPointInPath(mouseX, mouseY)) {
-						ctx.fillStyle = "darkRed";
+						ctx.fillStyle = `rgb(${[...Array(3)].map(() => Math.floor(Math.random() * 256)).join()})`;
 						ctx.fill();
 					}
 					ctx.stroke();
