@@ -1,5 +1,5 @@
 import { getTemplateCloner, languages, setLanguage, getLanguage, } from "./languages.js";
-import "./game.js";
+import "./gameStart.js";
 if (!new URL(location.href).searchParams.has("no-sw")) {
 	navigator.serviceWorker?.register("./service-worker.js", { scope: "./" });
 }

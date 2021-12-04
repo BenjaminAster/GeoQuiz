@@ -13,12 +13,6 @@ body {
 			display: none;
 		}
 	}
-}
-
-main {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
 
 	&[data-game-state="start"] {
 		start-screen {
@@ -30,7 +24,17 @@ main {
 		game {
 			display: flex;
 		}
+
+		nav {
+			display: none;
+		}
 	}
+}
+
+main {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 start-screen {

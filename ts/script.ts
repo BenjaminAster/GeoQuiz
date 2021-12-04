@@ -7,7 +7,7 @@ import {
 	getLanguage,
 } from "./languages.js";
 
-import "./game.js";
+import "./gameStart.js";
 
 /*
 

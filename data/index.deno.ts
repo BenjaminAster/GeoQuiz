@@ -210,14 +210,8 @@ https://www.highcharts.com/docs/maps/map-collection
 			sovereignt.trim() === differentCountryName
 		));
 
-		const geoJSONSovereignt = geoJSONCountries.filter(
-			({ properties: { name_long, name_sort, formal_en, admin, sovereignt } }: any) => (
-				// name_sort === sovereignt
-				// ||
-				// name_long === sovereignt
-				// ||
-				// formal_en === sovereignt
-
+		const geoJSONSovereignt = geoJSONCountries.find(
+			({ properties: { admin, sovereignt } }: any) => (
 				admin === sovereignt
 			)
 		);
@@ -226,42 +220,22 @@ https://www.highcharts.com/docs/maps/map-collection
 			continue;
 		}
 
-		console.log(geoJSONCountries.length, geoJSONSovereignt.length);
-		console.log(geoJSONCountries.map(({ properties: { name_sort, name_long, formal_en, admin, sovereignt, type } }: any) => (
-			// [formal_en, admin, name_long, name_sort, sovereignt, type]
-			[admin, sovereignt, type]
-		)));
-
-		// const geoJSONSovereignt = borders.features.find(({ properties: { sovereignt } }: any) => (
-		// 	sovereignt.trim() === differentCountryName
-		// ));
-
-		// if (!geoJSONSovereignt) {
-		// 	continue;
-		// }
-
-		// if (geoJSONSovereignt.properties.type !== "Sovereign country") {
-
-		// }
-
-		// }
-
-		// console.log(geoJSONCountries.map(({ properties: { continent } }: any) => continent));
-
-		// newData.push({
-		// 	name: country.name,
-		// 	capital: country.capital,
-		// 	flagSVG: country.flagSVG,
-		// 	coordinates: [].concat(...geoJSONCountries.map(
-		// 		({ geometry: { type, coordinates } }: any) => {
-		// 			switch (type) {
-		// 				case ("Polygon"): return coordinates;
-		// 				case ("MultiPolygon"): return [].concat(...coordinates);
-		// 			}
-		// 		}
-		// 	)),
-		// 	continent: geoJSONCountries.map(({ properties: { continent } }: any) => continent),
-		// });
+		newData.push({
+			name: country.name,
+			capital: country.capital,
+			flagSVG: country.flagSVG,
+			continent: geoJSONSovereignt.properties.continent.replace(
+				/(^.)|(\s)/g, (($: string) => $.toLowerCase().trim())
+			),
+			coordinates: [].concat(...geoJSONCountries.map(
+				({ geometry: { type, coordinates } }: any) => {
+					switch (type) {
+						case ("Polygon"): return coordinates;
+						case ("MultiPolygon"): return [].concat(...coordinates);
+					}
+				}
+			)),
+		});
 	}
 
 	await Deno.writeTextFile("./data.json", JSON.stringify(newData, null, "\t"));
