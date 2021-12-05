@@ -67,7 +67,7 @@ export default async (data: CountriesData, settings: {
 			);
 		}
 
-		(document.querySelector("game after-canvas") as HTMLElement).hidden = true;
+		(document.querySelector("game after-canvas") as HTMLElement).style.display = "none";
 
 		if (country.name.en === await awaitCountryClick()) {
 			markCountry(country.name.en, true);
