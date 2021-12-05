@@ -66,7 +66,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		}
 	};
 	for (const [actionName, func] of Object.entries(actions)) {
-		const button = document.querySelector(`nav [data-action="${actionName}"]`);
+		const button = document.querySelector(`nav [_action="${actionName}"]`);
 		button.addEventListener("click", func);
 	}
 	if (location.hostname === "localhost") {
@@ -100,6 +100,6 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 	}
 }
 {
-	document.body.setAttribute("data-loaded", "");
+	document.body.setAttribute("_loaded", "");
 }
 //# sourceMappingURL=script.js.map

@@ -38,7 +38,7 @@ let selectedContinents: { _: Set<string> } = (() => {
 	};
 
 	const checkboxSelectAll: HTMLInputElement = document.querySelector(
-		"continents [data-action=selectAll]"
+		"continents [_action=selectAll]"
 	);
 
 	for (const continent of continents) {
@@ -181,10 +181,10 @@ let selectedAnswerMode: { _: string } = (() => {
 })();
 
 (async () => {
-	document.body.setAttribute("data-game-state", "start");
-	document.querySelector("[data-action=startQuiz]").addEventListener(
+	document.body.setAttribute("_game-state", "start");
+	document.querySelector("[_action=startQuiz]").addEventListener(
 		"click", async (evt: MouseEvent) => {
-			document.body.setAttribute("data-game-state", "game");
+			document.body.setAttribute("_game-state", "game");
 			game(await dataPromise, {
 				continents: [...selectedContinents._],
 				questionMode: selectedQuestionMode._,

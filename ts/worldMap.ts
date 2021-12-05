@@ -1,5 +1,5 @@
 
-import { CountriesData } from "./game.js";
+import { CountriesData, enclaves } from "./game.js";
 
 
 let data: CountriesData;
@@ -24,7 +24,12 @@ let centerY: number = 0;
 let zoom: number = 0;
 const scalePerZoom: number = 1.5;
 
-export function initWorldMap(countriesData: CountriesData) {
+let countryToFind: string;
+let countryFound: () => void;
+// let lastClick: { x: number, y: number };
+let clicked: boolean = false;
+
+export default function initWorldMap(countriesData: CountriesData) {
 	data = countriesData;
 
 	{
@@ -39,10 +44,8 @@ export function initWorldMap(countriesData: CountriesData) {
 	}
 
 	window.addEventListener("pointermove", (evt: MouseEvent) => {
-		// @ts-ignore
-		mouseX = evt.layerX;
-		// @ts-ignore
-		mouseY = evt.layerY;
+		mouseX = evt.pageX - canvas.parentElement.offsetLeft;
+		mouseY = evt.pageY - canvas.parentElement.offsetTop;
 
 		if (evt.buttons === 1) {
 			centerX -= (evt.movementX / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
@@ -54,8 +57,12 @@ export function initWorldMap(countriesData: CountriesData) {
 		// @ts-ignore
 		const [x, y]: [number, number] = [evt.layerX, evt.layerY];
 
-		const pointX = (x / (canvas.width / 2) - 1) / ((scalePerZoom ** zoom) / 180) + centerX;
-		const pointY = (y / (canvas.height / 2) - 1) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180) + centerY;
+		const pointX: number = ((x / (canvas.width / 2) - 1) / (
+			(scalePerZoom ** zoom) / 180
+		)) + centerX;
+		const pointY: number = ((y / (canvas.height / 2) - 1) / (
+			(canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180
+		)) + centerY;
 
 		const delta = evt.deltaY / 100;
 		zoom -= delta;
@@ -76,96 +83,92 @@ export function initWorldMap(countriesData: CountriesData) {
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
 
-			// ctx.clearRect(0, 0, canvas.width, canvas.height);
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 			for (const country of data) {
-				// const geometry: Record<string, any> = country.geometry;
-				// const coordinates: [number, number][][][] = (() => {
-				// 	switch (geometry.type) {
-				// 		case ("Polygon"): return [geometry.coordinates];
-				// 		case ("MultiPolygon"): return geometry.coordinates;
-				// 		default: throw new Error(`Unknown geometry type: ${geometry.type}`);
-				// 	}
-				// })();
-
-				// console.log(country.coordinates);
-
 				const coordinates: [number, number][][] = country.coordinates;
 
-				for (const polygon of coordinates) {
-					ctx.beginPath();
-					// @ ts-ignore
-					for (const [x, y] of polygon) {
-						ctx.lineTo(
-							(
-								(x - centerX) * (scalePerZoom ** zoom) / 180 + 1
-							) * canvas.width / 2,
-							(
-								(y - centerY) * (canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180 + 1
-							) * canvas.height / 2,
-						);
-					}
-					ctx.closePath();
-					if (ctx.isPointInPath(mouseX, mouseY)) {
-						// ctx.fillStyle = "darkRed";
-						ctx.fillStyle = `rgb(${[...Array(3)].map(
-							() => Math.floor(Math.random() * 256)
-						).join()})`;
-						ctx.fill();
-					}
-					ctx.stroke();
+				let pointerInShape: boolean = false;
 
+				for (const drawPolygons of [false, true]) {
+					for (const polygon of coordinates) {
+						ctx.beginPath();
+						for (const [x, y] of polygon) {
+							ctx.lineTo(
+								((x - centerX) *
+									(scalePerZoom ** zoom) / 180 + 1
+								) * canvas.width / 2,
+								((y - centerY) * (canvas.width / canvas.height) *
+									(scalePerZoom ** zoom) / -180 + 1
+								) * canvas.height / 2,
+							);
+						}
+						ctx.closePath();
+						if (drawPolygons) {
+							if (pointerInShape) {
+								ctx.fillStyle = "darkRed";
+								ctx.fill();
+							} else {
+								if (enclaves.includes(country.name.en)) {
+									ctx.fillStyle = background;
+									ctx.fill();
+								}
+							}
+							ctx.stroke();
+						} else {
+							if (ctx.isPointInPath(mouseX, mouseY)) {
+								pointerInShape = true;
+								break;
+								// ctx.fillStyle = `rgb(${[...Array(3)].map(
+								// 	() => Math.floor(Math.random() * 256)
+								// ).join()})`;
+							}
+						}
+					}
 				}
 			}
 
-			// canvasElement.style.backgroundImage = `url(${canvas.toDataURL("image/png")})`;
-			// ctx.getImageData(0, 0, 1, 1);
-			// elementCtx.getImageData(0, 0, 1, 1);
-
-			// elementCtx.drawImage(canvas, 0, 0);
-			// await createImageBitmap(canvas, 0, 0, 1, 1);
-			// await createImageBitmap(canvasElement, 0, 0, 1, 1);
-
-			// console.log(canvas.toDataURL("image/png"));
-
-			window.requestAnimationFrame(draw);
+			window.requestAnimationFrame(() => setTimeout(draw));
 		};
 
 		draw();
 	}
 
+	{
+		let pointerDown: { x: number, y: number } = {
+			x: 0,
+			y: 0,
+		};
+		canvas.addEventListener("pointerup", (evt: MouseEvent) => {
+			const click: { x: number, y: number } = {
+				x: evt.pageX - canvas.parentElement.offsetLeft,
+				y: evt.pageY - canvas.parentElement.offsetTop,
+			};
+			if (
+				click.x === pointerDown.x &&
+				click.y === pointerDown.y
+			) {
+				clicked = true;
+			}
+		});
+		canvas.addEventListener("pointerdown", (evt: MouseEvent) => {
+			pointerDown = {
+				x: evt.pageX - canvas.parentElement.offsetLeft,
+				y: evt.pageY - canvas.parentElement.offsetTop,
+			};
+		});
+	}
+
 };
 
+export async function awaitFindCountry(countryName: string) {
+	const country = data.find(country => country.name.en === countryName);
+	if (!country) throw new Error(`Country not found: ${countryName}`);
 
-// export default async () => {
-// 	{
-// 		// country borders test
+	countryToFind = countryName;
 
-// 		// const countriesData: Record<string, any>[] = (await (await fetch(
-// 		// 	// "./data/geojson-maps.ash.ms/world-medium.geo.json"
-// 		// 	// "./data/github.com-simonepri/world-1m.geo.json"
-// 		// 	// "./data/world.geo.json"
-// 		// 	// "./data/exploratory.io/world.geo.json"
-// 		// 	"./data/data.min.json",
-// 		// )).json());
+	await new Promise<void>((resolve: () => void) => {
+		countryFound = resolve;
+	});
+}
 
-// 		// const canvasElement: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
-// 		// const elementCtx: CanvasRenderingContext2D = canvasElement.getContext("2d");
-
-// 		// const canvas: HTMLCanvasElement = document.createElement("canvas");
-// 		// canvas.width = canvasElement.width;
-// 		// canvas.height = canvasElement.height;
-// 		// const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
-
-// 		// const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: true });
-
-// 		// ctx.drawImage(canvas, 0, 0, 960, 540, 0, 0, 1920, 1080);
-// 		// // Force the drawImage call to be evaluated within this benchmark code:
-// 		// createImageBitmap(canvas, 0, 0, 1, 1).then(() => deferred.resolve());
-
-
-// 		// ctx.getImageData(0, 0, 1, 1);
-
-// 	}
-// };

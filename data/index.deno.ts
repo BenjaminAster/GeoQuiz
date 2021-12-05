@@ -199,7 +199,14 @@ https://www.highcharts.com/docs/maps/map-collection
 		"Sahrawi Arab Democratic Republic": "Western Sahara",
 	};
 
+	const enclaves: string[] = [
+		"Lesotho",
+		"San Marino",
+		"Vatican City",
+	];
+
 	const newData: any[] = [];
+	const enclavesData: any[] = [];
 
 	for (const country of data) {
 		const countryName: string = country.name.en;
@@ -220,7 +227,7 @@ https://www.highcharts.com/docs/maps/map-collection
 			continue;
 		}
 
-		newData.push({
+		const countryData = {
 			name: country.name,
 			capital: country.capital,
 			flagSVG: country.flagSVG,
@@ -235,7 +242,17 @@ https://www.highcharts.com/docs/maps/map-collection
 					}
 				}
 			)),
-		});
+		};
+
+		if (enclaves.includes(countryName)) {
+			enclavesData.push(countryData);
+		} else {
+			newData.push(countryData);
+		}
+	}
+
+	for (const country of enclavesData) {
+		newData.push(country);
 	}
 
 	await Deno.writeTextFile("./data.json", JSON.stringify(newData, null, "\t"));

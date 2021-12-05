@@ -105,7 +105,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 	};
 
 	for (const [actionName, func] of Object.entries(actions)) {
-		const button: HTMLElement = document.querySelector(`nav [data-action="${actionName}"]`);
+		const button: HTMLElement = document.querySelector(`nav [_action="${actionName}"]`);
 		button.addEventListener("click", func);
 	}
 
@@ -148,5 +148,5 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 }
 
 {
-	document.body.setAttribute("data-loaded", "");
+	document.body.setAttribute("_loaded", "");
 }

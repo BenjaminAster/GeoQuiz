@@ -10,19 +10,19 @@ sass scss:. --watch --style=compressed
 */
 
 body {
-	&:not([data-loaded]) {
+	&:not([_loaded]) {
 		:is(main, footer) {
 			display: none;
 		}
 	}
 
-	&[data-game-state="start"] {
+	&[_game-state="start"] {
 		start-screen {
 			display: block;
 		}
 	}
 
-	&[data-game-state="game"] {
+	&[_game-state="game"] {
 		game {
 			display: flex;
 		}

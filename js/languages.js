@@ -1,8 +1,8 @@
 import translations, { languages } from './translations.js';
 let chosenLanguage = localStorage.getItem("language") || (navigator.languages.join().includes("de") && "de") || languages[0];
 export const translateElement = (element) => {
-	for (const child of [...element.querySelectorAll("[data-text]")]) {
-		const HTML = child.getAttribute("data-text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
+	for (const child of [...element.querySelectorAll("[_text]")]) {
+		const HTML = child.getAttribute("_text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
 		child.innerHTML = HTML;
 	}
 	return element;
@@ -13,12 +13,12 @@ export const getTemplateCloner = (container) => {
 	return (contentObj) => {
 		const clone = templateElement.content.cloneNode(true);
 		for (const [key, value] of Object.entries(contentObj ?? {})) {
-			let element = clone.querySelector(`[data-content="${key}"]`);
+			let element = clone.querySelector(`[_content="${key}"]`);
 			if (element) {
-				element.setAttribute("data-text", value);
+				element.setAttribute("_text", value);
 			}
 			else {
-				element = clone.querySelector(`[data-notranslate="${key}"]`);
+				element = clone.querySelector(`[_notranslate="${key}"]`);
 				if (element) {
 					element.innerHTML = value;
 				}

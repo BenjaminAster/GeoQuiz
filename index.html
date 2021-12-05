@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="color-scheme" content="dark" />
 
 	<meta name="theme-color" content="#000000" />
@@ -25,7 +25,7 @@
 	<link rel="modulepreload" href="./js/worldMap.js" />
 	<script defer type="module" src="./js/script.js"></script>
 
-	<title>Country Quiz</title>
+	<title>Geography Quiz</title>
 </head>
 
 <body>
@@ -43,22 +43,22 @@
 	</noscript>
 
 	<nav>
-		<button data-action="toggleTheme" title="Toggle color scheme" id="theme-toggler"></button>
-		<button data-action="popOutWindow" title="Pop out window">
+		<button _action="toggleTheme" title="Toggle color scheme" id="theme-toggler"></button>
+		<button _action="popOutWindow" title="Pop out window">
 			<span style="transform: scaleX(-1)">
 				⇱︎
 			</span>
 		</button>
-		<button data-action="toggleFullscreen" title="Enable fullscreen">
+		<button _action="toggleFullscreen" title="Enable fullscreen">
 			⛶︎
 		</button>
-		<button data-action="installApp" title="Install App">
+		<button _action="installApp" title="Install App">
 			⭳︎
 		</button>
-		<button data-action="refresh" title="Refresh Site">
+		<button _action="refresh" title="Refresh Site">
 			↻︎
 		</button>
-		<button data-action="share" title="Share" style="position: relative">
+		<button _action="share" title="Share" style="position: relative">
 			<span style="position: absolute; transform: rotate(-90deg)">⛬︎</span>
 			<span style="position: absolute; transform: scale(1.1) translate(0, -2px)">ᐸ︎</span>
 		</button>
@@ -69,81 +69,81 @@
 			<mobile-warning>
 				<h2>
 					<warning-sign>⚠</warning-sign>
-					<span data-text="mobileWarning.header"></span>
+					<span _text="mobileWarning.header"></span>
 				</h2>
-				<p data-text="mobileWarning.text"></p>
+				<p _text="mobileWarning.text"></p>
 			</mobile-warning>
 
 			<safari-warning hidden>
 				<h2>
 					<warning-sign>⚠</warning-sign>
-					<span data-text="safariWarning.header"></span>
+					<span _text="safariWarning.header"></span>
 				</h2>
-				<p data-text="safariWarning.text"></p>
+				<p _text="safariWarning.text"></p>
 			</safari-warning>
 
 			<information>
-				<h2 data-text="mainHeader"></h2>
+				<h2 _text="mainHeader"></h2>
 
-				<p data-text="description"></p>
+				<p _text="description"></p>
 			</information>
 
 			<languages>
-				<h3 data-text="chooseLanguage"></h3>
+				<h3 _text="chooseLanguage"></h3>
 
 				<options-select>
 					<template>
 						<button>
-							<language-code data-notranslate="languageCode"></language-code>
-							<language-name data-content="languageName"></language-name>
+							<language-code _notranslate="languageCode"></language-code>
+							<language-name _content="languageName"></language-name>
 						</button>
 					</template>
 				</options-select>
 			</languages>
 
 			<continents>
-				<h3 data-text="continents.chooseContinent"></h3>
+				<h3 _text="continents.chooseContinent"></h3>
 
 				<label class="select-all">
-					<input type="checkbox" data-action="selectAll">
-					<span data-text="continents.selectAll"></span>
+					<input type="checkbox" _action="selectAll">
+					<span _text="continents.selectAll"></span>
 				</label>
 
 				<options-select>
 					<template>
 						<button>
-							<continent-name data-content="continentName"></continent-name>
+							<continent-name _content="continentName"></continent-name>
 						</button>
 					</template>
 				</options-select>
 			</continents>
 
 			<question-mode>
-				<h3 data-text="questionMode.chooseMode"></h3>
+				<h3 _text="questionMode.chooseMode"></h3>
 
 				<options-select>
 					<template>
 						<button>
-							<question-mode-name data-content="questionMode"></question-mode-name>
+							<question-mode-name _content="questionMode"></question-mode-name>
 						</button>
 					</template>
 				</options-select>
 			</question-mode>
 
 			<answer-mode>
-				<h3 data-text="answerMode.chooseMode"></h3>
+				<h3 _text="answerMode.chooseMode"></h3>
 
 				<options-select>
 					<template>
 						<button>
-							<answer-mode-name data-content="answerMode"></answer-mode-name>
+							<answer-mode-name _content="answerMode"></answer-mode-name>
 						</button>
 					</template>
 				</options-select>
 			</answer-mode>
 
 			<start-quiz>
-				<button data-action="startQuiz" data-text="startQuiz"></button>
+				<button _action="startQuiz" _text="startQuiz"></button>
 			</start-quiz>
 		</start-screen>
 
@@ -177,9 +177,9 @@
 	</main>
 
 	<footer>
-		<span data-text="footer.madeWithLove"></span>
+		<span _text="footer.madeWithLove"></span>
 		&bull;
-		<a data-text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Countries-Quiz"></a>
+		<a _text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Countries-Quiz"></a>
 	</footer>
 
 </body>

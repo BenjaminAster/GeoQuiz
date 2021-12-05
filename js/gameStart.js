@@ -25,7 +25,7 @@ let selectedContinents = (() => {
 			this.__ = value;
 		},
 	};
-	const checkboxSelectAll = document.querySelector("continents [data-action=selectAll]");
+	const checkboxSelectAll = document.querySelector("continents [_action=selectAll]");
 	for (const continent of continents) {
 		const clone = getClone({
 			continentName: `continents.${continent}`,
@@ -132,9 +132,9 @@ let selectedAnswerMode = (() => {
 	return selectedAnswerMode;
 })();
 (async () => {
-	document.body.setAttribute("data-game-state", "start");
-	document.querySelector("[data-action=startQuiz]").addEventListener("click", async (evt) => {
-		document.body.setAttribute("data-game-state", "game");
+	document.body.setAttribute("_game-state", "start");
+	document.querySelector("[_action=startQuiz]").addEventListener("click", async (evt) => {
+		document.body.setAttribute("_game-state", "game");
 		game(await dataPromise, {
 			continents: [...selectedContinents._],
 			questionMode: selectedQuestionMode._,

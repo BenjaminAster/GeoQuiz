@@ -1,5 +1,5 @@
 
-import { initWorldMap } from "./worldMap.js";
+import initWorldMap from "./worldMap.js";
 
 export type CountriesData = {
 	name: Record<string, string>,
@@ -8,6 +8,17 @@ export type CountriesData = {
 	flagSVG: string,
 	coordinates: [number, number][][],
 }[];
+
+export const enclaves: string[] = [
+	"Lesotho",
+	"San Marino",
+	"Vatican City",
+];
+
+export const countriesWithEnclaves: string[] = [
+	"South Africa",
+	"Italy",
+];
 
 export default async (data: CountriesData, settings: {
 	continents: string[],
