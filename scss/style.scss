@@ -177,6 +177,13 @@ options-select {
 	}
 }
 
+:is(question-mode, answer-mode) {
+	more-will-be-added {
+		font-style: italic;
+		color: var(--col-b);
+	}
+}
+
 continents {
 	label.select-all {
 		inline-size: fit-content;
@@ -282,13 +289,25 @@ game {
 	user-select: none;
 
 	:is(before-canvas, after-canvas) {
+		background-color: var(--col-2);
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.4rem;
 		place-items: center;
 		min-block-size: 4rem;
 		font-size: 2rem;
+	}
+
+	before-canvas {
+		flag {
+			display: block;
+			inline-size: 5rem;
+			block-size: 3rem;
+
+			background-repeat: no-repeat;
+			background-size: contain;
+		}
 	}
 
 	canvas-container {

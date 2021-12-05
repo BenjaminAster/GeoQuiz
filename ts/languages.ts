@@ -1,9 +1,7 @@
 
 import translations, { languages } from './translations.js';
 
-let chosenLanguage = localStorage.getItem("language") || (
-	navigator.languages.join().includes("de") && "de"
-) || languages[0];
+let chosenLanguage = localStorage.getItem(`${location.pathname}:language`) || languages[0];
 
 export const translateElement = <T extends HTMLElement | DocumentFragment>(element: T) => {
 	for (const child of [...element.querySelectorAll("[_text]") as any as HTMLElement[]]) {
@@ -40,7 +38,7 @@ export const getTemplateCloner = (container: HTMLElement) => {
 export const setLanguage = (language?: string) => {
 	if (language) chosenLanguage = language;
 	translateElement(document.body);
-	localStorage.setItem("language", chosenLanguage);
+	localStorage.setItem(`${location.pathname}:language`, chosenLanguage);
 };
 
 export const getLanguage = () => chosenLanguage;

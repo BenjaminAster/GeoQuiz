@@ -1,4 +1,4 @@
-import { getTemplateCloner } from "./languages.js";
+import { getTemplateCloner, getLanguage, } from "./languages.js";
 import game from "./game.js";
 let selectedContinents = (() => {
 	const continentsContainer = document.querySelector("continents");
@@ -12,7 +12,8 @@ let selectedContinents = (() => {
 		"europe",
 		"oceania",
 	];
-	let allSelected = false;
+	let allSelected = true;
+	continentsContainer.classList.toggle("all-selected", allSelected);
 	let selectedContinents = {
 		__: new Set(),
 		get _() {
@@ -31,6 +32,7 @@ let selectedContinents = (() => {
 			continentName: `continents.${continent}`,
 		});
 		let button = clone.firstElementChild;
+		button.classList.add("selected");
 		button.addEventListener("click", (evt) => {
 			button.classList.toggle("selected");
 			if (allSelected) {
@@ -74,7 +76,7 @@ let selectedQuestionMode = (() => {
 		"flag",
 	];
 	let selectedQuestionMode = {
-		__: questionModes[0],
+		__: questionModes[1],
 		get _() {
 			return this.__;
 		},
@@ -139,6 +141,7 @@ let selectedAnswerMode = (() => {
 			continents: [...selectedContinents._],
 			questionMode: selectedQuestionMode._,
 			answerMode: selectedAnswerMode._,
+			language: getLanguage(),
 		});
 	});
 	const dataPromise = (async () => await (await window.fetch("./data/data.min.json")).json())();

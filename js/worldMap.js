@@ -1,12 +1,7 @@
-import { enclaves } from "./game.js";
 let data;
 const canvas = document.querySelector("game canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
-const colors = {
-	background: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim(),
-	foreground: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")).trim(),
-	gray: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-7")).trim(),
-};
+let colors;
 let mouseX = 0;
 let mouseY = 0;
 let centerX = 0;
@@ -15,8 +10,19 @@ let zoom = 0;
 const scalePerZoom = 1.5;
 let countryClicked;
 let clicked = false;
+let correctCountries = new Set();
+let incorrectCountries = new Set();
 export default function initWorldMap(countriesData) {
 	data = countriesData;
+	{
+		colors = {
+			background: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim(),
+			foreground: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")).trim(),
+			gray: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-3")).trim(),
+			green: "green",
+			red: "red",
+		};
+	}
 	{
 		const resize = () => {
 			canvas.width = canvas.clientWidth;
@@ -53,10 +59,11 @@ export default function initWorldMap(countriesData) {
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			for (const country of data) {
-				const coordinates = country.coordinates;
-				let pointerInShape = false;
-				for (const drawPolygons of [false, true]) {
+			let hoveredCountry;
+			for (const drawPolygons of [false, true]) {
+				countryLoop: for (const country of (drawPolygons ? data : [...data].reverse())) {
+					const coordinates = country.coordinates;
+					const fillColor = (correctCountries.has(country.name.en) ? colors.green : (incorrectCountries.has(country.name.en) ? colors.red : null));
 					polygonLoop: for (const polygon of coordinates) {
 						ctx.beginPath();
 						for (const [x, y] of polygon) {
@@ -66,26 +73,26 @@ export default function initWorldMap(countriesData) {
 						}
 						ctx.closePath();
 						if (drawPolygons) {
-							if (pointerInShape) {
-								ctx.fillStyle = colors.gray;
-								ctx.fill();
+							if (fillColor) {
+								ctx.fillStyle = fillColor;
+							}
+							else if (hoveredCountry === country.name.en) {
+								ctx.fillStyle = colors.foreground;
 							}
 							else {
-								if (enclaves.includes(country.name.en)) {
-									ctx.fillStyle = colors.background;
-									ctx.fill();
-								}
+								ctx.fillStyle = colors.gray;
 							}
+							ctx.fill();
 							ctx.stroke();
 						}
 						else {
 							if (ctx.isPointInPath(mouseX, mouseY)) {
-								pointerInShape = true;
+								hoveredCountry = country.name.en;
 								if (clicked) {
 									countryClicked(country.name.en);
 									clicked = false;
 								}
-								break polygonLoop;
+								break countryLoop;
 							}
 						}
 					}
@@ -124,5 +131,13 @@ export async function awaitCountryClick() {
 	return await new Promise((resolve) => {
 		countryClicked = resolve;
 	});
+}
+export function markCountry(name, correct) {
+	if (correct) {
+		correctCountries.add(name);
+	}
+	else {
+		incorrectCountries.add(name);
+	}
 }
 //# sourceMappingURL=worldMap.js.map

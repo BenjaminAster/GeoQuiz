@@ -1,6 +1,7 @@
 
 import {
-	getTemplateCloner
+	getTemplateCloner,
+	getLanguage,
 } from "./languages.js";
 
 import game, { CountriesData } from "./game.js";
@@ -22,7 +23,8 @@ let selectedContinents: { _: Set<string> } = (() => {
 		"oceania",
 	];
 
-	let allSelected: boolean = false;
+	let allSelected: boolean = true;
+	continentsContainer.classList.toggle("all-selected", allSelected);
 
 	let selectedContinents = {
 		__: new Set(),
@@ -47,6 +49,7 @@ let selectedContinents: { _: Set<string> } = (() => {
 		});
 
 		let button = clone.firstElementChild;
+		button.classList.add("selected");
 
 		button.addEventListener("click", (evt: MouseEvent) => {
 			button.classList.toggle("selected");
@@ -104,7 +107,7 @@ let selectedQuestionMode: { _: string } = (() => {
 	];
 
 	let selectedQuestionMode = {
-		__: questionModes[0],
+		__: questionModes[1],
 		get _() {
 			return this.__;
 		},
@@ -189,6 +192,7 @@ let selectedAnswerMode: { _: string } = (() => {
 				continents: [...selectedContinents._],
 				questionMode: selectedQuestionMode._,
 				answerMode: selectedAnswerMode._,
+				language: getLanguage(),
 			});
 		}
 	);

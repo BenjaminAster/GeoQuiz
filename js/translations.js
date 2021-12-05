@@ -55,16 +55,6 @@ export default {
 			de: "Alle auswählen",
 		},
 	},
-	footer: {
-		madeWithLove: {
-			en: `Made with <span style=color:red>❤</span> by Benjamin Aster`,
-			de: `Mit <span style=color:red>❤</span> gemacht von Benjamin Aster`,
-		},
-		viewOnGitHub: {
-			en: "View on GitHub",
-			de: "Auf GitHub ansehen",
-		},
-	},
 	mobileWarning: {
 		header: {
 			en: "Doesn't work on mobile!",
@@ -102,6 +92,10 @@ export default {
 			en: "flag",
 			de: "Flagge",
 		},
+		moreWillBeAdded: {
+			en: "More options will be added in the future.",
+			de: "Mehr Optionen werden in Zukunft hinzugefügt werden.",
+		}
 	},
 	answerMode: {
 		chooseMode: {
@@ -116,10 +110,28 @@ export default {
 			en: "type the country name",
 			de: "Ländernamen eingeben",
 		},
+		moreWillBeAdded: {
+			en: "More options will be added in the future.",
+			de: "Mehr Optionen werden in Zukunft hinzugefügt werden.",
+		}
 	},
 	startQuiz: {
 		en: "Start quiz",
 		de: "Quiz starten",
+	},
+	footer: {
+		madeWithLove: {
+			en: `Made with <span style=color:red>❤</span> by Benjamin Aster`,
+			de: `Mit <span style=color:red>❤</span> gemacht von Benjamin Aster`,
+		},
+		viewOnGitHub: {
+			en: "View on GitHub",
+			de: "Auf GitHub ansehen",
+		},
+		version: {
+			en: "version",
+			de: "Version",
+		}
 	},
 };
 export const languages = [

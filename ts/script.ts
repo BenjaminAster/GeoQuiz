@@ -48,7 +48,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))
 		];
 
-		localStorage.setItem("color-scheme", colorScheme);
+		localStorage.setItem(`${location.pathname}:color-scheme`, colorScheme);
 
 		document.documentElement.setAttribute("color-scheme", colorScheme);
 		document.querySelector<HTMLMetaElement>("meta[name=color-scheme]").content = colorScheme;
@@ -57,7 +57,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		).trim();
 	}
 
-	setColorScheme(localStorage.getItem("color-scheme") ?? "dark");
+	setColorScheme(localStorage.getItem(`${location.pathname}:color-scheme`) ?? "dark");
 
 	const actions: Record<string, () => void> = {
 		toggleTheme() {

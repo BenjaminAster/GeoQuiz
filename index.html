@@ -105,7 +105,7 @@
 				<h3 _text="continents.chooseContinent"></h3>
 
 				<label class="select-all">
-					<input type="checkbox" _action="selectAll">
+					<input type="checkbox" _action="selectAll" checked>
 					<span _text="continents.selectAll"></span>
 				</label>
 
@@ -128,6 +128,8 @@
 						</button>
 					</template>
 				</options-select>
+
+				<more-will-be-added _text="questionMode.moreWillBeAdded"></more-will-be-added>
 			</question-mode>
 
 			<answer-mode>
@@ -140,6 +142,8 @@
 						</button>
 					</template>
 				</options-select>
+
+				<more-will-be-added _text="answerMode.moreWillBeAdded"></more-will-be-added>
 			</answer-mode>
 
 			<start-quiz>
@@ -149,13 +153,13 @@
 
 		<game>
 			<before-canvas>
-				<flag>flag</flag>
-				<country>country</country>
+				<flag></flag>
+				<country></country>
 			</before-canvas>
 			<canvas-container>
 				<canvas></canvas>
 			</canvas-container>
-			<after-canvas>&lt;after-canvas&gt;</after-canvas>
+			<after-canvas></after-canvas>
 		</game>
 
 		<!-- <test>
@@ -180,6 +184,9 @@
 		<span _text="footer.madeWithLove"></span>
 		&bull;
 		<a _text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Countries-Quiz"></a>
+		&bull;
+		<span _text="footer.version"></span>
+		1
 	</footer>
 
 </body>

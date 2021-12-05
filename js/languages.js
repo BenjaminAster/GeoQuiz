@@ -1,5 +1,5 @@
 import translations, { languages } from './translations.js';
-let chosenLanguage = localStorage.getItem("language") || (navigator.languages.join().includes("de") && "de") || languages[0];
+let chosenLanguage = localStorage.getItem(`${location.pathname}:language`) || languages[0];
 export const translateElement = (element) => {
 	for (const child of [...element.querySelectorAll("[_text]")]) {
 		const HTML = child.getAttribute("_text").split(".").reduce((obj, crr) => obj?.[crr], translations)?.[chosenLanguage];
@@ -31,7 +31,7 @@ export const setLanguage = (language) => {
 	if (language)
 		chosenLanguage = language;
 	translateElement(document.body);
-	localStorage.setItem("language", chosenLanguage);
+	localStorage.setItem(`${location.pathname}:language`, chosenLanguage);
 };
 export const getLanguage = () => chosenLanguage;
 export { languages } from "./translations.js";

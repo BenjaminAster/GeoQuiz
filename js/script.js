@@ -17,12 +17,12 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 	const setColorScheme = (scheme) => {
 		const colorSchemes = ["dark", "light"];
 		const colorScheme = scheme ?? colorSchemes[+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))];
-		localStorage.setItem("color-scheme", colorScheme);
+		localStorage.setItem(`${location.pathname}:color-scheme`, colorScheme);
 		document.documentElement.setAttribute("color-scheme", colorScheme);
 		document.querySelector("meta[name=color-scheme]").content = colorScheme;
 		document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
 	};
-	setColorScheme(localStorage.getItem("color-scheme") ?? "dark");
+	setColorScheme(localStorage.getItem(`${location.pathname}:color-scheme`) ?? "dark");
 	const actions = {
 		toggleTheme() {
 			setColorScheme();

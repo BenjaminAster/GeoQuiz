@@ -7,17 +7,7 @@ let data: CountriesData;
 const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
 
-const colors = {
-	background: (
-		window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
-	).trim(),
-	foreground: (
-		window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")
-	).trim(),
-	gray: (
-		window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-7")
-	).trim(),
-};
+let colors: Record<string, string>;
 
 let mouseX: number = 0;
 let mouseY: number = 0;
@@ -27,13 +17,30 @@ let centerY: number = 0;
 let zoom: number = 0;
 const scalePerZoom: number = 1.5;
 
-// let isAwaitingCountryClick: boolean = false;
 let countryClicked: (name: string) => void;
-// let lastClick: { x: number, y: number };
 let clicked: boolean = false;
+
+let correctCountries = new Set<string>();
+let incorrectCountries = new Set<string>();
 
 export default function initWorldMap(countriesData: CountriesData) {
 	data = countriesData;
+
+	{
+		colors = {
+			background: (
+				window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
+			).trim(),
+			foreground: (
+				window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")
+			).trim(),
+			gray: (
+				window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-3")
+			).trim(),
+			green: "green",
+			red: "red",
+		}
+	}
 
 	{
 		const resize = () => {
@@ -51,8 +58,12 @@ export default function initWorldMap(countriesData: CountriesData) {
 		mouseY = evt.pageY - canvas.parentElement.offsetTop;
 
 		if (evt.buttons === 1) {
-			centerX -= (evt.movementX / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
-			centerY += (evt.movementY / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+			centerX -= (evt.movementX / (canvas.width / 2)) / (
+				(scalePerZoom ** zoom) / 180
+			);
+			centerY += (evt.movementY / (canvas.height / 2)) / (
+				(canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180
+			);
 		}
 	});
 
@@ -88,12 +99,19 @@ export default function initWorldMap(countriesData: CountriesData) {
 
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-			for (const country of data) {
-				const coordinates: [number, number][][] = country.coordinates;
+			let hoveredCountry: string;
 
-				let pointerInShape: boolean = false;
+			for (const drawPolygons of [false, true]) {
 
-				for (const drawPolygons of [false, true]) {
+				countryLoop: for (const country of (drawPolygons ? data : [...data].reverse())) {
+					const coordinates: [number, number][][] = country.coordinates;
+
+					const fillColor: string | null = (
+						correctCountries.has(country.name.en) ? colors.green : (
+							incorrectCountries.has(country.name.en) ? colors.red : null
+						)
+					);
+
 					polygonLoop: for (const polygon of coordinates) {
 						ctx.beginPath();
 						for (const [x, y] of polygon) {
@@ -108,27 +126,25 @@ export default function initWorldMap(countriesData: CountriesData) {
 						}
 						ctx.closePath();
 						if (drawPolygons) {
-							if (pointerInShape) {
-								ctx.fillStyle = colors.gray;
-								ctx.fill();
+							if (fillColor) {
+								ctx.fillStyle = fillColor;
+							} else if (hoveredCountry === country.name.en) {
+								ctx.fillStyle = colors.foreground;
+								// } else if (enclaves.includes(country.name.en)) {
+								// 	ctx.fillStyle = colors.background;
 							} else {
-								if (enclaves.includes(country.name.en)) {
-									ctx.fillStyle = colors.background;
-									ctx.fill();
-								}
+								ctx.fillStyle = colors.gray;
 							}
+							ctx.fill();
 							ctx.stroke();
 						} else {
 							if (ctx.isPointInPath(mouseX, mouseY)) {
-								pointerInShape = true;
+								hoveredCountry = country.name.en;
 								if (clicked) {
 									countryClicked(country.name.en);
 									clicked = false;
 								}
-								break polygonLoop;
-								// ctx.fillStyle = `rgb(${[...Array(3)].map(
-								// 	() => Math.floor(Math.random() * 256)
-								// ).join()})`;
+								break countryLoop;
 							}
 						}
 					}
@@ -171,10 +187,15 @@ export default function initWorldMap(countriesData: CountriesData) {
 };
 
 export async function awaitCountryClick(): Promise<string> {
-	// countryToFind = countryName;
-
 	return await new Promise<string>((resolve: (name: string) => void) => {
 		countryClicked = resolve;
 	});
 }
 
+export function markCountry(name: string, correct: boolean) {
+	if (correct) {
+		correctCountries.add(name);
+	} else {
+		incorrectCountries.add(name);
+	}
+}
