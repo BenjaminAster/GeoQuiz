@@ -26,6 +26,8 @@ export default async (data: CountriesData, settings: {
 	answerMode: string,
 	language: string,
 }) => {
+	(document.querySelector("game after-canvas") as HTMLElement).style.display = "none";
+
 	initWorldMap(data);
 
 	function shuffleArray(array) {
@@ -41,7 +43,6 @@ export default async (data: CountriesData, settings: {
 			({ continent }) => settings.continents.includes(continent)
 		)
 	);
-
 
 	for (const country of countries) {
 
@@ -66,8 +67,6 @@ export default async (data: CountriesData, settings: {
 				`url("${flagBlobURI}")`
 			);
 		}
-
-		(document.querySelector("game after-canvas") as HTMLElement).style.display = "none";
 
 		if (country.name.en === await awaitCountryClick()) {
 			markCountry(country.name.en, true);

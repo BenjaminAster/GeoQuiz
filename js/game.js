@@ -9,6 +9,7 @@ export const countriesWithEnclaves = [
 	"Italy",
 ];
 export default async (data, settings) => {
+	document.querySelector("game after-canvas").style.display = "none";
 	initWorldMap(data);
 	function shuffleArray(array) {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -34,7 +35,6 @@ export default async (data, settings) => {
 			flagBlobURI = URL.createObjectURL(new Blob([country.flagSVG], { type: "image/svg+xml" }));
 			document.querySelector("game flag").style.backgroundImage = (`url("${flagBlobURI}")`);
 		}
-		document.querySelector("game after-canvas").style.display = "none";
 		if (country.name.en === await awaitCountryClick()) {
 			markCountry(country.name.en, true);
 		}
