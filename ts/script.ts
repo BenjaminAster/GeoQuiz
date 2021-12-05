@@ -150,3 +150,4 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 {
 	document.body.setAttribute("_loaded", "");
 }
+

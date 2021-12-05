@@ -7,14 +7,17 @@ let data: CountriesData;
 const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
 
-const background: string = (
-	window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
-).trim();
-
-const foreground: string = (
-	window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")
-).trim();
-
+const colors = {
+	background: (
+		window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
+	).trim(),
+	foreground: (
+		window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")
+	).trim(),
+	gray: (
+		window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-7")
+	).trim(),
+};
 
 let mouseX: number = 0;
 let mouseY: number = 0;
@@ -24,8 +27,8 @@ let centerY: number = 0;
 let zoom: number = 0;
 const scalePerZoom: number = 1.5;
 
-let countryToFind: string;
-let countryFound: () => void;
+// let isAwaitingCountryClick: boolean = false;
+let countryClicked: (name: string) => void;
 // let lastClick: { x: number, y: number };
 let clicked: boolean = false;
 
@@ -77,8 +80,8 @@ export default function initWorldMap(countriesData: CountriesData) {
 
 	{
 		const draw = () => {
-			ctx.strokeStyle = foreground;
-			ctx.fillStyle = background;
+			ctx.strokeStyle = colors.foreground;
+			ctx.fillStyle = colors.background;
 			ctx.lineWidth = 1;
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
@@ -91,7 +94,7 @@ export default function initWorldMap(countriesData: CountriesData) {
 				let pointerInShape: boolean = false;
 
 				for (const drawPolygons of [false, true]) {
-					for (const polygon of coordinates) {
+					polygonLoop: for (const polygon of coordinates) {
 						ctx.beginPath();
 						for (const [x, y] of polygon) {
 							ctx.lineTo(
@@ -106,11 +109,11 @@ export default function initWorldMap(countriesData: CountriesData) {
 						ctx.closePath();
 						if (drawPolygons) {
 							if (pointerInShape) {
-								ctx.fillStyle = "darkRed";
+								ctx.fillStyle = colors.gray;
 								ctx.fill();
 							} else {
 								if (enclaves.includes(country.name.en)) {
-									ctx.fillStyle = background;
+									ctx.fillStyle = colors.background;
 									ctx.fill();
 								}
 							}
@@ -118,7 +121,11 @@ export default function initWorldMap(countriesData: CountriesData) {
 						} else {
 							if (ctx.isPointInPath(mouseX, mouseY)) {
 								pointerInShape = true;
-								break;
+								if (clicked) {
+									countryClicked(country.name.en);
+									clicked = false;
+								}
+								break polygonLoop;
 								// ctx.fillStyle = `rgb(${[...Array(3)].map(
 								// 	() => Math.floor(Math.random() * 256)
 								// ).join()})`;
@@ -127,6 +134,8 @@ export default function initWorldMap(countriesData: CountriesData) {
 					}
 				}
 			}
+
+			clicked = false;
 
 			window.requestAnimationFrame(() => setTimeout(draw));
 		};
@@ -161,14 +170,11 @@ export default function initWorldMap(countriesData: CountriesData) {
 
 };
 
-export async function awaitFindCountry(countryName: string) {
-	const country = data.find(country => country.name.en === countryName);
-	if (!country) throw new Error(`Country not found: ${countryName}`);
+export async function awaitCountryClick(): Promise<string> {
+	// countryToFind = countryName;
 
-	countryToFind = countryName;
-
-	await new Promise<void>((resolve: () => void) => {
-		countryFound = resolve;
+	return await new Promise<string>((resolve: (name: string) => void) => {
+		countryClicked = resolve;
 	});
 }
 

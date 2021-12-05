@@ -1,5 +1,5 @@
 
-import initWorldMap from "./worldMap.js";
+import initWorldMap, { awaitCountryClick } from "./worldMap.js";
 
 export type CountriesData = {
 	name: Record<string, string>,
@@ -26,4 +26,6 @@ export default async (data: CountriesData, settings: {
 	answerMode: string,
 }) => {
 	initWorldMap(data);
+
+	console.log(await awaitCountryClick());
 };

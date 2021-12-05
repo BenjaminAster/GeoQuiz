@@ -1,4 +1,4 @@
-import initWorldMap from "./worldMap.js";
+import initWorldMap, { awaitCountryClick } from "./worldMap.js";
 export const enclaves = [
 	"Lesotho",
 	"San Marino",
@@ -10,5 +10,6 @@ export const countriesWithEnclaves = [
 ];
 export default async (data, settings) => {
 	initWorldMap(data);
+	console.log(await awaitCountryClick());
 };
 //# sourceMappingURL=game.js.map
