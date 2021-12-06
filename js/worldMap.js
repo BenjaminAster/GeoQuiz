@@ -42,6 +42,8 @@ export default function initWorldMap(countriesData) {
 				if (evt.buttons === 1) {
 					centerX -= ((evt.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
 					centerY += ((evt.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+					centerX = Math.min(Math.max(centerX, -180), 180);
+					centerY = Math.min(Math.max(centerY, -90), 90);
 				}
 			}
 			prevX = evt.pageX;
@@ -103,7 +105,11 @@ export default function initWorldMap(countriesData) {
 							if (ctx.isPointInPath(mouseX, mouseY)) {
 								hoveredCountry = country.name.en;
 								if (clicked) {
-									countryClicked(country.name.en);
+									if (!correctCountries.has(country.name.en)
+										&&
+											!incorrectCountries.has(country.name.en)) {
+										countryClicked(country.name.en);
+									}
 									clicked = false;
 								}
 								break countryLoop;

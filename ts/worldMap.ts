@@ -67,6 +67,9 @@ export default function initWorldMap(countriesData: CountriesData) {
 					centerY += ((evt.pageY - prevY) / (canvas.height / 2)) / (
 						(canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180
 					);
+
+					centerX = Math.min(Math.max(centerX, -180), 180);
+					centerY = Math.min(Math.max(centerY, -90), 90);
 				}
 			}
 
@@ -143,8 +146,6 @@ export default function initWorldMap(countriesData: CountriesData) {
 								ctx.fillStyle = fillColor;
 							} else if (hoveredCountry === country.name.en) {
 								ctx.fillStyle = colors.foreground;
-								// } else if (enclaves.includes(country.name.en)) {
-								// 	ctx.fillStyle = colors.background;
 							} else {
 								ctx.fillStyle = colors.gray;
 							}
@@ -154,7 +155,13 @@ export default function initWorldMap(countriesData: CountriesData) {
 							if (ctx.isPointInPath(mouseX, mouseY)) {
 								hoveredCountry = country.name.en;
 								if (clicked) {
-									countryClicked(country.name.en);
+									if (
+										!correctCountries.has(country.name.en)
+										&&
+										!incorrectCountries.has(country.name.en)
+									) {
+										countryClicked(country.name.en);
+									}
 									clicked = false;
 								}
 								break countryLoop;
