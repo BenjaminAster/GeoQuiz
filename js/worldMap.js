@@ -14,13 +14,14 @@ let correctCountries = new Set();
 let incorrectCountries = new Set();
 export default function initWorldMap(countriesData) {
 	data = countriesData;
+	const getColor = (color) => (window.getComputedStyle(document.documentElement)?.getPropertyValue(color)).trim();
 	{
 		colors = {
-			background: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim(),
-			foreground: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-f")).trim(),
-			gray: (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-3")).trim(),
-			green: "green",
-			red: "red",
+			background: getColor("--col-18"),
+			foreground: getColor("--col-f"),
+			gray: getColor("--col-3"),
+			green: getColor("--country-green"),
+			red: getColor("--red"),
 		};
 	}
 	{
@@ -31,20 +32,33 @@ export default function initWorldMap(countriesData) {
 		resize();
 		window.addEventListener("resize", resize);
 	}
-	window.addEventListener("pointermove", (evt) => {
-		mouseX = evt.pageX - canvas.parentElement.offsetLeft;
-		mouseY = evt.pageY - canvas.parentElement.offsetTop;
-		if (evt.buttons === 1) {
-			centerX -= (evt.movementX / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
-			centerY += (evt.movementY / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
-		}
-	});
+	{
+		let prevX = -1;
+		let prevY = -1;
+		window.addEventListener("pointermove", (evt) => {
+			if (prevX >= 0) {
+				mouseX = evt.pageX - canvas.parentElement.offsetLeft;
+				mouseY = evt.pageY - canvas.parentElement.offsetTop;
+				if (evt.buttons === 1) {
+					centerX -= ((evt.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
+					centerY += ((evt.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+				}
+			}
+			prevX = evt.pageX;
+			prevY = evt.pageY;
+		});
+	}
 	window.addEventListener("wheel", (evt) => {
-		const [x, y] = [evt.layerX, evt.layerY];
+		const x = evt.pageX - canvas.parentElement.offsetLeft;
+		const y = evt.pageY - canvas.parentElement.offsetTop;
 		const pointX = ((x / (canvas.width / 2) - 1) / ((scalePerZoom ** zoom) / 180)) + centerX;
 		const pointY = ((y / (canvas.height / 2) - 1) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180)) + centerY;
-		const delta = evt.deltaY / 100;
+		let delta = evt.deltaY / 100;
 		zoom -= delta;
+		if (zoom < 0) {
+			delta += zoom;
+			zoom = 0;
+		}
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
 	});

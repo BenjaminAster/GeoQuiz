@@ -37,9 +37,11 @@ $toLight: black;
 		--green: #{$green};
 		--green-bg: #{rgba($green, 20%)};
 
-		$red: red;
+		$red: #f45;
 		--red: #{$red};
 		--red-bg: #{rgba($red, 20%)};
+
+		--country-green: #0d4;
 
 		--transparent-cover: #1118;
 		--link-blue: lightSkyBlue;
@@ -52,9 +54,11 @@ $toLight: black;
 		--green: #{$green};
 		--green-bg: #{rgba($green, 20%)};
 
-		$red: red;
+		$red: #f57;
 		--red: #{$red};
 		--red-bg: #{rgba($red, 20%)};
+
+		--country-green: #5e7;
 
 		--transparent-cover: #eee8;
 		--link-blue: blue;

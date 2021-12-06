@@ -113,7 +113,7 @@ https://www.highcharts.com/docs/maps/map-collection
 
 			const originalFlagSVG: string = await (await globalThis.fetch(flagImageURL)).text();
 
-			const flagSVG: string = originalFlagSVG?.replaceAll(/[\r\n]/g, "").replaceAll(/[\t]/g, " ").match(
+			const flagSVG: string = originalFlagSVG?.replaceAll(/[\r]/g, "").replaceAll(/[\t\n]/g, " ").match(
 				/\<svg\b.*\<\/svg\>/
 			)?.[0] as string;
 

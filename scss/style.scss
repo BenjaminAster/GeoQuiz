@@ -232,6 +232,7 @@ continents {
 	&.all-selected {
 		label.select-all {
 			background-color: var(--blue-bg);
+			color: var(--blue);
 		}
 
 		options-select {
