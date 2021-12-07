@@ -66,16 +66,6 @@ export default {
 			de: "Dieses Quiz funktioniert nicht auf mobilen Geräten. Bitte nutze stattdessen ein Desktop-Gerät.",
 		},
 	},
-	safariWarning: {
-		header: {
-			en: "Please don't use Safari!",
-			de: "Bitte benutze nicht Safari!",
-		},
-		text: {
-			de: "Vermutlich funktioniert diese Seite auf Safari nicht richtig. Das Problem: Safari unterstützt viele modernen Web-Technologien nicht, und Apple gibt mir keine Möglichkeit, meine Webseiten auf Safari auszutesten, da Safari nur auf MacOS erhältlich ist. Also bitte sei so lieb und verwende irgendeinen anderen Browser.",
-			en: "This site probably doesn't work right on Safari. The problem: Safari doesn't support modern web technologies, and Apple doesn't give me a way to test my web pages on Safari, because Safari is only available on MacOS. So please be so kind and use any other browser.",
-		},
-	},
 	questionMode: {
 		chooseMode: {
 			en: "Choose what should be displayed:",
@@ -95,7 +85,7 @@ export default {
 		},
 		moreWillBeAdded: {
 			en: "More options will be added in the future.",
-			de: "Mehr Optionen werden in Zukunft hinzugefügt werden.",
+			de: "Mehr Optionen werden in Zukunft hinzugefügt.",
 		}
 	},
 	answerMode: {
@@ -113,7 +103,7 @@ export default {
 		},
 		moreWillBeAdded: {
 			en: "More options will be added in the future.",
-			de: "Mehr Optionen werden in Zukunft hinzugefügt werden.",
+			de: "Mehr Optionen werden in Zukunft hinzugefügt.",
 		}
 	},
 	startQuiz: {

@@ -25,14 +25,6 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 )?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 
 {
-	// Safari warning:
-
-	if (browser === "safari") {
-		document.querySelector<HTMLElement>("safari-warning").hidden = false;
-	}
-}
-
-{
 	// nav buttons & PWA:
 
 	let installPromptEvent: any;

@@ -5,11 +5,6 @@ if (!new URL(location.href).searchParams.has("no-sw")) {
 }
 const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand))?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 {
-	if (browser === "safari") {
-		document.querySelector("safari-warning").hidden = false;
-	}
-}
-{
 	let installPromptEvent;
 	window.addEventListener("beforeinstallprompt", (event) => {
 		installPromptEvent = event;
