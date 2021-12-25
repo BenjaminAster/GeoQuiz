@@ -1,0 +1,486 @@
+@charset "UTF-8";
+:root {
+  --col-0: #000104;
+  --col-08: #08090c;
+  --col-1: #111215;
+  --col-18: #191a1d;
+  --col-2: #212225;
+  --col-28: #2a2b2e;
+  --col-3: #323336;
+  --col-38: #3b3c3f;
+  --col-4: #434447;
+  --col-48: #4b4c4f;
+  --col-5: #545558;
+  --col-58: #5c5d60;
+  --col-6: #646568;
+  --col-68: #6d6e71;
+  --col-7: #757679;
+  --col-78: #7e7f82;
+  --col-8: #86878a;
+  --col-88: #8e8f92;
+  --col-9: #97989b;
+  --col-98: #9fa0a3;
+  --col-a: #a7a8ab;
+  --col-a8: #b0b1b4;
+  --col-b: #b8b9bc;
+  --col-b8: #c0c1c4;
+  --col-c: #c9cacd;
+  --col-c8: #d1d2d5;
+  --col-d: #dadbde;
+  --col-d8: #e2e3e6;
+  --col-e: #eaebee;
+  --col-e8: #f3f4f7;
+  --col-f: #fbfcff;
+  --blue: deepSkyBlue;
+  --blue-bg: rgba(0, 191, 255, 0.2);
+  --green: springGreen;
+  --green-bg: rgba(0, 255, 127, 0.2);
+  --red: #f24;
+  --red-bg: rgba(255, 34, 68, 0.2);
+  --country-green: #0d4;
+  --country-red: #f24;
+  --transparent-cover: #1118;
+  --link-blue: lightSkyBlue;
+}
+:root button#theme-toggler::before {
+  content: "🌙︎";
+}
+
+:root[color-scheme=light] {
+  --col-0: white;
+  --col-08: #f7f7f7;
+  --col-1: #eeeeee;
+  --col-18: #e6e6e6;
+  --col-2: #dddddd;
+  --col-28: #d5d5d5;
+  --col-3: #cccccc;
+  --col-38: #c4c4c4;
+  --col-4: #bbbbbb;
+  --col-48: #b3b3b3;
+  --col-5: #aaaaaa;
+  --col-58: #a2a2a2;
+  --col-6: #999999;
+  --col-68: #919191;
+  --col-7: #888888;
+  --col-78: gray;
+  --col-8: #777777;
+  --col-88: #6f6f6f;
+  --col-9: #666666;
+  --col-98: #5e5e5e;
+  --col-a: #555555;
+  --col-a8: #4d4d4d;
+  --col-b: #444444;
+  --col-b8: #3c3c3c;
+  --col-c: #333333;
+  --col-c8: #2b2b2b;
+  --col-d: #222222;
+  --col-d8: #1a1a1a;
+  --col-e: #111111;
+  --col-e8: #090909;
+  --col-f: black;
+  --blue: blue;
+  --blue-bg: rgba(0, 0, 255, 0.2);
+  --green: seaGreen;
+  --green-bg: rgba(46, 139, 87, 0.2);
+  --red: #f34;
+  --red-bg: rgba(255, 51, 68, 0.2);
+  --country-green: #5e7;
+  --country-red: #f55;
+  --transparent-cover: #eee8;
+  --link-blue: blue;
+}
+:root[color-scheme=light] button#theme-toggler::before {
+  content: "☀︎";
+}
+
+:root {
+  min-block-size: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  min-block-size: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--col-18);
+  color: var(--col-f);
+}
+
+button,
+label {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+::selection {
+  background: var(--green);
+  color: var(--col-0);
+}
+
+a {
+  color: var(--link-blue);
+}
+
+::-webkit-scrollbar {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+::-webkit-scrollbar-button:start:increment {
+  display: none;
+}
+::-webkit-scrollbar-button:end:decrement {
+  display: none;
+}
+::-webkit-scrollbar-thumb, ::-webkit-scrollbar-button {
+  background-color: var(--col-4);
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: 0.25rem solid transparent;
+  border-radius: 0.5rem;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-button:hover {
+  background-color: var(--col-6);
+}
+
+/*
+
+sass scss:_ --watch
+
+*/
+body:not([_loaded]) :is(main, footer) {
+  display: none;
+}
+body[_game-state=start] start-screen {
+  display: block;
+}
+body[_game-state=game] game {
+  display: flex;
+}
+body[_game-state=game] nav {
+  display: none;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+start-screen {
+  display: none;
+  padding: 0.2rem 0.5rem;
+  flex-grow: 1;
+}
+start-screen > * {
+  flex-direction: column;
+  gap: 1rem;
+  margin-block-end: 0.8rem;
+  background-color: var(--col-2);
+  padding: 0.8rem;
+  border-radius: 1rem;
+}
+start-screen > *:not([hidden]) {
+  display: flex;
+}
+start-screen > * h1,
+start-screen > * h2,
+start-screen > * h3,
+start-screen > * h4,
+start-screen > * h5,
+start-screen > * h6 {
+  color: var(--green);
+}
+
+nav {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  background-color: var(--green-bg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-radius: 1rem;
+}
+nav > button {
+  --mirror: 0;
+  padding: 0;
+  aspect-ratio: 1/1;
+  box-sizing: content-box;
+  display: grid;
+  place-items: center;
+  inline-size: 1.4em;
+  block-size: 1.4em;
+  font-size: 1.5rem;
+  background-color: var(--green-bg);
+  border: none;
+  border-radius: 0.7rem;
+  color: var(--col-e);
+  vertical-align: top;
+  transition: background-color 0.2s, color 0.2s;
+}
+nav > button:hover {
+  background-color: var(--green);
+  color: var(--col-0);
+}
+nav > button:not(:last-of-type) {
+  position: relative;
+}
+nav > button:not(:last-of-type)::after {
+  content: "";
+  background-color: var(--green-bg);
+  margin: 0.35rem 0;
+  block-size: calc(100% - 0.35rem * 2);
+  inline-size: 4px;
+  border-radius: 1rem;
+  position: absolute;
+  inset-inline-end: 0;
+  transform: translateX(8px);
+}
+
+:is(mobile-warning, safari-warning) {
+  background-color: var(--red-bg);
+}
+@media (hover) {
+  :is(mobile-warning, safari-warning):is(mobile-warning):not([selector-specificity-was-a-bad-invention]) {
+    display: none;
+  }
+}
+:is(mobile-warning, safari-warning) warning-sign {
+  font-weight: normal;
+  display: inline-block;
+  block-size: 1.4em;
+  inline-size: 1.4em;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 0.3em;
+  background-color: var(--red-bg);
+}
+:is(mobile-warning, safari-warning) :is(warning-sign, h2) {
+  color: var(--red);
+}
+
+options-select {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+options-select button {
+  background-color: var(--col-28);
+  color: var(--col-c);
+  padding: 0.5rem;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.8em 1em;
+  transition: 0.2s background-color, 0.2s color;
+}
+options-select button.selected {
+  background-color: var(--blue-bg);
+  color: var(--blue);
+}
+options-select button:not(.selected):hover {
+  background-color: var(--col-3);
+  color: var(--col-f);
+}
+
+:is(question-mode, answer-mode) more-will-be-added {
+  font-style: italic;
+  color: var(--col-b);
+}
+
+continents label.select-all {
+  inline-size: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  padding-inline-end: 0.8rem;
+  background-color: var(--col-28);
+  accent-color: var(--blue);
+  transition: 0.2s background-color, 0.2s border-color;
+  border: none;
+  border-radius: 1rem;
+}
+continents label.select-all:hover {
+  background-color: var(--col-3);
+}
+continents label.select-all input[type=checkbox] {
+  inline-size: 1.5em;
+  block-size: 1.5em;
+}
+continents button {
+  padding: 0.8em 1em;
+}
+continents options-select button {
+  position: relative;
+}
+continents options-select button::before {
+  transition: 0.2s background-color;
+  content: "";
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: inherit;
+}
+continents.all-selected label.select-all {
+  background-color: var(--blue-bg);
+  color: var(--blue);
+}
+continents.all-selected options-select button::before {
+  background-color: var(--transparent-cover);
+}
+
+languages options-select button {
+  min-inline-size: 6rem;
+}
+languages options-select button language-code {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+start-quiz {
+  padding: 0;
+  background-color: transparent;
+  display: grid;
+  place-items: center;
+}
+start-quiz button {
+  padding: 0.8em 1em;
+  background-color: var(--green);
+  color: var(--col-0);
+  inline-size: min(100%, 30rem);
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: inherit;
+  transition: 0.2s background-color, 0.2s color;
+}
+start-quiz button:hover {
+  background-color: var(--green-bg);
+  color: var(--green);
+}
+
+game {
+  display: none;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+  user-select: none;
+}
+game :is(before-canvas, after-canvas) {
+  background-color: var(--col-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  place-items: center;
+  min-block-size: 4rem;
+  font-size: 2rem;
+}
+game before-canvas {
+  display: flex;
+  align-items: center;
+  padding-inline: 0.45rem;
+}
+game before-canvas score {
+  display: flex;
+  gap: 0.2em;
+}
+game before-canvas score > * {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  padding-block-end: 0.15rem;
+  block-size: fit-content;
+  overflow: hidden;
+  border-radius: 0.8rem;
+}
+game before-canvas score correct-incorrect {
+  gap: 0.2rem;
+  background-color: var(--col-3);
+}
+game before-canvas score correct-incorrect correct {
+  color: var(--green);
+}
+game before-canvas score correct-incorrect incorrect {
+  color: var(--red);
+}
+game before-canvas score remaining {
+  display: inline-block;
+  color: var(--blue);
+  background-color: var(--blue-bg);
+  min-inline-size: 1.5em;
+  text-align: center;
+}
+game before-canvas score percentage {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+game before-canvas flag-and-country {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+game before-canvas flag-and-country flag {
+  display: inline-block;
+  inline-size: 5rem;
+  block-size: 3rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+game canvas-container {
+  position: relative;
+  flex-grow: 1;
+  flex-direction: column;
+}
+game canvas-container canvas {
+  display: block;
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+noscript {
+  display: block;
+  margin: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  background-color: var(--red-bg);
+  color: darkLight(salmon, darkRed);
+  border: none;
+  border-radius: 0.8rem;
+}
+
+button.theme-toggler label {
+  display: grid;
+  inline-size: 100%;
+  block-size: 100%;
+  place-items: center;
+}
+
+footer {
+  background-color: var(--col-2);
+  padding: 0.3rem;
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */

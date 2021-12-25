@@ -5,7 +5,7 @@
 
 /*
 
-sass scss:. --watch --style=compressed
+sass scss:_ --watch
 
 */
 
@@ -301,13 +301,103 @@ game {
 	}
 
 	before-canvas {
-		flag {
-			display: block;
-			inline-size: 5rem;
-			block-size: 3rem;
+		// position: relative;
 
-			background-repeat: no-repeat;
-			background-size: contain;
+		display: flex;
+		align-items: center;
+
+		padding-inline: 0.45rem;
+
+		score {
+			display: flex;
+			gap: 0.2em;
+			// position: absolute;
+			// inset-inline-start: 0;
+			// inset-block-start: 0;
+
+			// margin-inline: 0.45rem;
+
+			& > * {
+				display: flex;
+				align-items: center;
+				padding: 0 0.5rem;
+				padding-block-end: 0.15rem;
+				block-size: fit-content;
+				overflow: hidden;
+				// height: fit-content;
+				// block-size: 1.5rem;
+				border-radius: 0.8rem;
+				// background-color: var(--col-3);
+			}
+
+			correct-incorrect {
+				gap: 0.2rem;
+				// background-image: linear-gradient(
+				// 	-75deg,
+				// 	var(--red-bg),
+				// 	var(--red-bg) 50%,
+				// 	var(--green-bg) 50%,
+				// 	var(--green-bg)
+				// );
+				background-color: var(--col-3);
+
+				correct {
+					color: var(--green);
+				}
+				incorrect {
+					color: var(--red);
+				}
+			}
+
+			remaining {
+				display: inline-block;
+				color: var(--blue);
+				background-color: var(--blue-bg);
+				min-inline-size: 1.5em;
+				text-align: center;
+			}
+
+			percentage {
+				color: var(--green);
+				background-color: var(--green-bg);
+			}
+
+			// slash {
+			// 	position: relative;
+			// 	display: inline-grid;
+			// 	place-items: center;
+			// 	height: 3em;
+			// 	inline-size: 3px;
+
+			// 	&::before {
+			// 		content: "";
+			// 		position: absolute;
+			// 		display: inline-block;
+			// 		height: inherit;
+			// 		width: inherit;
+			// 		background-color: currentColor;
+			// 		transform: rotate(15deg) translateY(0.07em);
+			// 	}
+			// }
+		}
+
+		flag-and-country {
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			// justify-content: end;
+			gap: 1rem;
+
+			flag {
+				display: inline-block;
+				inline-size: 5rem;
+				block-size: 3rem;
+
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center;
+			}
 		}
 	}
 

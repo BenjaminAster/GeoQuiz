@@ -44,7 +44,14 @@ export default async (data: CountriesData, settings: {
 		)
 	);
 
-	for (const country of countries) {
+	let correctCountries: number = 0;
+	const beforeCanvasEl: HTMLElement = document.querySelector("game before-canvas");
+
+	for (const [i, country] of countries.entries()) {
+		beforeCanvasEl.querySelector("remaining").textContent = (countries.length - i).toString();
+		beforeCanvasEl.querySelector("percentage").textContent = Math.floor(
+			correctCountries / countries.length * 100
+		).toString() + "%";
 
 		const whatToShow: Record<string, boolean> = (() => {
 			switch (settings.questionMode) {
@@ -70,9 +77,14 @@ export default async (data: CountriesData, settings: {
 
 		if (country.name.en === await awaitCountryClick()) {
 			markCountry(country.name.en, true);
+			correctCountries++;
 		} else {
 			markCountry(country.name.en, false);
 		}
+
+
+		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
+		beforeCanvasEl.querySelector("incorrect").textContent = (i + 1 - correctCountries).toString();
 
 		URL.revokeObjectURL(flagBlobURI);
 	}

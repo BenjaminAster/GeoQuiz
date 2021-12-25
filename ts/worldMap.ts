@@ -36,8 +36,10 @@ export default function initWorldMap(countriesData: CountriesData) {
 			foreground: getColor("--col-f"),
 			gray: getColor("--col-3"),
 			green: getColor("--country-green"),
-			red: getColor("--red"),
-		}
+			red: getColor("--country-red"),
+		};
+
+		console.log(colors);
 	}
 
 	{
@@ -128,7 +130,7 @@ export default function initWorldMap(countriesData: CountriesData) {
 						)
 					);
 
-					polygonLoop: for (const polygon of coordinates) {
+					for (const polygon of coordinates) {
 						ctx.beginPath();
 						for (const [x, y] of polygon) {
 							ctx.lineTo(

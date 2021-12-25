@@ -4,26 +4,26 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="color-scheme" content="dark" />
-
-	<meta name="theme-color" content="#000000" />
-	<meta name="robots" content="all" />
 
 	<base href="./" />
 
+	<meta name="color-scheme" content="dark" />
+	<meta name="theme-color" content="#000000" />
+	<meta name="robots" content="all" />
 	<meta name="description"
 		content="Test your knowledge about geography with this country quiz!" />
-	<meta name="og:image" content="/media/white-circle.png" />
-
+	<link rel="apple-touch-icon" href="Shut up, Lighthouse, and give me my perfect PWA score!" />
 	<link rel="manifest" href="./manifest.webmanifest" />
-	<link rel="stylesheet" href="./style.css" />
 
-	<link rel="modulepreload" href="./js/languages.js" />
-	<link rel="modulepreload" href="./js/gameStart.js" />
-	<link rel="modulepreload" href="./js/translations.js" />
-	<link rel="modulepreload" href="./js/game.js" />
-	<link rel="modulepreload" href="./js/worldMap.js" />
-	<script defer type="module" src="./js/script.js"></script>
+	<link rel="icon" href="/circles/green.svg" />
+	<link rel="stylesheet" href="./_/style.css" />
+
+	<link rel="modulepreload" href="./_/languages.js" />
+	<link rel="modulepreload" href="./_/gameStart.js" />
+	<link rel="modulepreload" href="./_/translations.js" />
+	<link rel="modulepreload" href="./_/game.js" />
+	<link rel="modulepreload" href="./_/worldMap.js" />
+	<script defer type="module" src="./_/script.js"></script>
 
 	<title>Geography Quiz</title>
 </head>
@@ -145,8 +145,23 @@
 
 		<game>
 			<before-canvas>
-				<flag></flag>
-				<country></country>
+				<score>
+					<correct-incorrect>
+						<correct>0</correct>
+						<!-- <slash></slash> -->
+						&bull;
+						<incorrect>0</incorrect>
+					</correct-incorrect>
+
+					<remaining></remaining>
+				</score>
+				<flag-and-country>
+					<flag></flag>
+					<country></country>
+				</flag-and-country>
+				<score>
+					<percentage></percentage>
+				</score>
 			</before-canvas>
 			<canvas-container>
 				<canvas></canvas>
@@ -161,7 +176,7 @@
 		<a _text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Geography-Quiz"></a>
 		&bull;
 		<span _text="footer.version"></span>
-		3
+		4
 	</footer>
 
 </body>

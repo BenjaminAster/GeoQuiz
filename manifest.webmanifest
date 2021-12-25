@@ -1,5 +1,5 @@
 {
-	"name": "Country Quiz",
+	"name": "Geography Quiz",
 	"description": "Test your knowledge about geography with this country quiz!",
 	"start_url": "./",
 	"scope": "./",
@@ -8,14 +8,14 @@
 	"theme_color": "#000000",
 	"icons": [
 		{
-			"src": "/media/white-circle.png",
+			"src": "https://benjaminaster.com/media/white-circle.png",
 			"sizes": "512x512",
 			"purpose": "maskable any"
 		}
 	],
 	"screenshots": [
 		{
-			"src": "/media/transparent-2x2.png",
+			"src": "https://benjaminaster.com/media/transparent-2x2.png",
 			"sizes": "2x2"
 		}
 	]

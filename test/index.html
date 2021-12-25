@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="color-scheme" content="dark" />
+	<title>SVG Map Test</title>
+</head>
+
+<body>
+	<svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg"></svg>
+
+	<script>
+		(async () => {
+			const data = await (await window.fetch("../data/data.min.json")).json();
+			const svg = document.querySelector("svg");
+
+			for (const country of data) {
+				for (const polygon of country.coordinates) {
+					const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+					let d = `M${polygon[0][0] + 180} ${90 - polygon[0][1]}L`;
+					for (const vertex of polygon.slice(1)) {
+						d += `${vertex[0] + 180} ${90 - vertex[1]}, `;
+					}
+					d += "Z";
+					pathEl.setAttribute("d", d);
+					pathEl.setAttribute("fill", "gray");
+					pathEl.setAttribute("stroke", "white");
+					pathEl.setAttribute("stroke-width", "1");
+					pathEl.setAttribute("stroke-linejoin", "round");
+					pathEl.setAttribute("stroke-linecap", "round");
+					svg.appendChild(pathEl);
+				}
+			}
+
+			const loop = () => {
+				svg.setAttribute("viewBox", `0 0 ${360 * .9999 ** performance.now()} ${180 * .9999 ** performance.now()}`);
+				window.requestAnimationFrame(loop);
+			}
+
+			loop();
+		})();
+	</script>
+</body>
+
+</html>
