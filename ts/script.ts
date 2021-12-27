@@ -25,7 +25,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 )?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 
 {
-	// nav buttons & PWA:
+	/// nav buttons & PWA:
 
 	let installPromptEvent: any;
 
@@ -36,9 +36,11 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 	const setColorScheme = (scheme?: string) => {
 		const colorSchemes = ["dark", "light"];
 
-		const colorScheme = scheme ?? colorSchemes[
+		const colorScheme = scheme ? (
+			colorSchemes.find((colorScheme: string) => colorScheme === scheme) ?? colorSchemes[0]
+		) : (colorSchemes[
 			+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))
-		];
+		]);
 
 		localStorage.setItem(`${new URL(document.baseURI).pathname}:color-scheme`, colorScheme);
 
@@ -92,7 +94,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		share() {
 			navigator.share?.({
 				title: document.title,
-				text: document.querySelector("meta[name=description]")?.getAttribute("content") ?? "",
+				text: document.querySelector("meta[name=description]")?.getAttribute("content"),
 				url: location.href,
 			});
 		}
@@ -114,7 +116,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 }
 
 {
-	// languages:
+	/// languages:
 
 	setLanguage();
 
@@ -127,14 +129,14 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			languageCode: language.toUpperCase(),
 		});
 
-		let button = clone.firstElementChild;
+		const radio: HTMLInputElement = clone.querySelector("input[type=radio]");
+
 		if (language === getLanguage()) {
-			button.classList.add("selected");
+			radio.checked = true;
 		}
-		button.addEventListener("click", (evt: MouseEvent) => {
+
+		radio.addEventListener("change", (evt: MouseEvent) => {
 			setLanguage(language);
-			container.querySelector(".selected")?.classList.remove("selected");
-			button.classList.add("selected");
 		});
 
 		container.append(clone);

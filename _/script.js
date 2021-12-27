@@ -82,14 +82,12 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			languageName: `languages.${language}`,
 			languageCode: language.toUpperCase(),
 		});
-		let button = clone.firstElementChild;
+		const radio = clone.querySelector("input[type=radio]");
 		if (language === getLanguage()) {
-			button.classList.add("selected");
+			radio.checked = true;
 		}
-		button.addEventListener("click", (evt) => {
+		radio.addEventListener("change", (evt) => {
 			setLanguage(language);
-			container.querySelector(".selected")?.classList.remove("selected");
-			button.classList.add("selected");
 		});
 		container.append(clone);
 	}

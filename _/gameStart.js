@@ -1,6 +1,6 @@
 import { getTemplateCloner, getLanguage, } from "./languages.js";
 import game from "./game.js";
-let selectedContinents = (() => {
+const selectedContinents = (() => {
 	const continentsContainer = document.querySelector("continents");
 	const continentSelect = continentsContainer.querySelector("options-select");
 	const getClone = getTemplateCloner(continentSelect);
@@ -12,60 +12,36 @@ let selectedContinents = (() => {
 		"europe",
 		"oceania",
 	];
-	let allSelected = true;
-	continentsContainer.classList.toggle("all-selected", allSelected);
-	let selectedContinents = {
-		__: new Set(),
-		get _() {
-			if (allSelected) {
-				return new Set(continents);
-			}
-			return this.__;
-		},
-		set _(value) {
-			this.__ = value;
-		},
-	};
 	const checkboxSelectAll = document.querySelector("continents [_action=selectAll]");
 	for (const continent of continents) {
 		const clone = getClone({
 			continentName: `continents.${continent}`,
 		});
-		let button = clone.firstElementChild;
-		button.classList.add("selected");
-		button.addEventListener("click", (evt) => {
-			button.classList.toggle("selected");
-			if (allSelected) {
-				allSelected = false;
-				selectedContinents._ = new Set(continents);
-				continentsContainer.classList.remove("all-selected");
-				checkboxSelectAll.checked = false;
+		let checkbox = clone.querySelector("input[type=checkbox]");
+		checkbox.addEventListener("change", (evt) => {
+			const checkboxes = [
+				...continentSelect.querySelectorAll("input[type=checkbox]")
+			];
+			if (checkboxSelectAll.checked) {
+				for (const continentCheckbox of checkboxes) {
+					continentCheckbox.checked = checkbox !== continentCheckbox;
+				}
+				checkboxSelectAll.click();
 			}
-			selectedContinents._.has(continent) ? (selectedContinents._.delete(continent)) : selectedContinents._.add(continent);
-			if (selectedContinents._.size === continents.length) {
-				selectedContinents._.delete(continent);
-				allSelected = true;
-				continentsContainer.classList.add("all-selected");
-				checkboxSelectAll.checked = true;
+			else if (checkboxes.every((checkbox) => checkbox.checked)) {
+				checkboxSelectAll.click();
 			}
 		});
 		continentSelect.append(clone);
 	}
-	checkboxSelectAll.addEventListener("input", (evt) => {
-		allSelected = evt.target.checked;
-		continentsContainer.classList.toggle("all-selected");
-		for (const [i, continent] of continents.entries()) {
-			if (allSelected) {
-				continentSelect.children[i].classList.add("selected");
-			}
-			else {
-				if (!selectedContinents._.has(continent)) {
-					continentSelect.children[i].classList.remove("selected");
-				}
-			}
-		}
+	checkboxSelectAll.addEventListener("change", () => {
+		continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
 	});
-	return selectedContinents;
+	return {
+		get _() {
+			return checkboxSelectAll.checked ? continents : continents.filter((...[, i]) => continentSelect.children[i].querySelector("input[type=checkbox]").checked);
+		}
+	};
 })();
 let selectedQuestionMode = (() => {
 	const questionModeSelect = document.querySelector("question-mode options-select");
@@ -75,31 +51,20 @@ let selectedQuestionMode = (() => {
 		"countryNameAndFlag",
 		"flag",
 	];
-	let selectedQuestionMode = {
-		__: questionModes[1],
-		get _() {
-			return this.__;
-		},
-		set _(value) {
-			this.__ = value;
-		},
-	};
 	for (const questionMode of questionModes) {
 		const clone = getClone({
 			questionMode: `questionMode.${questionMode}`,
 		});
-		let button = clone.firstElementChild;
-		if (questionMode === selectedQuestionMode._) {
-			button.classList.add("selected");
+		if (questionMode === "countryNameAndFlag") {
+			clone.querySelector("input[type=radio]").checked = true;
 		}
-		button.addEventListener("click", (evt) => {
-			questionModeSelect.querySelector(".selected")?.classList.remove("selected");
-			button.classList.add("selected");
-			selectedQuestionMode._ = questionMode;
-		});
 		questionModeSelect.append(clone);
 	}
-	return selectedQuestionMode;
+	return {
+		get _() {
+			return questionModes.find((...[, i]) => questionModeSelect.children[i].querySelector("input[type=radio]").checked);
+		}
+	};
 })();
 let selectedAnswerMode = (() => {
 	const answerModeSelect = document.querySelector("answer-mode options-select");
@@ -107,31 +72,20 @@ let selectedAnswerMode = (() => {
 	const anserModes = [
 		"showOnMap",
 	];
-	let selectedAnswerMode = {
-		__: anserModes[0],
-		get _() {
-			return this.__;
-		},
-		set _(value) {
-			this.__ = value;
-		},
-	};
 	for (const answerMode of anserModes) {
 		const clone = getClone({
 			answerMode: `answerMode.${answerMode}`,
 		});
-		let button = clone.firstElementChild;
-		if (answerMode === selectedAnswerMode._) {
-			button.classList.add("selected");
+		if (answerMode === "showOnMap") {
+			clone.querySelector("input[type=radio]").checked = true;
 		}
-		button.addEventListener("click", (evt) => {
-			answerModeSelect.querySelector(".selected")?.classList.remove("selected");
-			button.classList.add("selected");
-			selectedAnswerMode._ = answerMode;
-		});
 		answerModeSelect.append(clone);
 	}
-	return selectedAnswerMode;
+	return {
+		get _() {
+			return anserModes.find((...[, i]) => answerModeSelect.children[i].querySelector("input[type=radio]").checked);
+		}
+	};
 })();
 (async () => {
 	document.body.setAttribute("_game-state", "start");
@@ -144,6 +98,6 @@ let selectedAnswerMode = (() => {
 			language: getLanguage(),
 		});
 	});
-	const dataPromise = (async () => await (await window.fetch("./data/data.min.json")).json())();
+	const dataPromise = (async () => await (await window.fetch("./_/data.min.json")).json())();
 })();
 //# sourceMappingURL=gameStart.js.map

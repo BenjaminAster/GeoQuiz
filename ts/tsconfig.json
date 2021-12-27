@@ -8,6 +8,7 @@
 		"lib": [
 			"es2021",
 			"dom",
+			"dom.iterable",
 		],                                   /* Specify library files to be included in the compilation. */
 		// "allowJs": true,                             /* Allow javascript files to be compiled. */
 		// "checkJs": true,                             /* Report errors in .js files. */

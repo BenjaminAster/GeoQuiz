@@ -1,10 +1,10 @@
 @use "sass:math";
 
-$fromDark: #000104;
-$toDark: #fbfcff;
+$fromDark: #000006;
+$toDark: #f9f9ff;
 
-$fromLight: white;
-$toLight: black;
+$fromLight: $toDark;
+$toLight: $fromDark;
 
 @mixin colors($scheme) {
 	$hexList: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c, d, e, f);
@@ -28,56 +28,64 @@ $toLight: black;
 		}
 	}
 
+	$bgPercentage: 15%;
+
 	@if ($scheme == "dark") {
 		$blue: deepSkyBlue;
 		--blue: #{$blue};
-		--blue-bg: #{rgba($blue, 20%)};
+		--blue-bg: #{rgba($blue, $bgPercentage)};
 
 		$green: springGreen;
 		--green: #{$green};
-		--green-bg: #{rgba($green, 20%)};
+		--green-bg: #{rgba($green, $bgPercentage)};
 
 		$red: #f24;
 		--red: #{$red};
-		--red-bg: #{rgba($red, 20%)};
+		--red-bg: #{rgba($red, $bgPercentage)};
 
 		--country-green: #0d4;
 		--country-red: #{$red};
 
-		--transparent-cover: #1118;
+		--transparent-bg: #1118;
+		--transparent-fg: #{rgba($toDark, 7%)};
+
 		--link-blue: lightSkyBlue;
 	} @else if ($scheme == "light") {
 		$blue: blue;
 		--blue: #{$blue};
-		--blue-bg: #{rgba($blue, 20%)};
+		--blue-bg: #{rgba($blue, $bgPercentage)};
 
 		$green: seaGreen;
 		--green: #{$green};
-		--green-bg: #{rgba($green, 20%)};
+		--green-bg: #{rgba($green, $bgPercentage)};
 
 		$red: #f34;
 		--red: #{$red};
-		--red-bg: #{rgba($red, 20%)};
+		--red-bg: #{rgba($red, $bgPercentage)};
 
 		--country-green: #5e7;
 		--country-red: #f55;
 
-		--transparent-cover: #eee8;
+		--transparent-bg: #eee8;
+		--transparent-fg: #{rgba($toLight, 7%)};
+
 		--link-blue: blue;
 	}
 
-	button#theme-toggler {
-		&::before {
-			@if ($scheme == "dark") {
-				content: "🌙\fe0e";
-			} @else if ($scheme == "light") {
-				content: "☀\fe0e";
+	button[_action="toggleTheme"] {
+		@if ($scheme == "dark") {
+			moon {
+				display: grid;
+			}
+		} @else if ($scheme == "light") {
+			sun {
+				display: grid;
 			}
 		}
 	}
 }
 
-:root {
+:root[color-scheme="dark"] {
 	@include colors("dark");
 }
 

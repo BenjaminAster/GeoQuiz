@@ -23,7 +23,6 @@ export default function initWorldMap(countriesData) {
 			green: getColor("--country-green"),
 			red: getColor("--country-red"),
 		};
-		console.log(colors);
 	}
 	{
 		const resize = () => {

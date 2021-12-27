@@ -38,8 +38,6 @@ export default function initWorldMap(countriesData: CountriesData) {
 			green: getColor("--country-green"),
 			red: getColor("--country-red"),
 		};
-
-		console.log(colors);
 	}
 
 	{

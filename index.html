@@ -8,7 +8,7 @@
 	<base href="./" />
 
 	<meta name="color-scheme" content="dark" />
-	<meta name="theme-color" content="#000000" />
+	<meta name="theme-color" content="black" />
 	<meta name="robots" content="all" />
 	<meta name="description"
 		content="Test your knowledge about geography with this country quiz!" />
@@ -43,25 +43,19 @@
 	</noscript>
 
 	<nav>
-		<button _action="toggleTheme" title="Toggle color scheme" id="theme-toggler"></button>
-		<button _action="popOutWindow" title="Pop out window">
-			<span style="transform: scaleX(-1)">
-				⇱︎
-			</span>
+		<button _action="toggleTheme" title="Toggle color scheme">
+			<sun hidden class="bi-brightness-high-fill"></sun>
+			<moon hidden class="bi-moon-fill"></moon>
 		</button>
+		<button _action="popOutWindow" class="bi-box-arrow-up-right" title="Pop out window"></button>
 		<button _action="toggleFullscreen" title="Enable fullscreen">
-			⛶︎
+			<enable-fullscreen hidden class="bi-arrows-fullscreen"></enable-fullscreen>
+			<disable-fullscreen hidden class="bi-fullscreen-exit"></disable-fullscreen>
 		</button>
-		<button _action="installApp" title="Install App">
-			⭳︎
-		</button>
-		<button _action="refresh" title="Refresh Site">
-			↻︎
-		</button>
-		<button _action="share" title="Share" style="position: relative">
-			<span style="position: absolute; transform: rotate(-90deg)">⛬︎</span>
-			<span style="position: absolute; transform: scale(1.1) translate(0, -2px)">ᐸ︎</span>
-		</button>
+		<button _action="installApp" class="bi-app-indicator" title="Install App"></button>
+		<button _action="refresh" class="bi-arrow-clockwise" title="Refresh Site"></button>
+		<button _action="share" class="bi-share-fill" title="Share"></button>
+		<a href="https://github.com/BenjaminAster/Geography-Quiz" class="bi-github" title="View on GitHub"></a>
 	</nav>
 
 	<main>
@@ -85,27 +79,33 @@
 
 				<options-select>
 					<template>
-						<button>
-							<language-code _notranslate="languageCode"></language-code>
-							<language-name _content="languageName"></language-name>
-						</button>
+						<label>
+							<input type="radio" name="language" />
+							<button tabindex="-1">
+								<language-code _notranslate="languageCode"></language-code>
+								<language-name _content="languageName"></language-name>
+							</button>
+						</label>
 					</template>
 				</options-select>
 			</languages>
 
-			<continents>
+			<continents class="all-selected">
 				<h3 _text="continents.chooseContinent"></h3>
 
 				<label class="select-all">
 					<input type="checkbox" _action="selectAll" checked>
-					<span _text="continents.selectAll"></span>
+					<button tabindex="-1" _text="continents.selectAll"></button>
 				</label>
 
 				<options-select>
 					<template>
-						<button>
-							<continent-name _content="continentName"></continent-name>
-						</button>
+						<label>
+							<input type="checkbox" />
+							<button tabindex="-1">
+								<continent-name _content="continentName"></continent-name>
+							</button>
+						</label>
 					</template>
 				</options-select>
 			</continents>
@@ -115,9 +115,12 @@
 
 				<options-select>
 					<template>
-						<button>
-							<question-mode-name _content="questionMode"></question-mode-name>
-						</button>
+						<label>
+							<input type="radio" name="questionMode" />
+							<button tabindex="-1">
+								<question-mode-name _content="questionMode"></question-mode-name>
+							</button>
+						</label>
 					</template>
 				</options-select>
 
@@ -129,9 +132,12 @@
 
 				<options-select>
 					<template>
-						<button>
-							<answer-mode-name _content="answerMode"></answer-mode-name>
-						</button>
+						<label>
+							<input type="radio" name="answerMode" />
+							<button tabindex="-1">
+								<answer-mode-name _content="answerMode"></answer-mode-name>
+							</button>
+						</label>
 					</template>
 				</options-select>
 
@@ -148,7 +154,6 @@
 				<score>
 					<correct-incorrect>
 						<correct>0</correct>
-						<!-- <slash></slash> -->
 						&bull;
 						<incorrect>0</incorrect>
 					</correct-incorrect>
@@ -176,7 +181,7 @@
 		<a _text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Geography-Quiz"></a>
 		&bull;
 		<span _text="footer.version"></span>
-		4
+		5
 	</footer>
 
 </body>

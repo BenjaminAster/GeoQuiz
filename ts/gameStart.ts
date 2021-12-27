@@ -6,9 +6,7 @@ import {
 
 import game, { CountriesData } from "./game.js";
 
-let selectedContinents: { _: Set<string> } = (() => {
-	// continents:
-
+const selectedContinents: { _: string[] } = (() => {
 	const continentsContainer: HTMLElement = document.querySelector("continents");
 
 	const continentSelect: HTMLElement = continentsContainer.querySelector("options-select");
@@ -23,80 +21,52 @@ let selectedContinents: { _: Set<string> } = (() => {
 		"oceania",
 	];
 
-	let allSelected: boolean = true;
-	continentsContainer.classList.toggle("all-selected", allSelected);
-
-	let selectedContinents = {
-		__: new Set(),
-		get _() {
-			if (allSelected) {
-				return new Set(continents);
-			}
-			return this.__;
-		},
-		set _(value: Set<string>) {
-			this.__ = value;
-		},
-	};
-
 	const checkboxSelectAll: HTMLInputElement = document.querySelector(
 		"continents [_action=selectAll]"
 	);
 
 	for (const continent of continents) {
-		const clone = getClone({
+		const clone: DocumentFragment = getClone({
 			continentName: `continents.${continent}`,
 		});
 
-		let button = clone.firstElementChild;
-		button.classList.add("selected");
+		let checkbox: HTMLInputElement = clone.querySelector("input[type=checkbox]");
 
-		button.addEventListener("click", (evt: MouseEvent) => {
-			button.classList.toggle("selected");
-			if (allSelected) {
-				allSelected = false;
-				selectedContinents._ = new Set(continents);
-				continentsContainer.classList.remove("all-selected");
-				checkboxSelectAll.checked = false;
-			}
-			selectedContinents._.has(continent) ? (
-				selectedContinents._.delete(continent)
-			) : selectedContinents._.add(continent);
+		checkbox.addEventListener("change", (evt: InputEvent) => {
+			const checkboxes: HTMLInputElement[] = [
+				...continentSelect.querySelectorAll<HTMLInputElement>("input[type=checkbox]")
+			];
 
-			if (selectedContinents._.size === continents.length) {
-				selectedContinents._.delete(continent);
-				allSelected = true;
-				continentsContainer.classList.add("all-selected");
-				checkboxSelectAll.checked = true;
+			if (checkboxSelectAll.checked) {
+				for (const continentCheckbox of checkboxes) {
+					continentCheckbox.checked = checkbox !== continentCheckbox;
+				}
+				checkboxSelectAll.click();
+			} else if (checkboxes.every((checkbox: HTMLInputElement) => checkbox.checked)) {
+				checkboxSelectAll.click();
 			}
 		});
 
 		continentSelect.append(clone);
 	}
 
-	checkboxSelectAll.addEventListener("input", (evt: InputEvent) => {
-		allSelected = (evt.target as HTMLInputElement).checked;
-
-		continentsContainer.classList.toggle("all-selected");
-
-		for (const [i, continent] of continents.entries()) {
-			if (allSelected) {
-				continentSelect.children[i].classList.add("selected");
-			} else {
-				if (!selectedContinents._.has(continent)) {
-					continentSelect.children[i].classList.remove("selected");
-				}
-			}
-		}
+	checkboxSelectAll.addEventListener("change", () => {
+		continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
 	});
 
-	return selectedContinents;
+	return {
+		get _() {
+			return checkboxSelectAll.checked ? continents : continents.filter(
+				(...[, i]) => continentSelect.children[i].querySelector<HTMLInputElement>(
+					"input[type=checkbox]"
+				).checked
+			);
+		}
+	};
 })();
 
 
 let selectedQuestionMode: { _: string } = (() => {
-	// question mode:
-
 	const questionModeSelect: HTMLElement = document.querySelector("question-mode options-select");
 	const getClone = getTemplateCloner(questionModeSelect);
 
@@ -106,81 +76,60 @@ let selectedQuestionMode: { _: string } = (() => {
 		"flag",
 	];
 
-	let selectedQuestionMode = {
-		__: questionModes[1],
-		get _() {
-			return this.__;
-		},
-		set _(value: string) {
-			this.__ = value;
-		},
-	};
-
 	for (const questionMode of questionModes) {
-		const clone = getClone({
+		const clone: DocumentFragment = getClone({
 			questionMode: `questionMode.${questionMode}`,
 		});
 
-		let button = clone.firstElementChild;
-		if (questionMode === selectedQuestionMode._) {
-			button.classList.add("selected");
+		if (questionMode === "countryNameAndFlag") {
+			clone.querySelector<HTMLInputElement>("input[type=radio]").checked = true;
 		}
-
-		button.addEventListener("click", (evt: MouseEvent) => {
-			questionModeSelect.querySelector(".selected")?.classList.remove("selected");
-			button.classList.add("selected");
-			selectedQuestionMode._ = questionMode;
-		});
 
 		questionModeSelect.append(clone);
 	}
 
-	return selectedQuestionMode;
+	return {
+		get _() {
+			return questionModes.find(
+				(...[, i]) => questionModeSelect.children[i].querySelector<HTMLInputElement>(
+					"input[type=radio]"
+				).checked
+			);
+		}
+	};
 })();
 
 
 
 let selectedAnswerMode: { _: string } = (() => {
-	// question mode:
-
 	const answerModeSelect: HTMLElement = document.querySelector("answer-mode options-select");
 	const getClone = getTemplateCloner(answerModeSelect);
 
 	const anserModes: string[] = [
 		"showOnMap",
-		// "typeName",
 	];
-
-	let selectedAnswerMode = {
-		__: anserModes[0],
-		get _() {
-			return this.__;
-		},
-		set _(value: string) {
-			this.__ = value;
-		},
-	};
 
 	for (const answerMode of anserModes) {
 		const clone = getClone({
 			answerMode: `answerMode.${answerMode}`,
 		});
 
-		let button = clone.firstElementChild;
-		if (answerMode === selectedAnswerMode._) {
-			button.classList.add("selected");
+		if (answerMode === "showOnMap") {
+			clone.querySelector<HTMLInputElement>("input[type=radio]").checked = true;
 		}
-
-		button.addEventListener("click", (evt: MouseEvent) => {
-			answerModeSelect.querySelector(".selected")?.classList.remove("selected");
-			button.classList.add("selected");
-			selectedAnswerMode._ = answerMode;
-		});
 
 		answerModeSelect.append(clone);
 	}
 
-	return selectedAnswerMode;
+	return {
+		get _() {
+			return anserModes.find(
+				(...[, i]) => answerModeSelect.children[i].querySelector<HTMLInputElement>(
+					"input[type=radio]"
+				).checked
+			);
+		}
+	};
 })();
 
 (async () => {
@@ -188,6 +137,7 @@ let selectedAnswerMode: { _: string } = (() => {
 	document.querySelector("[_action=startQuiz]").addEventListener(
 		"click", async (evt: MouseEvent) => {
 			document.body.setAttribute("_game-state", "game");
+
 			game(await dataPromise, {
 				continents: [...selectedContinents._],
 				questionMode: selectedQuestionMode._,
@@ -198,7 +148,7 @@ let selectedAnswerMode: { _: string } = (() => {
 	);
 
 	const dataPromise: Promise<CountriesData> = (async () => await (
-		await window.fetch("./data/data.min.json")
+		await window.fetch("./_/data.min.json")
 	).json())();
 })();
 

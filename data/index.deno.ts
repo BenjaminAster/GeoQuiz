@@ -256,6 +256,6 @@ https://www.highcharts.com/docs/maps/map-collection
 	}
 
 	await Deno.writeTextFile("./data.json", JSON.stringify(newData, null, "\t"));
-	await Deno.writeTextFile("./data.min.json", JSON.stringify(newData));
+	await Deno.writeTextFile("../_/data.min.json", JSON.stringify(newData));
 })();
 

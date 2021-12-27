@@ -112,8 +112,8 @@ export default {
 	},
 	footer: {
 		madeWithLove: {
-			en: `Made with <span style=color:red>❤</span> by Benjamin Aster`,
-			de: `Mit <span style=color:red>❤</span> gemacht von Benjamin Aster`,
+			en: `Made with <heart></heart> by Benjamin Aster`,
+			de: `Mit <heart></heart> gemacht von Benjamin Aster`,
 		},
 		viewOnGitHub: {
 			en: "View on GitHub",

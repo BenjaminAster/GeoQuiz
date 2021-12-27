@@ -1,5 +1,6 @@
 @use "colors";
 @use "global";
+@use "icons";
 
 @use "sass:math";
 
@@ -70,6 +71,7 @@ nav {
 	padding: 0.5rem;
 	margin: 0.5rem;
 	background-color: var(--green-bg);
+	font-weight: bolder;
 	display: flex;
 	flex-wrap: wrap;
 	$borderWidth: 4px;
@@ -77,35 +79,35 @@ nav {
 	gap: $gap;
 	border-radius: 1rem;
 
-	& > button {
-		--mirror: 0;
-
+	& > * {
 		padding: 0;
 		aspect-ratio: 1/1;
 		box-sizing: content-box;
 		display: grid;
 		place-items: center;
 
-		inline-size: 1.4em;
-		block-size: 1.4em;
+		inline-size: 2.3rem;
+		// inline-size: 5rem;
+		aspect-ratio: 1;
 
-		font-size: 1.5rem;
+		font-size: 1.4rem;
+		// font-size: 2.9rem;
 		background-color: var(--green-bg);
 		border: none {
 			radius: 0.7rem;
 		}
-		color: var(--col-e);
+		color: var(--col-f);
 
 		vertical-align: top;
 
-		transition: background-color 0.2s, color 0.2s;
+		transition: background-color 0.3s, color 0.3s;
 
 		&:hover {
 			background-color: var(--green);
 			color: var(--col-0);
 		}
 
-		&:not(:last-of-type) {
+		&:not(:last-child) {
 			position: relative;
 			&::after {
 				content: "";
@@ -120,16 +122,25 @@ nav {
 				transform: translateX(#{math.div(($gap + $borderWidth), 2)});
 			}
 		}
+
+		&[_action="toggleFullscreen"] {
+			@media all and (display-mode: fullscreen) {
+				disable-fullscreen {
+					display: grid;
+				}
+			}
+			@media not all and (display-mode: fullscreen) {
+				enable-fullscreen {
+					display: grid;
+				}
+			}
+		}
 	}
 }
 
-:is(mobile-warning, safari-warning) {
-	&:is(mobile-warning) {
-		@media (hover) {
-			&:not([selector-specificity-was-a-bad-invention]) {
-				display: none;
-			}
-		}
+mobile-warning {
+	@media (hover) {
+		display: none !important;
 	}
 
 	background-color: var(--red-bg);
@@ -152,27 +163,61 @@ nav {
 
 options-select {
 	display: flex;
-	gap: 0.5rem;
+	gap: 0.7rem;
 	flex-wrap: wrap;
 
-	button {
-		background-color: var(--col-28);
-		color: var(--col-c);
-		padding: 0.5rem;
-		border: none {
-			radius: 1rem;
-		}
-		padding: 0.8em 1em;
+	label {
+		display: block;
+		border-radius: 1.4rem;
+		// background-color: var(--col-3);
+		transition: background-color 0.3s;
+		z-index: 2;
 
-		transition: 0.2s background-color, 0.2s color;
+		input:is([type="checkbox"], [type="radio"]) {
+			position: absolute;
+			opacity: 0;
+			pointer-events: none;
 
-		&.selected {
-			background-color: var(--blue-bg);
-			color: var(--blue);
+			&:focus-visible ~ button {
+				outline: 2px solid var(--col-f);
+
+				outline-offset: 3px;
+			}
+
+			&:checked ~ button {
+				background-color: var(--blue-bg);
+				color: var(--blue);
+
+				// border-color: var(--blue);
+
+				--border-width: 3px;
+			}
 		}
-		&:not(.selected):hover {
+
+		button {
+			z-index: 1;
+			pointer-events: none;
+			display: block;
+			// background-color: var(--col-3);
+			// background-color: #8883;
+			background-color: var(--transparent-fg);
+			// background: none;
+			color: var(--col-c);
+			padding: 0.5rem;
+			border: none {
+				radius: inherit;
+			}
+
+			--border-width: 0;
+			box-shadow: inset 0 0 0 var(--border-width) var(--blue);
+
+			padding: 0.8em 1em;
+
+			transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+		}
+
+		&:hover {
 			background-color: var(--col-3);
-			color: var(--col-f);
 		}
 	}
 }
@@ -189,36 +234,70 @@ continents {
 		inline-size: fit-content;
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem {
-			inline-end: 0.8rem;
-		}
-		background-color: var(--col-28);
 		accent-color: var(--blue);
-		transition: 0.2s background-color, 0.2s border-color;
-		border: none {
-			radius: 1rem;
-		}
+		// background-color: var(--col-3);
+		// background-color: var(--col-3);
+		transition: background-color 0.3s;
 
-		&:hover {
-			background-color: var(--col-3);
+		border: none {
+			radius: 1.3rem;
 		}
 
 		input[type="checkbox"] {
-			inline-size: 1.5em;
-			block-size: 1.5em;
-		}
-	}
+			position: absolute;
+			inline-size: 1.3rem;
+			block-size: 1.3rem;
+			margin-inline-start: 0.9rem;
+			outline: none;
 
-	button {
-		padding: 0.8em 1em;
+			&:focus-visible ~ button {
+				outline: 2px solid var(--col-f);
+
+				outline-offset: 3px;
+			}
+
+			:is(&:checked ~ button, continents.all-selected options-select button) {
+				background-color: var(--blue-bg);
+				color: var(--blue);
+
+				--border-width: 3px;
+			}
+		}
+
+		button {
+			background-color: var(--transparent-fg);
+			display: inline-block;
+
+			--border-width: 0;
+			box-shadow: inset 0 0 0 var(--border-width) var(--blue);
+			transition: 0.3s background-color, 0.3s border-color, 0.3s box-shadow;
+
+			font-size: inherit;
+			color: var(--col-f);
+			pointer-events: none;
+
+			padding: 0.8rem 0.9rem {
+				inline-start: 2.6rem;
+			}
+			border: none {
+				radius: inherit;
+			}
+		}
+
+		&:hover {
+			background-color: var(--col-4);
+		}
 	}
 
 	options-select {
 		button {
+			padding: 0.8em 1em;
+		}
+
+		label {
 			position: relative;
 			&::before {
-				transition: 0.2s background-color;
+				transition: 0.3s background-color;
 				content: "";
 				position: absolute;
 				inset: 0;
@@ -230,14 +309,9 @@ continents {
 	}
 
 	&.all-selected {
-		label.select-all {
-			background-color: var(--blue-bg);
-			color: var(--blue);
-		}
-
 		options-select {
-			button::before {
-				background-color: var(--transparent-cover);
+			label::before {
+				background-color: var(--transparent-bg);
 			}
 		}
 	}
@@ -252,7 +326,6 @@ languages {
 				display: block;
 				font-size: 2rem;
 				font-weight: bold;
-				// font-weight: 500;
 			}
 		}
 	}
@@ -273,7 +346,7 @@ start-quiz {
 		border: none {
 			radius: inherit;
 		}
-		transition: 0.2s background-color, 0.2s color;
+		transition: 0.3s background-color, 0.3s color;
 
 		&:hover {
 			background-color: var(--green-bg);
@@ -301,8 +374,6 @@ game {
 	}
 
 	before-canvas {
-		// position: relative;
-
 		display: flex;
 		align-items: center;
 
@@ -311,11 +382,6 @@ game {
 		score {
 			display: flex;
 			gap: 0.2em;
-			// position: absolute;
-			// inset-inline-start: 0;
-			// inset-block-start: 0;
-
-			// margin-inline: 0.45rem;
 
 			& > * {
 				display: flex;
@@ -324,21 +390,11 @@ game {
 				padding-block-end: 0.15rem;
 				block-size: fit-content;
 				overflow: hidden;
-				// height: fit-content;
-				// block-size: 1.5rem;
 				border-radius: 0.8rem;
-				// background-color: var(--col-3);
 			}
 
 			correct-incorrect {
 				gap: 0.2rem;
-				// background-image: linear-gradient(
-				// 	-75deg,
-				// 	var(--red-bg),
-				// 	var(--red-bg) 50%,
-				// 	var(--green-bg) 50%,
-				// 	var(--green-bg)
-				// );
 				background-color: var(--col-3);
 
 				correct {
@@ -361,24 +417,6 @@ game {
 				color: var(--green);
 				background-color: var(--green-bg);
 			}
-
-			// slash {
-			// 	position: relative;
-			// 	display: inline-grid;
-			// 	place-items: center;
-			// 	height: 3em;
-			// 	inline-size: 3px;
-
-			// 	&::before {
-			// 		content: "";
-			// 		position: absolute;
-			// 		display: inline-block;
-			// 		height: inherit;
-			// 		width: inherit;
-			// 		background-color: currentColor;
-			// 		transform: rotate(15deg) translateY(0.07em);
-			// 	}
-			// }
 		}
 
 		flag-and-country {
@@ -386,7 +424,6 @@ game {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			// justify-content: end;
 			gap: 1rem;
 
 			flag {
@@ -441,4 +478,10 @@ footer {
 	background-color: var(--col-2);
 	padding: 0.3rem;
 	text-align: center;
+
+	heart::before {
+		/// circumvent insufficient color contrast
+		content: "❤";
+		color: var(--red);
+	}
 }
