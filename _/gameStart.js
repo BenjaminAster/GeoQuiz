@@ -1,4 +1,4 @@
-import { getTemplateCloner, getLanguage, } from "./languages.js";
+import { getTemplateCloner, getLanguage, } from "./utils.js";
 import game from "./game.js";
 const selectedContinents = (() => {
 	const continentsContainer = document.querySelector("continents");

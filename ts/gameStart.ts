@@ -2,7 +2,7 @@
 import {
 	getTemplateCloner,
 	getLanguage,
-} from "./languages.js";
+} from "./utils.js";
 
 import game, { CountriesData } from "./game.js";
 

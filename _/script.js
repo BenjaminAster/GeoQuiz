@@ -1,4 +1,4 @@
-import { getTemplateCloner, languages, setLanguage, getLanguage, } from "./languages.js";
+import { getTemplateCloner, languages, setLanguage, getLanguage, storage, } from "./utils.js";
 import "./gameStart.js";
 if (!new URL(location.href).searchParams.has("no-sw")) {
 	navigator.serviceWorker?.register("./service-worker.js", { scope: "./" });
@@ -11,13 +11,13 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 	});
 	const setColorScheme = (scheme) => {
 		const colorSchemes = ["dark", "light"];
-		const colorScheme = scheme ?? colorSchemes[+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))];
-		localStorage.setItem(`${new URL(document.baseURI).pathname}:color-scheme`, colorScheme);
-		document.documentElement.setAttribute("color-scheme", colorScheme);
+		const colorScheme = scheme ? (colorSchemes.includes(scheme) ? scheme : colorSchemes[0]) : (colorSchemes[+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))]);
+		storage.set("color-scheme", colorScheme);
 		document.querySelector("meta[name=color-scheme]").content = colorScheme;
+		document.documentElement.setAttribute("color-scheme", colorScheme);
 		document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
 	};
-	setColorScheme(localStorage.getItem(`${new URL(document.baseURI).pathname}:color-scheme`) ?? "dark");
+	setColorScheme(storage.get("color-scheme") ?? "dark");
 	const actions = {
 		toggleTheme() {
 			setColorScheme();
@@ -34,9 +34,8 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			}
 			;
 		},
-		async installApp() {
+		async installOrOpenApp() {
 			installPromptEvent?.prompt?.();
-			await installPromptEvent?.userChoice;
 		},
 		async refresh() {
 			await new Promise(async (resolve) => {
@@ -55,14 +54,14 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		share() {
 			navigator.share?.({
 				title: document.title,
-				text: document.querySelector("meta[name=description]")?.getAttribute("content") ?? "",
+				text: document.querySelector("meta[name=description]")?.getAttribute("content"),
 				url: location.href,
 			});
 		}
 	};
 	for (const [actionName, func] of Object.entries(actions)) {
-		const button = document.querySelector(`nav [_action="${actionName}"]`);
-		button.addEventListener("click", func);
+		const buttons = [...document.querySelectorAll(`[_action="${actionName}"]`)];
+		buttons.forEach((button) => button.addEventListener("click", func));
 	}
 	if (location.hostname === "localhost") {
 		window.addEventListener("keydown", (evt) => {

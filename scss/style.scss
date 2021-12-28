@@ -34,35 +34,42 @@ body {
 	}
 }
 
-main {
-	flex-grow: 1;
+titlebar {
+	// z-index: 1;
 	display: flex;
-	flex-direction: column;
-}
+	align-items: center;
+	gap: 0.5rem;
+	padding-inline: 0.6rem;
+	overflow: hidden;
+	-webkit-app-region: drag;
+	app-region: drag;
+	position: fixed;
+	inset-block-start: env(titlebar-area-y, 0);
+	inset-inline-start: env(titlebar-area-x, 0);
+	width: env(titlebar-area-width, 0);
+	height: env(titlebar-area-height, 0);
+	background-color: var(--col-18);
 
-start-screen {
-	display: none;
-	padding: 0.2rem 0.5rem;
-	flex-grow: 1;
+	// font-size: calc(env(titlebar-area-height, 32px) / 2);
 
-	& > * {
-		&:not([hidden]) {
-			display: flex;
+	button {
+		-webkit-app-region: no-drag;
+		app-region: no-drag;
+
+		background: none;
+		display: grid;
+		place-items: center;
+		height: 100%;
+		aspect-ratio: 1;
+		border: none {
+			radius: 0.3rem;
 		}
-		flex-direction: column;
-		gap: 1rem;
-		margin-block-end: 0.8rem;
-		background-color: var(--col-2);
-		padding: 0.8rem;
-		border-radius: 1rem;
+		padding: 0;
+		font-size: env(titlebar-area-height) / 2;
+		transition: background-color 0.3s;
 
-		h1,
-		h2,
-		h3,
-		h4,
-		h5,
-		h6 {
-			color: var(--green);
+		&:hover {
+			background-color: var(--col-4);
 		}
 	}
 }
@@ -138,6 +145,39 @@ nav {
 	}
 }
 
+main {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+start-screen {
+	display: none;
+	padding: 0.2rem 0.5rem;
+	flex-grow: 1;
+
+	& > * {
+		&:not([hidden]) {
+			display: flex;
+		}
+		flex-direction: column;
+		gap: 1rem;
+		margin-block-end: 0.8rem;
+		background-color: var(--col-2);
+		padding: 0.8rem;
+		border-radius: 1rem;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: var(--green);
+		}
+	}
+}
+
 mobile-warning {
 	@media (hover) {
 		display: none !important;
@@ -171,7 +211,6 @@ options-select {
 		border-radius: 1.4rem;
 		// background-color: var(--col-3);
 		transition: background-color 0.3s;
-		z-index: 2;
 
 		input:is([type="checkbox"], [type="radio"]) {
 			position: absolute;
@@ -195,7 +234,6 @@ options-select {
 		}
 
 		button {
-			z-index: 1;
 			pointer-events: none;
 			display: block;
 			// background-color: var(--col-3);
@@ -462,15 +500,6 @@ noscript {
 	color: #{darkLight(salmon, darkRed)};
 	border: none {
 		radius: 0.8rem;
-	}
-}
-
-button.theme-toggler {
-	label {
-		display: grid;
-		inline-size: 100%;
-		block-size: 100%;
-		place-items: center;
 	}
 }
 

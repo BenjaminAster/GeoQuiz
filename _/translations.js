@@ -1,7 +1,7 @@
 export default {
-	mainHeader: {
+	title: {
 		en: "Geography Quiz",
-		de: "Geographie-Quiz",
+		de: "Geographie Quiz",
 	},
 	description: {
 		de: "Lerne die Namen, geografischen Positionen, Flaggen und Hauptstädte der Länder der Welt!",

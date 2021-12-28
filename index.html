@@ -11,14 +11,14 @@
 	<meta name="theme-color" content="black" />
 	<meta name="robots" content="all" />
 	<meta name="description"
-		content="Test your knowledge about geography with this country quiz!" />
+		content="Test your knowledge about geography with this geography quiz!" />
 	<link rel="apple-touch-icon" href="Shut up, Lighthouse, and give me my perfect PWA score!" />
 	<link rel="manifest" href="./manifest.webmanifest" />
 
-	<link rel="icon" href="/circles/green.svg" />
+	<link rel="icon" href="https://benjaminaster.com/circles/green.svg" />
 	<link rel="stylesheet" href="./_/style.css" />
 
-	<link rel="modulepreload" href="./_/languages.js" />
+	<link rel="modulepreload" href="./_/utils.js" />
 	<link rel="modulepreload" href="./_/gameStart.js" />
 	<link rel="modulepreload" href="./_/translations.js" />
 	<link rel="modulepreload" href="./_/game.js" />
@@ -29,11 +29,18 @@
 </head>
 
 <body>
+	<titlebar>
+		<site-name _text="title"></site-name>
+		<button _action="toggleTheme" title="Toggle color scheme">
+			<sun hidden class="bi-brightness-high-fill"></sun>
+			<moon hidden class="bi-moon-fill"></moon>
+		</button>
+	</titlebar>
+
 	<noscript>
 		⚠ Please enable JavaScript to use this site.
 
 		<style>
-			nav,
 			main,
 			footer {
 				display: none;
@@ -43,18 +50,18 @@
 	</noscript>
 
 	<nav>
-		<button _action="toggleTheme" title="Toggle color scheme">
+		<button _action="toggleTheme" title="toggle color scheme">
 			<sun hidden class="bi-brightness-high-fill"></sun>
 			<moon hidden class="bi-moon-fill"></moon>
 		</button>
-		<button _action="popOutWindow" class="bi-box-arrow-up-right" title="Pop out window"></button>
-		<button _action="toggleFullscreen" title="Enable fullscreen">
+		<button _action="popOutWindow" class="bi-box-arrow-up-right" title="pop out window"></button>
+		<button _action="toggleFullscreen" title="enable fullscreen">
 			<enable-fullscreen hidden class="bi-arrows-fullscreen"></enable-fullscreen>
 			<disable-fullscreen hidden class="bi-fullscreen-exit"></disable-fullscreen>
 		</button>
-		<button _action="installApp" class="bi-app-indicator" title="Install App"></button>
-		<button _action="refresh" class="bi-arrow-clockwise" title="Refresh Site"></button>
-		<button _action="share" class="bi-share-fill" title="Share"></button>
+		<button _action="installOrOpenApp" class="bi-app-indicator" title="install or open App"></button>
+		<button _action="refresh" class="bi-arrow-clockwise" title="refresh Site"></button>
+		<button _action="share" class="bi-share-fill" title="share"></button>
 		<a href="https://github.com/BenjaminAster/Geography-Quiz" class="bi-github" title="View on GitHub"></a>
 	</nav>
 
@@ -69,7 +76,7 @@
 			</mobile-warning>
 
 			<information>
-				<h2 _text="mainHeader"></h2>
+				<h2 _text="title"></h2>
 
 				<p _text="description"></p>
 			</information>

@@ -5,7 +5,8 @@ import {
 	languages,
 	setLanguage,
 	getLanguage,
-} from "./languages.js";
+	storage,
+} from "./utils.js";
 
 import "./gameStart.js";
 
@@ -37,23 +38,21 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		const colorSchemes = ["dark", "light"];
 
 		const colorScheme = scheme ? (
-			colorSchemes.find((colorScheme: string) => colorScheme === scheme) ?? colorSchemes[0]
+			colorSchemes.includes(scheme) ? scheme : colorSchemes[0]
 		) : (colorSchemes[
 			+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))
 		]);
 
-		localStorage.setItem(`${new URL(document.baseURI).pathname}:color-scheme`, colorScheme);
+		storage.set("color-scheme", colorScheme);
 
-		document.documentElement.setAttribute("color-scheme", colorScheme);
 		document.querySelector<HTMLMetaElement>("meta[name=color-scheme]").content = colorScheme;
+		document.documentElement.setAttribute("color-scheme", colorScheme);
 		document.querySelector<HTMLMetaElement>("meta[name=theme-color]").content = (
 			window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
 		).trim();
 	}
 
-	setColorScheme(localStorage.getItem(
-		`${new URL(document.baseURI).pathname}:color-scheme`
-	) ?? "dark");
+	setColorScheme(storage.get("color-scheme") ?? "dark");
 
 	const actions: Record<string, () => void> = {
 		toggleTheme() {
@@ -69,9 +68,11 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 				await document.documentElement.requestFullscreen?.();
 			};
 		},
-		async installApp() {
+		async installOrOpenApp() {
 			installPromptEvent?.prompt?.();
-			await installPromptEvent?.userChoice;
+			// if ((await installPromptEvent?.userChoice)?.outcome === "accepted") {
+				
+			// }
 		},
 		async refresh() {
 			await new Promise<void>(async (resolve: () => void) => {
@@ -101,8 +102,8 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 	};
 
 	for (const [actionName, func] of Object.entries(actions)) {
-		const button: HTMLElement = document.querySelector(`nav [_action="${actionName}"]`);
-		button.addEventListener("click", func);
+		const buttons: Element[] = [...document.querySelectorAll(`[_action="${actionName}"]`)];
+		buttons.forEach((button: Element) => button.addEventListener("click", func));
 	}
 
 	if (location.hostname === "localhost") {
