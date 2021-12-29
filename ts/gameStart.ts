@@ -32,7 +32,7 @@ const selectedContinents: { _: string[] } = (() => {
 
 		let checkbox: HTMLInputElement = clone.querySelector("input[type=checkbox]");
 
-		checkbox.addEventListener("change", (evt: InputEvent) => {
+		checkbox.addEventListener("change", (event: InputEvent) => {
 			const checkboxes: HTMLInputElement[] = [
 				...continentSelect.querySelectorAll<HTMLInputElement>("input[type=checkbox]")
 			];
@@ -135,7 +135,7 @@ let selectedAnswerMode: { _: string } = (() => {
 (async () => {
 	document.body.setAttribute("_game-state", "start");
 	document.querySelector("[_action=startQuiz]").addEventListener(
-		"click", async (evt: MouseEvent) => {
+		"click", async (event: MouseEvent) => {
 			document.body.setAttribute("_game-state", "game");
 
 			game(await dataPromise, {

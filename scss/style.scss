@@ -87,10 +87,12 @@ nav {
 	border-radius: 1rem;
 
 	& > * {
+		&:not([hidden]) {
+			display: grid;
+		}
 		padding: 0;
 		aspect-ratio: 1/1;
 		box-sizing: content-box;
-		display: grid;
 		place-items: center;
 
 		inline-size: 2.3rem;
@@ -140,6 +142,12 @@ nav {
 				enable-fullscreen {
 					display: grid;
 				}
+			}
+		}
+
+		&[_action="openInApp"] {
+			@media all and (display-mode: standalone) {
+				display: none;
 			}
 		}
 	}

@@ -6,9 +6,31 @@ if (!new URL(location.href).searchParams.has("no-sw")) {
 const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand))?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 {
 	let installPromptEvent;
-	window.addEventListener("beforeinstallprompt", (event) => {
-		installPromptEvent = event;
-	});
+	{
+		const showOpenInAppButton = () => {
+			document.querySelector("[_action=installApp]").hidden = true;
+			const button = document.querySelector("[_action=openInApp]");
+			button.hidden = false;
+			button.addEventListener("click", () => {
+				window.open("web+geographyquiz://", "_blank");
+			});
+		};
+		if (storage.get("isInstalled") === true) {
+			showOpenInAppButton();
+		}
+		window.addEventListener("beforeinstallprompt", (event) => {
+			storage.set("isInstalled", false);
+			installPromptEvent = event;
+			document.querySelector("[_action=installApp").hidden = false;
+		});
+		window.addEventListener("appinstalled", (event) => {
+			storage.set("isInstalled", true);
+			showOpenInAppButton();
+		});
+		if (new URL(location.href).searchParams.has("url")) {
+			history.replaceState(history.state, document.title, "./");
+		}
+	}
 	const setColorScheme = (scheme) => {
 		const colorSchemes = ["dark", "light"];
 		const colorScheme = scheme ? (colorSchemes.includes(scheme) ? scheme : colorSchemes[0]) : (colorSchemes[+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))]);
@@ -23,7 +45,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			setColorScheme();
 		},
 		popOutWindow() {
-			window.open(location.href, "_blank", "location=yes");
+			window.open(location.href, "_blank", "_");
 		},
 		async toggleFullscreen() {
 			if (document.fullscreenElement) {
@@ -34,7 +56,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 			}
 			;
 		},
-		async installOrOpenApp() {
+		async installApp() {
 			installPromptEvent?.prompt?.();
 		},
 		async refresh() {
@@ -64,9 +86,9 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		buttons.forEach((button) => button.addEventListener("click", func));
 	}
 	if (location.hostname === "localhost") {
-		window.addEventListener("keydown", (evt) => {
-			if (evt.key === "F5" && !evt.ctrlKey) {
-				evt.preventDefault();
+		window.addEventListener("keydown", (event) => {
+			if (event.key === "F5" && !event.ctrlKey) {
+				event.preventDefault();
 				actions.refresh();
 			}
 		});
@@ -85,7 +107,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		if (language === getLanguage()) {
 			radio.checked = true;
 		}
-		radio.addEventListener("change", (evt) => {
+		radio.addEventListener("change", (event) => {
 			setLanguage(language);
 		});
 		container.append(clone);

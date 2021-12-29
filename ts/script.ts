@@ -30,9 +30,35 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 
 	let installPromptEvent: any;
 
-	window.addEventListener("beforeinstallprompt", (event: Event) => {
-		installPromptEvent = event;
-	});
+	{
+		const showOpenInAppButton = () => {
+			document.querySelector<HTMLElement>("[_action=installApp]").hidden = true;
+			const button = document.querySelector<HTMLElement>("[_action=openInApp]");
+			button.hidden = false;
+			button.addEventListener("click", () => {
+				window.open("web+geographyquiz://", "_blank");
+			});
+		};
+
+		if (storage.get("isInstalled") === true) {
+			showOpenInAppButton();
+		}
+
+		window.addEventListener("beforeinstallprompt", (event: Event) => {
+			storage.set("isInstalled", false);
+			installPromptEvent = event;
+			document.querySelector<HTMLElement>("[_action=installApp").hidden = false;
+		});
+
+		window.addEventListener("appinstalled", (event: Event) => {
+			storage.set("isInstalled", true);
+			showOpenInAppButton();
+		});
+
+		if (new URL(location.href).searchParams.has("url")) {
+			history.replaceState(history.state, document.title, "./");
+		}
+	}
 
 	const setColorScheme = (scheme?: string) => {
 		const colorSchemes = ["dark", "light"];
@@ -59,7 +85,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			setColorScheme();
 		},
 		popOutWindow() {
-			window.open(location.href, "_blank", "location=yes");
+			window.open(location.href, "_blank", "_");
 		},
 		async toggleFullscreen() {
 			if (document.fullscreenElement) {
@@ -68,11 +94,8 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 				await document.documentElement.requestFullscreen?.();
 			};
 		},
-		async installOrOpenApp() {
+		async installApp() {
 			installPromptEvent?.prompt?.();
-			// if ((await installPromptEvent?.userChoice)?.outcome === "accepted") {
-				
-			// }
 		},
 		async refresh() {
 			await new Promise<void>(async (resolve: () => void) => {
@@ -107,9 +130,9 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 	}
 
 	if (location.hostname === "localhost") {
-		window.addEventListener("keydown", (evt: KeyboardEvent) => {
-			if (evt.key === "F5" && !evt.ctrlKey) {
-				evt.preventDefault();
+		window.addEventListener("keydown", (event: KeyboardEvent) => {
+			if (event.key === "F5" && !event.ctrlKey) {
+				event.preventDefault();
 				actions.refresh();
 			}
 		});
@@ -136,7 +159,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 			radio.checked = true;
 		}
 
-		radio.addEventListener("change", (evt: MouseEvent) => {
+		radio.addEventListener("change", (event: MouseEvent) => {
 			setLanguage(language);
 		});
 

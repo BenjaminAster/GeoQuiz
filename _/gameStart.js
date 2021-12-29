@@ -18,7 +18,7 @@ const selectedContinents = (() => {
 			continentName: `continents.${continent}`,
 		});
 		let checkbox = clone.querySelector("input[type=checkbox]");
-		checkbox.addEventListener("change", (evt) => {
+		checkbox.addEventListener("change", (event) => {
 			const checkboxes = [
 				...continentSelect.querySelectorAll("input[type=checkbox]")
 			];
@@ -89,7 +89,7 @@ let selectedAnswerMode = (() => {
 })();
 (async () => {
 	document.body.setAttribute("_game-state", "start");
-	document.querySelector("[_action=startQuiz]").addEventListener("click", async (evt) => {
+	document.querySelector("[_action=startQuiz]").addEventListener("click", async (event) => {
 		document.body.setAttribute("_game-state", "game");
 		game(await dataPromise, {
 			continents: [...selectedContinents._],

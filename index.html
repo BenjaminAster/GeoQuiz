@@ -12,7 +12,7 @@
 	<meta name="robots" content="all" />
 	<meta name="description"
 		content="Test your knowledge about geography with this geography quiz!" />
-	<link rel="apple-touch-icon" href="Shut up, Lighthouse, and give me my perfect PWA score!" />
+	<link rel="apple-touch-icon" href="https://benjaminaster.com/media/white-circle.png" />
 	<link rel="manifest" href="./manifest.webmanifest" />
 
 	<link rel="icon" href="https://benjaminaster.com/circles/green.svg" />
@@ -37,6 +37,23 @@
 		</button>
 	</titlebar>
 
+	<nav>
+		<button _action="toggleTheme" title="toggle color scheme">
+			<sun hidden class="bi-brightness-high-fill"></sun>
+			<moon hidden class="bi-moon-fill"></moon>
+		</button>
+		<button _action="popOutWindow" class="bi-window-stack" title="pop out window"></button>
+		<button _action="toggleFullscreen" title="toggle fullscreen">
+			<enable-fullscreen hidden class="bi-fullscreen"></enable-fullscreen>
+			<disable-fullscreen hidden class="bi-fullscreen-exit"></disable-fullscreen>
+		</button>
+		<button _action="refresh" class="bi-arrow-clockwise" title="refresh site"></button>
+		<button _action="share" class="bi-share-fill" title="share"></button>
+		<button hidden _action="installApp" class="bi-app-indicator" title="install app"></button>
+		<button hidden _action="openInApp" class="bi-box-arrow-up-right" title="open in app"></button>
+		<a href="https://github.com/BenjaminAster/Geography-Quiz" class="bi-github" title="view on GitHub"></a>
+	</nav>
+
 	<noscript>
 		⚠ Please enable JavaScript to use this site.
 
@@ -48,22 +65,6 @@
 
 		</style>
 	</noscript>
-
-	<nav>
-		<button _action="toggleTheme" title="toggle color scheme">
-			<sun hidden class="bi-brightness-high-fill"></sun>
-			<moon hidden class="bi-moon-fill"></moon>
-		</button>
-		<button _action="popOutWindow" class="bi-box-arrow-up-right" title="pop out window"></button>
-		<button _action="toggleFullscreen" title="enable fullscreen">
-			<enable-fullscreen hidden class="bi-arrows-fullscreen"></enable-fullscreen>
-			<disable-fullscreen hidden class="bi-fullscreen-exit"></disable-fullscreen>
-		</button>
-		<button _action="installOrOpenApp" class="bi-app-indicator" title="install or open App"></button>
-		<button _action="refresh" class="bi-arrow-clockwise" title="refresh Site"></button>
-		<button _action="share" class="bi-share-fill" title="share"></button>
-		<a href="https://github.com/BenjaminAster/Geography-Quiz" class="bi-github" title="View on GitHub"></a>
-	</nav>
 
 	<main>
 		<start-screen>

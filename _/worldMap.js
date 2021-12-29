@@ -35,27 +35,27 @@ export default function initWorldMap(countriesData) {
 	{
 		let prevX = -1;
 		let prevY = -1;
-		window.addEventListener("pointermove", (evt) => {
+		window.addEventListener("pointermove", (event) => {
 			if (prevX >= 0) {
-				mouseX = evt.pageX - canvas.parentElement.offsetLeft;
-				mouseY = evt.pageY - canvas.parentElement.offsetTop;
-				if (evt.buttons === 1) {
-					centerX -= ((evt.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
-					centerY += ((evt.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+				mouseX = event.pageX - canvas.parentElement.offsetLeft;
+				mouseY = event.pageY - canvas.parentElement.offsetTop;
+				if (event.buttons === 1) {
+					centerX -= ((event.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
+					centerY += ((event.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
 					centerX = Math.min(Math.max(centerX, -180), 180);
 					centerY = Math.min(Math.max(centerY, -90), 90);
 				}
 			}
-			prevX = evt.pageX;
-			prevY = evt.pageY;
+			prevX = event.pageX;
+			prevY = event.pageY;
 		});
 	}
-	window.addEventListener("wheel", (evt) => {
-		const x = evt.pageX - canvas.parentElement.offsetLeft;
-		const y = evt.pageY - canvas.parentElement.offsetTop;
+	window.addEventListener("wheel", (event) => {
+		const x = event.pageX - canvas.parentElement.offsetLeft;
+		const y = event.pageY - canvas.parentElement.offsetTop;
 		const pointX = ((x / (canvas.width / 2) - 1) / ((scalePerZoom ** zoom) / 180)) + centerX;
 		const pointY = ((y / (canvas.height / 2) - 1) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180)) + centerY;
-		let delta = evt.deltaY / 100;
+		let delta = event.deltaY / 100;
 		zoom -= delta;
 		if (zoom < 0) {
 			delta += zoom;
@@ -64,8 +64,8 @@ export default function initWorldMap(countriesData) {
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
 	});
-	canvas.addEventListener("wheel", (evt) => {
-		evt.preventDefault();
+	canvas.addEventListener("wheel", (event) => {
+		event.preventDefault();
 	});
 	{
 		const draw = () => {
@@ -128,20 +128,20 @@ export default function initWorldMap(countriesData) {
 			x: 0,
 			y: 0,
 		};
-		canvas.addEventListener("pointerup", (evt) => {
+		canvas.addEventListener("pointerup", (event) => {
 			const click = {
-				x: evt.pageX - canvas.parentElement.offsetLeft,
-				y: evt.pageY - canvas.parentElement.offsetTop,
+				x: event.pageX - canvas.parentElement.offsetLeft,
+				y: event.pageY - canvas.parentElement.offsetTop,
 			};
 			if (click.x === pointerDown.x &&
 				click.y === pointerDown.y) {
 				clicked = true;
 			}
 		});
-		canvas.addEventListener("pointerdown", (evt) => {
+		canvas.addEventListener("pointerdown", (event) => {
 			pointerDown = {
-				x: evt.pageX - canvas.parentElement.offsetLeft,
-				y: evt.pageY - canvas.parentElement.offsetTop,
+				x: event.pageX - canvas.parentElement.offsetLeft,
+				y: event.pageY - canvas.parentElement.offsetTop,
 			};
 		});
 	}
