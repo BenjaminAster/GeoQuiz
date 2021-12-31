@@ -1,23 +1,33 @@
-import { getTemplateCloner, getLanguage, } from "./utils.js";
-import game from "./game.js";
+import { getTemplateCloner, getLanguage, storage, } from "./utils.js";
+import game, { stopGame, } from "./game.js";
+const continents = [
+	"africa",
+	"northAmerica",
+	"southAmerica",
+	"asia",
+	"europe",
+	"oceania",
+];
+const startQuizButton = document.querySelector("[_action=startQuiz]");
 const selectedContinents = (() => {
 	const continentsContainer = document.querySelector("continents");
 	const continentSelect = continentsContainer.querySelector("options-select");
 	const getClone = getTemplateCloner(continentSelect);
-	const continents = [
-		"africa",
-		"northAmerica",
-		"southAmerica",
-		"asia",
-		"europe",
-		"oceania",
-	];
+	const initialContinents = storage.get("continents")?.filter?.((continent) => continents.includes(continent)) ?? continents;
 	const checkboxSelectAll = document.querySelector("continents [_action=selectAll]");
+	checkboxSelectAll.checked = (initialContinents.length === continents.length);
+	continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
+	const continentsGetter = {
+		get _() {
+			return checkboxSelectAll.checked ? continents : continents.filter((...[, i]) => continentSelect.children[i + 1].querySelector("input[type=checkbox]")?.checked);
+		}
+	};
 	for (const continent of continents) {
 		const clone = getClone({
 			continentName: `continents.${continent}`,
 		});
 		let checkbox = clone.querySelector("input[type=checkbox]");
+		checkbox.checked = (initialContinents.includes(continent) && !checkboxSelectAll.checked);
 		checkbox.addEventListener("change", (event) => {
 			const checkboxes = [
 				...continentSelect.querySelectorAll("input[type=checkbox]")
@@ -31,17 +41,25 @@ const selectedContinents = (() => {
 			else if (checkboxes.every((checkbox) => checkbox.checked)) {
 				checkboxSelectAll.click();
 			}
+			if (continentsGetter._.length === 0) {
+				startQuizButton.disabled = true;
+			}
+			else {
+				startQuizButton.disabled = false;
+			}
 		});
 		continentSelect.append(clone);
 	}
 	checkboxSelectAll.addEventListener("change", () => {
 		continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
-	});
-	return {
-		get _() {
-			return checkboxSelectAll.checked ? continents : continents.filter((...[, i]) => continentSelect.children[i].querySelector("input[type=checkbox]").checked);
+		if (continentsGetter._.length === 0) {
+			startQuizButton.disabled = true;
 		}
-	};
+		else {
+			startQuizButton.disabled = false;
+		}
+	});
+	return continentsGetter;
 })();
 let selectedQuestionMode = (() => {
 	const questionModeSelect = document.querySelector("question-mode options-select");
@@ -51,53 +69,78 @@ let selectedQuestionMode = (() => {
 		"countryNameAndFlag",
 		"flag",
 	];
+	const initialQuestionMode = questionModes.includes(storage.get("questionMode")) ? storage.get("questionMode") : questionModes[1];
 	for (const questionMode of questionModes) {
 		const clone = getClone({
 			questionMode: `questionMode.${questionMode}`,
 		});
-		if (questionMode === "countryNameAndFlag") {
+		if (questionMode === initialQuestionMode) {
 			clone.querySelector("input[type=radio]").checked = true;
 		}
 		questionModeSelect.append(clone);
 	}
 	return {
 		get _() {
-			return questionModes.find((...[, i]) => questionModeSelect.children[i].querySelector("input[type=radio]").checked);
+			return questionModes.find((...[, i]) => questionModeSelect.children[i + 1].querySelector("input[type=radio]")?.checked);
 		}
 	};
 })();
 let selectedAnswerMode = (() => {
 	const answerModeSelect = document.querySelector("answer-mode options-select");
 	const getClone = getTemplateCloner(answerModeSelect);
-	const anserModes = [
+	const answerModes = [
 		"showOnMap",
 	];
-	for (const answerMode of anserModes) {
+	const initialAnswerMode = answerModes.includes(storage.get("answerMode")) ? storage.get("answerMode") : answerModes[0];
+	for (const answerMode of answerModes) {
 		const clone = getClone({
 			answerMode: `answerMode.${answerMode}`,
 		});
-		if (answerMode === "showOnMap") {
+		if (answerMode === initialAnswerMode) {
 			clone.querySelector("input[type=radio]").checked = true;
 		}
 		answerModeSelect.append(clone);
 	}
 	return {
 		get _() {
-			return anserModes.find((...[, i]) => answerModeSelect.children[i].querySelector("input[type=radio]").checked);
+			return answerModes.find((...[, i]) => answerModeSelect.children[i + 1].querySelector("input[type=radio]")?.checked);
 		}
 	};
 })();
-(async () => {
-	document.body.setAttribute("_game-state", "start");
-	document.querySelector("[_action=startQuiz]").addEventListener("click", async (event) => {
-		document.body.setAttribute("_game-state", "game");
+{
+	const dataPromise = (async () => await (await window.fetch("./_/data.min.json")).json())();
+	const startGame = async () => {
+		const continents = selectedContinents._;
+		const questionMode = selectedQuestionMode._;
+		const answerMode = selectedAnswerMode._;
+		storage.set("continents", continents);
+		storage.set("questionMode", questionMode);
+		storage.set("answerMode", answerMode);
 		game(await dataPromise, {
-			continents: [...selectedContinents._],
-			questionMode: selectedQuestionMode._,
-			answerMode: selectedAnswerMode._,
+			continents,
+			questionMode,
+			answerMode,
 			language: getLanguage(),
 		});
+	};
+	window.addEventListener("popstate", (event) => {
+		if (event.state?.page === "game") {
+			startGame();
+		}
+		else {
+			document.body.setAttribute("_game-state", "start");
+			stopGame();
+		}
 	});
-	const dataPromise = (async () => await (await window.fetch("./_/data.min.json")).json())();
-})();
+	if (history.state?.page === "game") {
+		startGame();
+	}
+	else {
+		document.body.setAttribute("_game-state", "start");
+	}
+	document.querySelector("[_action=startQuiz]").addEventListener("click", async () => {
+		await startGame();
+		history.pushState({ page: "game" }, document.title, "./");
+	});
+}
 //# sourceMappingURL=gameStart.js.map

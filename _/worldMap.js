@@ -2,33 +2,54 @@ let data;
 const canvas = document.querySelector("game canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 let colors;
-let mouseX = 0;
-let mouseY = 0;
-let centerX = 0;
-let centerY = 0;
-let zoom = 0;
-const scalePerZoom = 1.5;
+let mouseX;
+let mouseY;
+let centerX;
+let centerY;
+let zoom;
+const scalePerZoom = 1.8;
 let countryClicked;
-let clicked = false;
-let correctCountries = new Set();
-let incorrectCountries = new Set();
-export default function initWorldMap(countriesData) {
+let clicked;
+let correctCountries;
+let incorrectCountries;
+let running;
+let newGameCallback;
+const resize = () => {
+	if (running) {
+		canvas.width = canvas.clientWidth;
+		canvas.height = canvas.clientHeight;
+	}
+};
+export const newGame = () => {
+	mouseX = 0;
+	mouseY = 0;
+	centerX = 0;
+	centerY = 0;
+	zoom = 0;
+	clicked = false;
+	correctCountries = new Set();
+	incorrectCountries = new Set();
+	running = true;
+	newGameCallback?.();
+	resize();
+};
+export default (countriesData) => {
 	data = countriesData;
-	const getColor = (color) => (window.getComputedStyle(document.documentElement)?.getPropertyValue(color)).trim();
+	const getColor = (color) => (window.getComputedStyle(document.documentElement).getPropertyValue(color)).trim();
 	{
-		colors = {
-			background: getColor("--col-18"),
-			foreground: getColor("--col-f"),
-			gray: getColor("--col-3"),
-			green: getColor("--country-green"),
-			red: getColor("--country-red"),
+		const initColors = () => {
+			colors = {
+				background: getColor("--col-18"),
+				foreground: getColor("--col-f"),
+				gray: getColor("--col-3"),
+				green: getColor("--country-green"),
+				red: getColor("--country-red"),
+			};
 		};
+		initColors();
+		window.addEventListener("color-scheme-set", initColors);
 	}
 	{
-		const resize = () => {
-			canvas.width = canvas.clientWidth;
-			canvas.height = canvas.clientHeight;
-		};
 		resize();
 		window.addEventListener("resize", resize);
 	}
@@ -38,10 +59,11 @@ export default function initWorldMap(countriesData) {
 		window.addEventListener("pointermove", (event) => {
 			if (prevX >= 0) {
 				mouseX = event.pageX - canvas.parentElement.offsetLeft;
-				mouseY = event.pageY - canvas.parentElement.offsetTop;
+				mouseY = event.pageY - canvas.parentElement.offsetTop - (navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0);
+				const dragMultiplier = 2;
 				if (event.buttons === 1) {
-					centerX -= ((event.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
-					centerY += ((event.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+					centerX -= dragMultiplier * ((event.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
+					centerY += dragMultiplier * ((event.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
 					centerX = Math.min(Math.max(centerX, -180), 180);
 					centerY = Math.min(Math.max(centerY, -90), 90);
 				}
@@ -50,12 +72,13 @@ export default function initWorldMap(countriesData) {
 			prevY = event.pageY;
 		});
 	}
-	window.addEventListener("wheel", (event) => {
+	canvas.addEventListener("wheel", (event) => {
+		event.preventDefault();
 		const x = event.pageX - canvas.parentElement.offsetLeft;
-		const y = event.pageY - canvas.parentElement.offsetTop;
+		const y = event.pageY - canvas.parentElement.offsetTop - (navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0);
 		const pointX = ((x / (canvas.width / 2) - 1) / ((scalePerZoom ** zoom) / 180)) + centerX;
 		const pointY = ((y / (canvas.height / 2) - 1) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180)) + centerY;
-		let delta = event.deltaY / 100;
+		let delta = Math.min(Math.max(event.deltaY * 5, -100), 100) / 100;
 		zoom -= delta;
 		if (zoom < 0) {
 			delta += zoom;
@@ -63,10 +86,7 @@ export default function initWorldMap(countriesData) {
 		}
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
-	});
-	canvas.addEventListener("wheel", (event) => {
-		event.preventDefault();
-	});
+	}, { passive: false });
 	{
 		const draw = () => {
 			ctx.strokeStyle = colors.foreground;
@@ -119,7 +139,14 @@ export default function initWorldMap(countriesData) {
 				}
 			}
 			clicked = false;
-			window.requestAnimationFrame(() => setTimeout(draw));
+			if (running) {
+				window.requestAnimationFrame(draw);
+			}
+			else {
+				newGameCallback = () => {
+					window.requestAnimationFrame(draw);
+				};
+			}
 		};
 		draw();
 	}
@@ -145,19 +172,22 @@ export default function initWorldMap(countriesData) {
 			};
 		});
 	}
-}
-;
-export async function awaitCountryClick() {
+};
+export const stopDrawing = () => {
+	running = false;
+	countryClicked(null);
+};
+export const awaitCountryClick = async () => {
 	return await new Promise((resolve) => {
 		countryClicked = resolve;
 	});
-}
-export function markCountry(name, correct) {
+};
+export const markCountry = (name, correct) => {
 	if (correct) {
 		correctCountries.add(name);
 	}
 	else {
 		incorrectCountries.add(name);
 	}
-}
+};
 //# sourceMappingURL=worldMap.js.map

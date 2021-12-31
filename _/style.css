@@ -37,6 +37,8 @@
   --green-bg: rgba(0, 255, 127, 0.15);
   --red: #f24;
   --red-bg: rgba(255, 34, 68, 0.15);
+  --orange: orange;
+  --orange-bg: rgba(255, 165, 0, 0.15);
   --country-green: #0d4;
   --country-red: #f24;
   --transparent-bg: rgba(0, 0, 6, 0.5);
@@ -81,10 +83,12 @@
   --col-f: black;
   --blue: blue;
   --blue-bg: rgba(0, 0, 255, 0.15);
-  --green: seaGreen;
-  --green-bg: rgba(46, 139, 87, 0.15);
-  --red: #f34;
-  --red-bg: rgba(255, 51, 68, 0.15);
+  --green: #062;
+  --green-bg: rgba(0, 102, 34, 0.15);
+  --red: #d13;
+  --red-bg: rgba(221, 17, 51, 0.15);
+  --orange: #a20;
+  --orange-bg: rgba(170, 34, 0, 0.1);
   --country-green: #5e7;
   --country-red: #f55;
   --transparent-bg: rgba(255, 255, 255, 0.5);
@@ -101,10 +105,7 @@
   overflow: hidden;
 }
 
-* {
-  box-sizing: border-box;
-}
-@media all and (hover) {
+@media (hover: none) {
   * {
     -webkit-tap-highlight-color: transparent;
   }
@@ -206,8 +207,8 @@ a {
   --_: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 18 18">  <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>');
 }
 
-.bi-arrow-clockwise::before {
-  --_: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 18 18">  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>');
+.bi-arrow-repeat::before {
+  --_: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 18 18">  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/></svg>');
 }
 
 .bi-share-fill::before {
@@ -226,123 +227,12 @@ a {
   --_: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 18 18">  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>');
 }
 
-/*
-
-sass scss:_ --watch
-
-*/
-body:not([_loaded]) :is(main, footer) {
-  display: none;
-}
-body[_game-state=start] start-screen {
-  display: block;
-}
-body[_game-state=game] game {
-  display: flex;
-}
-body[_game-state=game] nav {
-  display: none;
+.bi-arrow-left-short::before {
+  --_: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 18 18">  <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/></svg>');
 }
 
-titlebar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-inline: 0.6rem;
-  overflow: hidden;
-  -webkit-app-region: drag;
-  app-region: drag;
-  position: fixed;
-  inset-block-start: env(titlebar-area-y, 0);
-  inset-inline-start: env(titlebar-area-x, 0);
-  width: env(titlebar-area-width, 0);
-  height: env(titlebar-area-height, 0);
-  background-color: var(--col-18);
-}
-titlebar button {
-  -webkit-app-region: no-drag;
-  app-region: no-drag;
-  background: none;
-  display: grid;
-  place-items: center;
-  height: 100%;
-  aspect-ratio: 1;
-  border: none;
-  border-radius: 0.3rem;
-  padding: 0;
-  font-size: env(titlebar-area-height)/2;
-  transition: background-color 0.3s;
-}
-titlebar button:hover {
-  background-color: var(--col-4);
-}
-
-nav {
-  padding: 0.5rem;
-  margin: 0.5rem;
-  background-color: var(--green-bg);
-  font-weight: bolder;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  border-radius: 1rem;
-}
-nav > * {
-  padding: 0;
-  aspect-ratio: 1/1;
-  box-sizing: content-box;
-  place-items: center;
-  inline-size: 2.3rem;
-  aspect-ratio: 1;
-  font-size: 1.4rem;
-  background-color: var(--green-bg);
-  border: none;
-  border-radius: 0.7rem;
-  color: var(--col-f);
-  vertical-align: top;
-  transition: background-color 0.3s, color 0.3s;
-}
-nav > *:not([hidden]) {
-  display: grid;
-}
-nav > *:hover {
-  background-color: var(--green);
-  color: var(--col-0);
-}
-nav > *:not(:last-child) {
-  position: relative;
-}
-nav > *:not(:last-child)::after {
-  content: "";
-  background-color: var(--green-bg);
-  margin: 0.35rem 0;
-  block-size: calc(100% - 0.35rem * 2);
-  inline-size: 4px;
-  border-radius: 1rem;
-  position: absolute;
-  inset-inline-end: 0;
-  transform: translateX(8px);
-}
-@media all and (display-mode: fullscreen) {
-  nav > *[_action=toggleFullscreen] disable-fullscreen {
-    display: grid;
-  }
-}
-@media not all and (display-mode: fullscreen) {
-  nav > *[_action=toggleFullscreen] enable-fullscreen {
-    display: grid;
-  }
-}
-@media all and (display-mode: standalone) {
-  nav > *[_action=openInApp] {
-    display: none;
-  }
-}
-
-main {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+.bi-arrow-clockwise::before {
+  --_: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 18 18">  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>');
 }
 
 start-screen {
@@ -387,6 +277,9 @@ mobile-warning warning-sign {
   place-items: center;
   border-radius: 0.3em;
   background-color: var(--red-bg);
+}
+mobile-warning warning-sign::before {
+  content: "⚠";
 }
 mobile-warning :is(warning-sign, h2) {
   color: var(--red);
@@ -529,6 +422,9 @@ start-quiz button:hover {
   background-color: var(--green-bg);
   color: var(--green);
 }
+start-quiz button:disabled {
+  cursor: not-allowed;
+}
 
 game {
   display: none;
@@ -538,53 +434,84 @@ game {
   user-select: none;
 }
 game :is(before-canvas, after-canvas) {
-  background-color: var(--col-2);
   display: flex;
+  background-color: var(--col-2);
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
   place-items: center;
-  min-block-size: 4rem;
+  padding: 0.5rem;
   font-size: 2rem;
 }
 game before-canvas {
+  z-index: 1;
+  margin: 1rem;
+  border-radius: 1.1rem;
+}
+game before-canvas :is(left-side, right-side) {
   display: flex;
   align-items: center;
-  padding-inline: 0.45rem;
+  gap: 0.5rem;
 }
-game before-canvas score {
-  display: flex;
-  gap: 0.2em;
-}
-game before-canvas score > * {
-  display: flex;
-  align-items: center;
-  padding: 0 0.5rem;
-  padding-block-end: 0.15rem;
-  block-size: fit-content;
+game before-canvas :is(left-side, right-side) > * {
+  display: block;
+  --padding: 0 0.5rem 0.15rem;
+  padding: var(--padding);
+  font-size: inherit;
+  block-size: 100%;
   overflow: hidden;
   border-radius: 0.8rem;
-}
-game before-canvas score correct-incorrect {
-  gap: 0.2rem;
   background-color: var(--col-3);
 }
-game before-canvas score correct-incorrect correct {
+game before-canvas :is(left-side, right-side) :is(back-arrow, restart) {
+  position: relative;
+  font-size: inherit;
+  display: inline-block;
+  min-inline-size: 1em;
+  transition: background-color 0.3s;
+}
+game before-canvas :is(left-side, right-side) :is(back-arrow, restart):hover {
+  background-color: var(--col-4);
+}
+game before-canvas :is(left-side, right-side) :is(back-arrow, restart) button {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: 0;
+  font-family: inherit;
+  padding: 0;
+  min-inline-size: 3rem;
+  border: none;
+  border-radius: inherit;
+  background: none;
+  font-size: inherit;
+}
+game before-canvas :is(left-side, right-side) back-arrow button::before {
+  font-size: 3rem;
+}
+game before-canvas :is(left-side, right-side) correct-incorrect {
+  display: flex;
+  gap: 0.2rem;
+}
+game before-canvas :is(left-side, right-side) correct-incorrect correct {
   color: var(--green);
 }
-game before-canvas score correct-incorrect incorrect {
+game before-canvas :is(left-side, right-side) correct-incorrect incorrect {
   color: var(--red);
 }
-game before-canvas score remaining {
-  display: inline-block;
+game before-canvas :is(left-side, right-side) remaining {
+  display: block;
   color: var(--blue);
   background-color: var(--blue-bg);
-  min-inline-size: 1.5em;
+  min-inline-size: 1.2em;
   text-align: center;
 }
-game before-canvas score percentage {
+game before-canvas :is(left-side, right-side) percentage {
   color: var(--green);
   background-color: var(--green-bg);
+}
+game before-canvas :is(left-side, right-side) percentage::after {
+  content: "%";
 }
 game before-canvas flag-and-country {
   flex-grow: 1;
@@ -594,15 +521,20 @@ game before-canvas flag-and-country {
   gap: 1rem;
 }
 game before-canvas flag-and-country flag {
-  display: inline-block;
   inline-size: 5rem;
   block-size: 3rem;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
 }
+game before-canvas flag-and-country flag:not([hidden]) {
+  display: inline-block;
+}
 game canvas-container {
-  position: relative;
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
   flex-grow: 1;
   flex-direction: column;
 }
@@ -611,6 +543,284 @@ game canvas-container canvas {
   position: absolute;
   inline-size: 100%;
   block-size: 100%;
+}
+
+end-screen {
+  display: none;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+end-screen you-have {
+  font-size: 1.5rem;
+}
+end-screen score {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+end-screen score :is(correct, total) {
+  display: inline-block;
+  min-inline-size: 1.2em;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 0.1em 0.2em;
+  border-radius: 0.4em;
+}
+end-screen score correct {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+end-screen score total {
+  color: var(--blue);
+  background-color: var(--blue-bg);
+}
+end-screen score out-of {
+  font-size: 1.5rem;
+}
+end-screen score-explanation {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-inline: 1rem;
+}
+end-screen score-explanation incorrect {
+  display: inline-block;
+  font-weight: bold;
+  color: var(--red);
+  background-color: var(--red-bg);
+  min-inline-size: 1.2em;
+  border-radius: 0.4em;
+  text-align: center;
+  padding: 0.1em 0.2em;
+}
+end-screen percentage-container {
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+}
+end-screen percentage-container percentage {
+  font-weight: bold;
+  border-radius: 0.4em;
+  padding: 0.1em 0.2em;
+}
+end-screen percentage-container percentage[data-evaluation=good] {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+end-screen percentage-container percentage[data-evaluation=medium] {
+  color: var(--orange);
+  background-color: var(--orange-bg);
+}
+end-screen percentage-container percentage[data-evaluation=bad] {
+  color: var(--red);
+  background-color: var(--red-bg);
+}
+end-screen percentage-container percentage::after {
+  content: "%";
+}
+end-screen continents-explanation {
+  margin-inline: 1rem;
+  margin-block-start: 0.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em 0.1em;
+}
+end-screen continents-explanation continents {
+  display: contents;
+}
+end-screen continents-explanation continents continent-name {
+  padding: 0.1em 0.25em;
+  color: var(--blue);
+  background-color: var(--blue-bg);
+  border-radius: 0.4em;
+}
+end-screen :is(conjunction[_text*=comma], point) {
+  margin-inline-start: -0.12em;
+}
+end-screen question-answer-mode {
+  margin-inline: 1rem;
+  margin-block: 0.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em 0.1em;
+}
+end-screen question-answer-mode :is(question-mode, answer-mode) {
+  border-radius: 0.4em;
+  padding: 0.1em 0.2em;
+}
+end-screen question-answer-mode question-mode {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+end-screen question-answer-mode answer-mode {
+  color: var(--orange);
+  background-color: var(--orange-bg);
+}
+end-screen button {
+  padding: 0.5em 4rem;
+  border: none;
+  border-radius: 0.4em;
+  background-color: var(--green);
+  min-inline-size: 25rem;
+  font-size: 1.5rem;
+  color: var(--col-0);
+  font-weight: bold;
+  font-family: inherit;
+  text-align: center;
+  position: relative;
+  transition: color 0.3s, background-color 0.3s;
+}
+end-screen button icon {
+  font-size: 2rem;
+  display: inline-block;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  block-size: 100%;
+  inline-size: 3rem;
+  display: grid;
+  place-items: center;
+}
+end-screen button[_action=backToStartScreen] icon {
+  font-size: 3rem;
+}
+end-screen button:hover {
+  background-color: var(--green-bg);
+  color: var(--green);
+}
+
+/*
+
+sass scss:_ --watch
+
+*/
+body:not([_loaded]) :is(main, footer) {
+  display: none;
+}
+body[_game-state=start] start-screen {
+  display: block;
+}
+body[_game-state=game] game {
+  display: flex;
+}
+body[_game-state=game] nav {
+  display: none;
+}
+body[_game-state=end] end-screen {
+  display: flex;
+}
+
+titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.6rem;
+  overflow: hidden;
+  -webkit-app-region: drag;
+  app-region: drag;
+  position: fixed;
+  inset-block-start: env(titlebar-area-y, 0);
+  inset-inline-start: env(titlebar-area-x, 0);
+  width: env(titlebar-area-width, 0);
+  height: env(titlebar-area-height, 0);
+  background-color: var(--col-18);
+  user-select: none;
+}
+titlebar button {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+  background: none;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0;
+  font-size: env(titlebar-area-height)/2;
+  transition: background-color 0.3s;
+}
+titlebar button:hover {
+  background-color: var(--col-4);
+}
+
+nav {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  background-color: var(--green-bg);
+  font-weight: bolder;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-radius: 1rem;
+}
+nav > * {
+  padding: 0;
+  aspect-ratio: 1/1;
+  box-sizing: content-box;
+  place-items: center;
+  inline-size: 2.3rem;
+  aspect-ratio: 1;
+  font-size: 1.4rem;
+  background-color: var(--green-bg);
+  border: none;
+  border-radius: 0.7rem;
+  color: var(--col-f);
+  vertical-align: top;
+  transition: background-color 0.3s, color 0.3s;
+}
+nav > *:not([hidden]) {
+  display: grid;
+}
+nav > *:hover {
+  background-color: var(--green);
+  color: var(--col-0);
+}
+nav > *:not(:last-child) {
+  position: relative;
+}
+nav > *:not(:last-child)::after {
+  content: "";
+  background-color: var(--green-bg);
+  margin: 0.35rem 0;
+  block-size: calc(100% - 0.35rem * 2);
+  inline-size: 4px;
+  border-radius: 1rem;
+  position: absolute;
+  inset-inline-end: 0;
+  transform: translateX(8px);
+}
+@media all and (display-mode: fullscreen) {
+  nav > *[_action=toggleFullscreen] disable-fullscreen {
+    display: grid;
+  }
+}
+@media not all and (display-mode: fullscreen) {
+  nav > *[_action=toggleFullscreen] enable-fullscreen {
+    display: grid;
+  }
+}
+@media all and (display-mode: standalone) {
+  nav > *[_action=openInApp] {
+    display: none;
+  }
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 noscript {
@@ -623,14 +833,23 @@ noscript {
   border-radius: 0.8rem;
 }
 
-footer {
+body footer {
   background-color: var(--col-2);
   padding: 0.3rem;
   text-align: center;
 }
-footer heart::before {
+body footer heart::before {
   content: "❤";
   color: var(--red);
+}
+body[_game-state=game] footer {
+  position: absolute;
+  inset-block-end: 0.7rem;
+  padding-inline: 0.5em;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  border-radius: 0.7rem;
+  width: fit-content;
 }
 
 /*# sourceMappingURL=style.css.map */

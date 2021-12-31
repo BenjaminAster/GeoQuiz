@@ -6,9 +6,12 @@ import {
 	setLanguage,
 	getLanguage,
 	storage,
+	setColorScheme,
 } from "./utils.js";
 
 import "./gameStart.js";
+
+import { installPromptEvent } from "./pwa.js";
 
 /*
 
@@ -26,61 +29,11 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 )?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 
 {
-	/// nav buttons & PWA:
+	/// nav buttons:
 
-	let installPromptEvent: any;
+	setColorScheme(storage.get("colorScheme") ?? "dark");
 
-	{
-		const showOpenInAppButton = () => {
-			document.querySelector<HTMLElement>("[_action=installApp]").hidden = true;
-			const button = document.querySelector<HTMLElement>("[_action=openInApp]");
-			button.hidden = false;
-			button.addEventListener("click", () => {
-				window.open("web+geographyquiz://", "_blank");
-			});
-		};
-
-		if (storage.get("isInstalled") === true) {
-			showOpenInAppButton();
-		}
-
-		window.addEventListener("beforeinstallprompt", (event: Event) => {
-			storage.set("isInstalled", false);
-			installPromptEvent = event;
-			document.querySelector<HTMLElement>("[_action=installApp").hidden = false;
-		});
-
-		window.addEventListener("appinstalled", (event: Event) => {
-			storage.set("isInstalled", true);
-			showOpenInAppButton();
-		});
-
-		if (new URL(location.href).searchParams.has("url")) {
-			history.replaceState(history.state, document.title, "./");
-		}
-	}
-
-	const setColorScheme = (scheme?: string) => {
-		const colorSchemes = ["dark", "light"];
-
-		const colorScheme = scheme ? (
-			colorSchemes.includes(scheme) ? scheme : colorSchemes[0]
-		) : (colorSchemes[
-			+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))
-		]);
-
-		storage.set("color-scheme", colorScheme);
-
-		document.querySelector<HTMLMetaElement>("meta[name=color-scheme]").content = colorScheme;
-		document.documentElement.setAttribute("color-scheme", colorScheme);
-		document.querySelector<HTMLMetaElement>("meta[name=theme-color]").content = (
-			window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")
-		).trim();
-	}
-
-	setColorScheme(storage.get("color-scheme") ?? "dark");
-
-	const actions: Record<string, () => void> = {
+	const actions: Record<string, Function> = {
 		toggleTheme() {
 			setColorScheme();
 		},
@@ -97,7 +50,9 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		async installApp() {
 			installPromptEvent?.prompt?.();
 		},
-		async refresh() {
+		async refresh(clearLocalStorage: boolean = true) {
+			if (clearLocalStorage) localStorage.clear();
+
 			await new Promise<void>(async (resolve: () => void) => {
 				window.setTimeout(resolve, 500);
 				window.caches.delete(
@@ -126,14 +81,14 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 
 	for (const [actionName, func] of Object.entries(actions)) {
 		const buttons: Element[] = [...document.querySelectorAll(`[_action="${actionName}"]`)];
-		buttons.forEach((button: Element) => button.addEventListener("click", func));
+		buttons.forEach((button: Element) => button.addEventListener("click", () => func()));
 	}
 
 	if (location.hostname === "localhost") {
 		window.addEventListener("keydown", (event: KeyboardEvent) => {
 			if (event.key === "F5" && !event.ctrlKey) {
 				event.preventDefault();
-				actions.refresh();
+				actions.refresh(false);
 			}
 		});
 	}

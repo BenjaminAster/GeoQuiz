@@ -1,6 +1,6 @@
 
-import { CountriesData, enclaves } from "./game.js";
 
+import type { CountriesData } from "./game.js";
 
 let data: CountriesData;
 
@@ -9,43 +9,82 @@ const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
 
 let colors: Record<string, string>;
 
-let mouseX: number = 0;
-let mouseY: number = 0;
+let mouseX: number;
+let mouseY: number;
 
-let centerX: number = 0;
-let centerY: number = 0;
-let zoom: number = 0;
-const scalePerZoom: number = 1.5;
+let centerX: number;
+let centerY: number;
+let zoom: number;
+const scalePerZoom: number = 1.8;
 
 let countryClicked: (name: string) => void;
-let clicked: boolean = false;
+let clicked: boolean;
 
-let correctCountries = new Set<string>();
-let incorrectCountries = new Set<string>();
+let correctCountries: Set<string>;
+let incorrectCountries: Set<string>;
 
-export default function initWorldMap(countriesData: CountriesData) {
+let running: boolean;
+
+let newGameCallback: Function;
+
+const resize = () => {
+	if (running) {
+		canvas.width = canvas.clientWidth;
+		canvas.height = canvas.clientHeight;
+	}
+};
+
+
+// const onNewGame = (callback: Function) => {
+// 	newGameCallback = callback;
+// };
+
+// let _id: number;
+
+export const newGame = () => {
+	mouseX = 0;
+	mouseY = 0;
+
+	centerX = 0;
+	centerY = 0;
+	zoom = 0;
+
+	clicked = false;
+
+	correctCountries = new Set<string>();
+	incorrectCountries = new Set<string>();
+
+	running = true;
+
+	newGameCallback?.();
+
+	resize();
+
+	// _id = Math.random();
+}
+
+export default (countriesData: CountriesData) => {
 	data = countriesData;
 
 	const getColor = (color: string) => (
-		window.getComputedStyle(document.documentElement)?.getPropertyValue(color)
+		window.getComputedStyle(document.documentElement).getPropertyValue(color)
 	).trim();
 
 	{
-		colors = {
-			background: getColor("--col-18"),
-			foreground: getColor("--col-f"),
-			gray: getColor("--col-3"),
-			green: getColor("--country-green"),
-			red: getColor("--country-red"),
+		const initColors = () => {
+			colors = {
+				background: getColor("--col-18"),
+				foreground: getColor("--col-f"),
+				gray: getColor("--col-3"),
+				green: getColor("--country-green"),
+				red: getColor("--country-red"),
+			};
 		};
+		initColors();
+		window.addEventListener("color-scheme-set", initColors);
 	}
 
 	{
-		const resize = () => {
-			canvas.width = canvas.clientWidth;
-			canvas.height = canvas.clientHeight;
-		};
-
 		resize();
 
 		window.addEventListener("resize", resize);
@@ -58,13 +97,18 @@ export default function initWorldMap(countriesData: CountriesData) {
 		window.addEventListener("pointermove", (event: MouseEvent) => {
 			if (prevX >= 0) {
 				mouseX = event.pageX - canvas.parentElement.offsetLeft;
-				mouseY = event.pageY - canvas.parentElement.offsetTop;
+				mouseY = event.pageY - canvas.parentElement.offsetTop - (
+					// @ts-ignore
+					navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0
+				);
+
+				const dragMultiplier: number = 2;
 
 				if (event.buttons === 1) {
-					centerX -= ((event.pageX - prevX) / (canvas.width / 2)) / (
+					centerX -= dragMultiplier * ((event.pageX - prevX) / (canvas.width / 2)) / (
 						(scalePerZoom ** zoom) / 180
 					);
-					centerY += ((event.pageY - prevY) / (canvas.height / 2)) / (
+					centerY += dragMultiplier * ((event.pageY - prevY) / (canvas.height / 2)) / (
 						(canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180
 					);
 
@@ -78,9 +122,14 @@ export default function initWorldMap(countriesData: CountriesData) {
 		});
 	}
 
-	window.addEventListener("wheel", (event: WheelEvent) => {
+	canvas.addEventListener("wheel", (event: WheelEvent) => {
+		event.preventDefault();
+
 		const x: number = event.pageX - canvas.parentElement.offsetLeft;
-		const y: number = event.pageY - canvas.parentElement.offsetTop;
+		const y: number = event.pageY - canvas.parentElement.offsetTop - (
+			// @ts-ignore
+			navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0
+		);
 
 		const pointX: number = ((x / (canvas.width / 2) - 1) / (
 			(scalePerZoom ** zoom) / 180
@@ -89,7 +138,7 @@ export default function initWorldMap(countriesData: CountriesData) {
 			(canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180
 		)) + centerY;
 
-		let delta = event.deltaY / 100;
+		let delta = Math.min(Math.max(event.deltaY * 5, -100), 100) / 100;
 		zoom -= delta;
 
 		if (zoom < 0) {
@@ -99,11 +148,11 @@ export default function initWorldMap(countriesData: CountriesData) {
 
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
-	});
+	}, { passive: false });
 
-	canvas.addEventListener("wheel", (event: WheelEvent) => {
-		event.preventDefault();
-	});
+	// canvas.addEventListener("wheel", (event: WheelEvent) => {
+	// 	event.preventDefault();
+	// });
 
 	{
 		const draw = () => {
@@ -173,7 +222,21 @@ export default function initWorldMap(countriesData: CountriesData) {
 
 			clicked = false;
 
-			window.requestAnimationFrame(() => setTimeout(draw));
+			if (running) {
+				// setTimeout(() => {
+				window.requestAnimationFrame(draw);
+				// }, 1000);
+			} else {
+				// onNewGame(() => {
+				// 	window.requestAnimationFrame(draw);
+				// 	// setTimeout(() => {
+				// 	// });
+				// });
+
+				newGameCallback = () => {
+					window.requestAnimationFrame(draw);
+				};
+			}
 		};
 
 		draw();
@@ -203,19 +266,24 @@ export default function initWorldMap(countriesData: CountriesData) {
 			};
 		});
 	}
-
 };
 
-export async function awaitCountryClick(): Promise<string> {
+export const stopDrawing = () => {
+	running = false;
+	countryClicked(null);
+};
+
+export const awaitCountryClick = async (): Promise<string> => {
 	return await new Promise<string>((resolve: (name: string) => void) => {
 		countryClicked = resolve;
 	});
 }
 
-export function markCountry(name: string, correct: boolean) {
+export const markCountry = (name: string, correct: boolean) => {
 	if (correct) {
 		correctCountries.add(name);
 	} else {
 		incorrectCountries.add(name);
 	}
 }
+

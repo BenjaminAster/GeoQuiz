@@ -5,12 +5,15 @@ export const storage = {
 			return JSON.parse(localStorage.getItem(`${new URL(document.baseURI).pathname}:${key}`));
 		}
 		catch (error) {
-			console.error(error);
+			console.info(error);
 			return null;
 		}
 	},
 	set(key, value) {
 		localStorage.setItem(`${new URL(document.baseURI).pathname}:${key}`, JSON.stringify(value));
+	},
+	remove(key) {
+		localStorage.removeItem(`${new URL(document.baseURI).pathname}:${key}`);
 	},
 };
 let chosenLanguage = storage.get("language") || languages[0];
@@ -23,19 +26,19 @@ export const translateElement = (element) => {
 };
 export const getTemplateCloner = (container) => {
 	const templateElement = container.querySelector("template");
-	templateElement.remove();
 	return (contentObj) => {
 		const clone = templateElement.content.cloneNode(true);
 		for (const [key, value] of Object.entries(contentObj ?? {})) {
+			if (!value)
+				continue;
 			let element = clone.querySelector(`[_content="${key}"]`);
 			if (element) {
 				element.setAttribute("_text", value);
 			}
 			else {
 				element = clone.querySelector(`[_notranslate="${key}"]`);
-				if (element) {
+				if (element)
 					element.innerHTML = value;
-				}
 			}
 		}
 		return translateElement(clone);
@@ -48,6 +51,16 @@ export const setLanguage = (language) => {
 	translateElement(document.body);
 	document.title = translations.title[chosenLanguage];
 	storage.set("language", chosenLanguage);
+};
+export const setColorScheme = (scheme) => {
+	const colorSchemes = ["dark", "light"];
+	const colorScheme = scheme ? (colorSchemes.includes(scheme) ? scheme : colorSchemes[0]) : (colorSchemes[+!colorSchemes.indexOf(document.documentElement.getAttribute("color-scheme"))]);
+	storage.set("colorScheme", colorScheme);
+	document.querySelector("meta[name=color-scheme]").content = colorScheme;
+	document.documentElement.setAttribute("color-scheme", colorScheme);
+	document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
+	const event = new CustomEvent("color-scheme-set");
+	window.dispatchEvent(event);
 };
 export const getLanguage = () => chosenLanguage;
 export { languages } from "./translations.js";

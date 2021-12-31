@@ -1,4 +1,9 @@
 
+export const languages = [
+	"en",
+	"de",
+];
+
 export default {
 	title: {
 		en: "Geography Quiz",
@@ -90,8 +95,8 @@ export default {
 	},
 	answerMode: {
 		chooseMode: {
-			en: "Choose how you want to answer:",
-			de: "Wähle aus, wie du antworten willst:",
+			en: "Choose what you want to do:",
+			de: "Wähle aus, was du machen willst:",
 		},
 		showOnMap: {
 			en: "find country on world map",
@@ -124,9 +129,70 @@ export default {
 			de: "Version",
 		}
 	},
+	endScreen: {
+		youHave: {
+			en: "You have",
+			de: "Du hast",
+		},
+		outOf: {
+			en: "out of",
+			de: "von",
+		},
+		countriesExplanation: {
+			en: "countries right and",
+			de: "Länder richtig und",
+		},
+		percentageExplanation: {
+			en: "wrong. <br /> That makes a percentage of",
+			de: "falsch. <br /> Das macht einen Prozentsatz von",
+		},
+		yourContinentsWere: {
+			en: "Your continents were",
+			de: "Deine Kontinente waren",
+		},
+		and: {
+			en: "and",
+			de: "und",
+		},
+		comma: {
+			en: ",",
+			de: ",",
+		},
+		questionModeExplanation: {
+			en: "You were shown",
+			de: "Dir wurden",
+		},
+		questionModes: {
+			countryName: {
+				en: "the country names",
+				de: "die Ländernamen",
+			},
+			countryNameAndFlag: {
+				en: "the country names and flags",
+				de: "die Ländernamen und Flaggen",
+			},
+			flag: {
+				en: "the flags",
+				de: "die Flaggen",
+			},
+		},
+		answerModeExplanation: {
+			en: "and you had to",
+			de: "angezeigt und du musstest",
+		},
+		answerModes: {
+			showOnMap: {
+				en: "find the countries on world map",
+				de: "die Länder auf der Weltkarte finden",
+			},
+		},
+		restartQuiz: {
+			en: "Restart quiz",
+			de: "Quiz neu starten",
+		},
+		backToStartScreen: {
+			en: "Back to start screen",
+			de: "Zurück zur Startseite",
+		},
+	},
 };
-
-export const languages = [
-	"en",
-	"de",
-];

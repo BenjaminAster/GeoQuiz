@@ -1,5 +1,16 @@
 
-import initWorldMap, { awaitCountryClick, markCountry } from "./worldMap.js";
+import initWorldMap, {
+	newGame,
+	awaitCountryClick,
+	markCountry,
+	stopDrawing,
+} from "./worldMap.js";
+
+import {
+	getTemplateCloner,
+} from "./utils.js";
+
+import translations from "./translations.js";
 
 export type CountriesData = {
 	name: Record<string, string>,
@@ -9,28 +20,77 @@ export type CountriesData = {
 	coordinates: [number, number][][],
 }[];
 
-export const enclaves: string[] = [
-	"Lesotho",
-	"San Marino",
-	"Vatican City",
-];
+let firstGamePlayed: boolean = false;
+let running: boolean = false;
 
-export const countriesWithEnclaves: string[] = [
-	"South Africa",
-	"Italy",
-];
+const beforeCanvasEl: HTMLElement = document.querySelector("game before-canvas");
 
-export default async (data: CountriesData, settings: {
+let onNewGame: Function;
+
+beforeCanvasEl.querySelector<HTMLButtonElement>("back-arrow button").addEventListener(
+	"click", () => {
+		running = false;
+		stopGame();
+
+		history.back();
+	}
+);
+
+beforeCanvasEl.querySelector<HTMLButtonElement>("restart button").addEventListener(
+	"click", () => {
+
+		// setTimeout(() => {
+		// 	requestAnimationFrame(() => {
+		running = false;
+		stopGame();
+
+		onNewGame?.();
+		// setTimeout(() => {
+		// 	requestAnimationFrame(() => {
+		// 		game(data, settings);
+		// 	});
+		// });
+		// 	});
+		// });
+	}
+);
+
+document.querySelector<HTMLButtonElement>("end-screen [_action=restartQuiz]").addEventListener(
+	"click", () => {
+		// running = false;
+		// stopGame();
+
+		onNewGame?.();
+	},
+);
+
+document.querySelector<HTMLButtonElement>("end-screen [_action=backToStartScreen]").addEventListener(
+	"click", () => {
+		// running = false;
+		// stopGame();
+
+		history.back();
+	},
+);
+
+const game = async (data: CountriesData, settings: {
 	continents: string[],
 	questionMode: string,
 	answerMode: string,
 	language: string,
-}) => {
+}): Promise<void> => {
+	document.body.setAttribute("_game-state", "game");
+
 	(document.querySelector("game after-canvas") as HTMLElement).style.display = "none";
 
-	initWorldMap(data);
+	newGame();
 
-	function shuffleArray(array) {
+	if (!firstGamePlayed) {
+		initWorldMap(data);
+		firstGamePlayed = true;
+	}
+
+	const shuffleArray = (array) => {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[array[i], array[j]] = [array[j], array[i]];
@@ -45,21 +105,38 @@ export default async (data: CountriesData, settings: {
 	);
 
 	let correctCountries: number = 0;
-	const beforeCanvasEl: HTMLElement = document.querySelector("game before-canvas");
+
+	const whatToShow: Record<string, boolean> = (() => {
+		switch (settings.questionMode) {
+			case ("countryName"): return { countryName: true };
+			case ("flag"): return { flag: true };
+			case ("countryNameAndFlag"): return { countryName: true, flag: true };
+		}
+	})();
+
+	beforeCanvasEl.querySelector<HTMLElement>("flag").hidden = !whatToShow.flag;
+	beforeCanvasEl.querySelector<HTMLElement>("country").hidden = !whatToShow.countryName;
+
+
+	running = true;
+
+	onNewGame = () => {
+		requestAnimationFrame(() => {
+			game(data, settings);
+		});
+	}
 
 	for (const [i, country] of countries.entries()) {
+		// if (!isRunning) return stopGame();
+		if (!running) return;
+
 		beforeCanvasEl.querySelector("remaining").textContent = (countries.length - i).toString();
 		beforeCanvasEl.querySelector("percentage").textContent = Math.floor(
 			correctCountries / countries.length * 100
-		).toString() + "%";
+		).toString();
 
-		const whatToShow: Record<string, boolean> = (() => {
-			switch (settings.questionMode) {
-				case ("countryName"): return { countryName: true };
-				case ("flag"): return { flag: true };
-				case ("countryNameAndFlag"): return { countryName: true, flag: true };
-			}
-		})();
+		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
+		beforeCanvasEl.querySelector("incorrect").textContent = (i - correctCountries).toString();
 
 		if (whatToShow.countryName) {
 			document.querySelector("game country").textContent = country.name[settings.language];
@@ -78,14 +155,67 @@ export default async (data: CountriesData, settings: {
 		if (country.name.en === await awaitCountryClick()) {
 			markCountry(country.name.en, true);
 			correctCountries++;
-		} else {
+		} else if (running) {
 			markCountry(country.name.en, false);
 		}
 
-
-		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
-		beforeCanvasEl.querySelector("incorrect").textContent = (i + 1 - correctCountries).toString();
-
 		URL.revokeObjectURL(flagBlobURI);
 	}
+
+	stopDrawing();
+
+	document.body.setAttribute("_game-state", "end");
+
+	{
+		document.querySelector("end-screen correct").textContent = correctCountries.toString();
+
+		document.querySelector("end-screen total").textContent = countries.length.toString();
+
+		document.querySelector("end-screen incorrect").textContent = (
+			countries.length - correctCountries
+		).toString();
+
+		const fraction: number = correctCountries / countries.length;
+		document.querySelector("end-screen percentage").textContent = Math.floor(
+			fraction * 100
+		).toString();
+
+		document.querySelector("end-screen percentage").setAttribute("data-evaluation", (
+			(fraction > .9) ? "good" : (fraction > .7) ? "medium" : "bad"
+		));
+
+		{
+			const continentsContainer: HTMLElement = document.querySelector("end-screen continents");
+			const getClone = getTemplateCloner(continentsContainer);
+
+			continentsContainer.querySelectorAll(":scope > :not(template)").forEach(
+				(element: HTMLElement) => element.remove()
+			);
+
+			for (const [i, continent] of settings.continents.entries()) {
+				const clone: DocumentFragment = getClone({
+					conjunction: i ? (
+						(i < settings.continents.length - 1) ? "endScreen.comma" : "endScreen.and"
+					) : null,
+					continent: "continents." + continent,
+				});
+
+				continentsContainer.append(clone);
+			}
+		}
+
+		document.querySelector("end-screen question-mode").textContent = (
+			translations.endScreen.questionModes[settings.questionMode][settings.language]
+		);
+
+		document.querySelector("end-screen answer-mode").textContent = (
+			translations.endScreen.answerModes[settings.answerMode][settings.language]
+		);
+	}
+};
+
+export default game;
+
+export const stopGame = () => {
+	stopDrawing();
 };

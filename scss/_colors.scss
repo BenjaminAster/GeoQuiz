@@ -43,10 +43,13 @@ $toLight: black;
 		--red: #{$red};
 		--red-bg: #{rgba($red, $bgPercentage)};
 
+		$orange: orange;
+		--orange: #{$orange};
+		--orange-bg: #{rgba($orange, $bgPercentage)};
+
 		--country-green: #0d4;
 		--country-red: #{$red};
-		
-		// --transparent-bg: #1118;
+
 		--transparent-bg: #{rgba($fromDark, 50%)};
 		--transparent-fg: #{rgba($toDark, 7%)};
 
@@ -56,18 +59,23 @@ $toLight: black;
 		--blue: #{$blue};
 		--blue-bg: #{rgba($blue, $bgPercentage)};
 
-		$green: seaGreen;
+		// $green: seaGreen;
+		$green: #062;
 		--green: #{$green};
 		--green-bg: #{rgba($green, $bgPercentage)};
 
-		$red: #f34;
+		$red: #d13;
 		--red: #{$red};
 		--red-bg: #{rgba($red, $bgPercentage)};
 
+		// $orange: #e70;
+		$orange: #a20;
+		--orange: #{$orange};
+		--orange-bg: #{rgba($orange, 10%)};
+
 		--country-green: #5e7;
 		--country-red: #f55;
-		
-		// --transparent-bg: #eee8;
+
 		--transparent-bg: #{rgba($fromLight, 50%)};
 		--transparent-fg: #{rgba($toLight, 7%)};
 

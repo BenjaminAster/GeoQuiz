@@ -12,8 +12,6 @@
 	<meta name="robots" content="all" />
 	<meta name="description"
 		content="Test your knowledge about geography with this geography quiz!" />
-	<link rel="apple-touch-icon" href="https://benjaminaster.com/media/white-circle.png" />
-	<link rel="manifest" href="./manifest.webmanifest" />
 
 	<link rel="icon" href="https://benjaminaster.com/circles/green.svg" />
 	<link rel="stylesheet" href="./_/style.css" />
@@ -22,8 +20,11 @@
 	<link rel="modulepreload" href="./_/gameStart.js" />
 	<link rel="modulepreload" href="./_/translations.js" />
 	<link rel="modulepreload" href="./_/game.js" />
+	<link rel="modulepreload" href="./_/pwa.js" />
 	<link rel="modulepreload" href="./_/worldMap.js" />
-	<script defer type="module" src="./_/script.js"></script>
+	<script defer type="module" src="./_/main.js"></script>
+
+	<link rel="preload" as="fetch" crossorigin="anonymous" href="./_/data.min.json" />
 
 	<title>Geography Quiz</title>
 </head>
@@ -38,20 +39,22 @@
 	</titlebar>
 
 	<nav>
-		<button _action="toggleTheme" title="toggle color scheme">
+		<button _action="toggleTheme" title="Toggle color scheme">
 			<sun hidden class="bi-brightness-high-fill"></sun>
 			<moon hidden class="bi-moon-fill"></moon>
 		</button>
-		<button _action="popOutWindow" class="bi-window-stack" title="pop out window"></button>
-		<button _action="toggleFullscreen" title="toggle fullscreen">
+		<button _action="popOutWindow" class="bi-window-stack" title="Pop out window"></button>
+		<button _action="toggleFullscreen" title="Toggle fullscreen">
 			<enable-fullscreen hidden class="bi-fullscreen"></enable-fullscreen>
 			<disable-fullscreen hidden class="bi-fullscreen-exit"></disable-fullscreen>
 		</button>
-		<button _action="refresh" class="bi-arrow-clockwise" title="refresh site"></button>
-		<button _action="share" class="bi-share-fill" title="share"></button>
-		<button hidden _action="installApp" class="bi-app-indicator" title="install app"></button>
-		<button hidden _action="openInApp" class="bi-box-arrow-up-right" title="open in app"></button>
-		<a href="https://github.com/BenjaminAster/Geography-Quiz" class="bi-github" title="view on GitHub"></a>
+		<button _action="refresh" class="bi-arrow-repeat" title="Refresh site"></button>
+		<button _action="share" class="bi-share-fill" title="Share"></button>
+		<button hidden _action="installApp" class="bi-app-indicator" title="Install app"></button>
+		<button hidden _action="openInApp" class="bi-box-arrow-up-right" title="Open in app"></button>
+		<a href="https://github.com/BenjaminAster/Geography-Quiz"
+			class="bi-github" title="View on GitHub">
+		</a>
 	</nav>
 
 	<noscript>
@@ -70,7 +73,7 @@
 		<start-screen>
 			<mobile-warning>
 				<h2>
-					<warning-sign>⚠</warning-sign>
+					<warning-sign></warning-sign>
 					<span _text="mobileWarning.header"></span>
 				</h2>
 				<p _text="mobileWarning.text"></p>
@@ -98,7 +101,7 @@
 				</options-select>
 			</languages>
 
-			<continents class="all-selected">
+			<continents>
 				<h3 _text="continents.chooseContinent"></h3>
 
 				<label class="select-all">
@@ -159,28 +162,96 @@
 
 		<game>
 			<before-canvas>
-				<score>
-					<correct-incorrect>
-						<correct>0</correct>
-						&bull;
-						<incorrect>0</incorrect>
-					</correct-incorrect>
+				<left-side>
+					<back-arrow>
+						&nbsp;
+						<button title="Back to start screen" class="bi-arrow-left-short"></button>
+					</back-arrow>
 
-					<remaining></remaining>
-				</score>
+					<restart>
+						&nbsp;
+						<button title="Restart game" class="bi-arrow-clockwise"></button>
+					</restart>
+
+					<correct-incorrect title="Correct and incorrect countries">
+						<correct></correct>
+						&bull;
+						<incorrect></incorrect>
+					</correct-incorrect>
+				</left-side>
+
 				<flag-and-country>
 					<flag></flag>
 					<country></country>
 				</flag-and-country>
-				<score>
-					<percentage></percentage>
-				</score>
+
+				<right-side>
+					<remaining title="Remaining countries"></remaining>
+
+					<percentage title="Percentage of right countries"></percentage>
+				</right-side>
 			</before-canvas>
+
 			<canvas-container>
 				<canvas></canvas>
 			</canvas-container>
+
 			<after-canvas></after-canvas>
 		</game>
+
+		<end-screen>
+			<you-have _text="endScreen.youHave"></you-have>
+
+			<score>
+				<correct></correct>
+				<out-of _text="endScreen.outOf"></out-of>
+				<total></total>
+			</score>
+
+			<score-explanation>
+				<countries-explanation _text="endScreen.countriesExplanation"></countries-explanation>
+				<incorrect></incorrect>
+				<percentage-explanation _text="endScreen.percentageExplanation"></percentage-explanation>
+			</score-explanation>
+
+			<percentage-container>
+				<percentage data-evaluation></percentage>
+				<point>.</point>
+			</percentage-container>
+
+			<continents-explanation>
+				<your-continents-were _text="endScreen.yourContinentsWere"></your-continents-were>
+				<continents>
+					<template>
+						<conjunction _content="conjunction"></conjunction>
+						<continent-name _content="continent"></continent-name>
+					</template>
+				</continents>
+				<point>.</point>
+			</continents-explanation>
+
+			<question-answer-mode>
+				<question-mode-explanation _text="endScreen.questionModeExplanation">
+				</question-mode-explanation>
+				<question-mode></question-mode>
+				<answer-mode-explanation _text="endScreen.answerModeExplanation">
+				</answer-mode-explanation>
+				<answer-mode></answer-mode>
+				<point>.</point>
+			</question-answer-mode>
+
+			<button _action="restartQuiz">
+				<icon class="bi-arrow-clockwise"></icon>
+
+				<span _text="endScreen.restartQuiz"></span>
+			</button>
+
+			<button _action="backToStartScreen">
+				<icon class="bi-arrow-left-short"></icon>
+
+				<span _text="endScreen.backToStartScreen"></span>
+			</button>
+		</end-screen>
 	</main>
 
 	<footer>
