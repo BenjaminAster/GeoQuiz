@@ -1,6 +1,6 @@
 :root {
-	min-block-size: 100vh;
-	position: fixed;
+	// min-block-size: 100vh;
+	// position: fixed;
 	overflow: hidden;
 }
 
@@ -39,6 +39,15 @@ h5,
 h6,
 p {
 	margin: 0;
+}
+
+button {
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	background-color: transparent;
+	border: none;
+	padding: 0;
 }
 
 ::selection {

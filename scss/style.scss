@@ -32,10 +32,6 @@ body {
 			display: flex;
 		}
 
-		// :is(nav, footer) {
-		// 	display: none;
-		// }
-
 		nav {
 			display: none;
 		}
@@ -64,8 +60,6 @@ titlebar {
 	height: env(titlebar-area-height, 0);
 	background-color: var(--col-18);
 	user-select: none;
-
-	// font-size: calc(env(titlebar-area-height, 32px) / 2);
 
 	button {
 		-webkit-app-region: no-drag;
@@ -111,18 +105,14 @@ nav {
 		place-items: center;
 
 		inline-size: 2.3rem;
-		// inline-size: 5rem;
 		aspect-ratio: 1;
 
 		font-size: 1.4rem;
-		// font-size: 2.9rem;
 		background-color: var(--green-bg);
 		border: none {
 			radius: 0.7rem;
 		}
 		color: var(--col-f);
-
-		vertical-align: top;
 
 		transition: background-color 0.3s, color 0.3s;
 

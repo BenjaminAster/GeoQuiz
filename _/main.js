@@ -26,7 +26,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		async installApp() {
 			installPromptEvent?.prompt?.();
 		},
-		async refresh(clearLocalStorage = true) {
+		async update(clearLocalStorage = true) {
 			if (clearLocalStorage)
 				localStorage.clear();
 			await new Promise(async (resolve) => {

@@ -18,6 +18,7 @@ export type CountriesData = {
 	continent: string,
 	flagSVG: string,
 	coordinates: [number, number][][],
+	capitalCoordinates: [number, number],
 }[];
 
 let firstGamePlayed: boolean = false;
@@ -39,26 +40,15 @@ beforeCanvasEl.querySelector<HTMLButtonElement>("back-arrow button").addEventLis
 beforeCanvasEl.querySelector<HTMLButtonElement>("restart button").addEventListener(
 	"click", () => {
 
-		// setTimeout(() => {
-		// 	requestAnimationFrame(() => {
 		running = false;
 		stopGame();
 
 		onNewGame?.();
-		// setTimeout(() => {
-		// 	requestAnimationFrame(() => {
-		// 		game(data, settings);
-		// 	});
-		// });
-		// 	});
-		// });
 	}
 );
 
 document.querySelector<HTMLButtonElement>("end-screen [_action=restartQuiz]").addEventListener(
 	"click", () => {
-		// running = false;
-		// stopGame();
 
 		onNewGame?.();
 	},
@@ -66,8 +56,6 @@ document.querySelector<HTMLButtonElement>("end-screen [_action=restartQuiz]").ad
 
 document.querySelector<HTMLButtonElement>("end-screen [_action=backToStartScreen]").addEventListener(
 	"click", () => {
-		// running = false;
-		// stopGame();
 
 		history.back();
 	},
@@ -83,7 +71,18 @@ const game = async (data: CountriesData, settings: {
 
 	(document.querySelector("game after-canvas") as HTMLElement).style.display = "none";
 
-	newGame();
+	const whatToShow: Record<string, boolean> = (() => {
+		switch (settings.questionMode) {
+			case ("countryName"): return { country: true };
+			case ("flag"): return { flag: true };
+			case ("countryNameAndFlag"): return { country: true, flag: true };
+			case ("capital"): return { capital: true };
+		}
+	})();
+
+	newGame({
+		capital: settings.answerMode === "showCapitalOnMap",
+	});
 
 	if (!firstGamePlayed) {
 		initWorldMap(data);
@@ -106,17 +105,10 @@ const game = async (data: CountriesData, settings: {
 
 	let correctCountries: number = 0;
 
-	const whatToShow: Record<string, boolean> = (() => {
-		switch (settings.questionMode) {
-			case ("countryName"): return { countryName: true };
-			case ("flag"): return { flag: true };
-			case ("countryNameAndFlag"): return { countryName: true, flag: true };
-		}
-	})();
 
-	beforeCanvasEl.querySelector<HTMLElement>("flag").hidden = !whatToShow.flag;
-	beforeCanvasEl.querySelector<HTMLElement>("country").hidden = !whatToShow.countryName;
-
+	for (const type of ["flag", "country", "capital"]) {
+		beforeCanvasEl.querySelector<HTMLElement>(type).hidden = !whatToShow[type];
+	}
 
 	running = true;
 
@@ -127,7 +119,6 @@ const game = async (data: CountriesData, settings: {
 	}
 
 	for (const [i, country] of countries.entries()) {
-		// if (!isRunning) return stopGame();
 		if (!running) return;
 
 		beforeCanvasEl.querySelector("remaining").textContent = (countries.length - i).toString();
@@ -138,9 +129,8 @@ const game = async (data: CountriesData, settings: {
 		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
 		beforeCanvasEl.querySelector("incorrect").textContent = (i - correctCountries).toString();
 
-		if (whatToShow.countryName) {
-			document.querySelector("game country").textContent = country.name[settings.language];
-		}
+		if (whatToShow.country) document.querySelector("game country").textContent = country.name[settings.language];
+		if (whatToShow.capital) document.querySelector("game capital").textContent = country.capital[settings.language];
 
 		let flagBlobURI: string;
 

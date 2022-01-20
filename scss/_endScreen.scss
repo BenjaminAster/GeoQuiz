@@ -116,7 +116,7 @@ end-screen {
 
 	question-answer-mode {
 		margin-inline: 1rem;
-		margin-block: 0.5rem;
+		margin-block: 0.5rem 1rem;
 		font-size: 1.5rem;
 		display: flex;
 		flex-wrap: wrap;
@@ -129,21 +129,16 @@ end-screen {
 			padding: 0.1em 0.2em;
 		}
 
-		question-mode {
+		:is(question-mode, answer-mode) {
 			color: var(--green);
 			background-color: var(--green-bg);
-		}
-
-		answer-mode {
-			color: var(--orange);
-			background-color: var(--orange-bg);
 		}
 	}
 
 	button {
 		padding: 0.5em 4rem;
 		border: none;
-		border-radius: 0.4em;
+		border-radius: 1rem;
 		background-color: var(--green);
 		min-inline-size: 25rem;
 		font-size: 1.5rem;
@@ -162,7 +157,7 @@ end-screen {
 			inset-inline-start: 0;
 			inset-block: 0;
 			block-size: 100%;
-			inline-size: 3rem;
+			inline-size: 3.5rem;
 
 			display: grid;
 			place-items: center;

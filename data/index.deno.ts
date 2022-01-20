@@ -179,7 +179,7 @@ https://www.highcharts.com/docs/maps/map-collection
 	const borders = JSON.parse(await Deno.readTextFile(
 		"./geojson-maps.ash.ms/world-medium.geo.json"
 	));
-	const data = JSON.parse(await Deno.readTextFile("./wikipedia-data.json"));
+	const data = JSON.parse(await Deno.readTextFile("./wikipedia-data-2.json"));
 
 	const nameDifferences: Record<string, string> = {
 		"Danish Realm": "Denmark",
@@ -242,6 +242,7 @@ https://www.highcharts.com/docs/maps/map-collection
 					}
 				}
 			)),
+			capitalCoordinates: country.capitalCoordinates,
 		};
 
 		if (enclaves.includes(countryName)) {
@@ -258,4 +259,157 @@ https://www.highcharts.com/docs/maps/map-collection
 	await Deno.writeTextFile("./data.json", JSON.stringify(newData, null, "\t"));
 	await Deno.writeTextFile("../_/data.min.json", JSON.stringify(newData));
 })();
+
+(async () => {
+	const wikipediaData = JSON.parse(await Deno.readTextFile("./wikipedia-data.json"));
+
+	const parser: DOMParser = new DOMParser();
+
+	const exceptions: Record<string, Record<string, any>> = {
+		Singapore: {
+			capitalWikipediaURLName: "Singapore",
+			coordinates: [
+				1.290270, 103.851959
+			],
+		},
+		"Vatican City": {
+			capitalWikipediaURLName: "Vatican_City",
+			coordinates: [
+				41.904755, 12.454628
+			],
+		},
+		Switzerland: {
+			capitalWikipediaURLName: "Bern",
+			capital: {
+				en: "Bern",
+				de: "Bern",
+			},
+			coordinates: [
+				46.947222, 7.444608
+			],
+		},
+		Monaco: {
+			capitalWikipediaURLName: "Monte_Carlo",
+			coordinates: [
+				43.738418, 7.424615
+			],
+		},
+	};
+
+	const wikipediaData2 = await Promise.all(wikipediaData.map(async (country: any) => {
+		// const wikipediaData2 = await Promise.all([wikipediaData[0], wikipediaData[1], wikipediaData[2]].map(async (country: any) => {
+
+		// const latitude: string = document.querySelector(".geo-default .geo-dms .latitude")!?.textContent!?.trim()!;
+		// const longitude: string = document.querySelector(".geo-default .geo-dms .longitude")!?.textContent!?.trim()!;
+
+		let latitude: number, longitude: number;
+		let capitalWikipediaURLName: string = country.capitalWikipediaURLName;
+
+		if (country.name.en in exceptions) {
+			console.log("exception:", country.name.en);
+
+			capitalWikipediaURLName = exceptions[country.name.en].capitalWikipediaURLName as string;
+
+			latitude = exceptions[country.name.en].coordinates[0] as number;
+			longitude = exceptions[country.name.en].coordinates[1] as number;
+
+			if (exceptions[country.name.en].capital) {
+				country.capital = exceptions[country.name.en].capital;
+			}
+		}
+
+		const wikipediaURL: string = `https://en.wikipedia.org/wiki/${capitalWikipediaURLName}`;
+
+		console.log("fetching ", wikipediaURL);
+		await new Promise((resolve) => setTimeout(resolve, Math.random() * 30e3)); // deno can't handle too many requests
+		const pageHTML: string = await (await globalThis.fetch(wikipediaURL)).text();
+		console.log("fetched ", wikipediaURL);
+
+		const document: HTMLDocument = parser.parseFromString(pageHTML, "text/html") as HTMLDocument;
+
+		if (!(country.name.en in exceptions)) {
+			[latitude, longitude] = ["latitude", "longitude"].map((key: string, i: number) => {
+				let text: string = document.querySelector(`.geo-default .geo-dms .${key}`)!?.textContent!?.trim()!;
+
+				// if (text) {
+				// 	const array: number[] = text.split(/[°′″]/).slice(0, 3).map((value: string) => +value);
+
+				// 	console.log(array);
+
+				// 	const degrees: number = Math.floor((array[0] + (array[1] / 60) + ((array[2] / 3600) || 0)) * 1e8) / 1e8;
+
+				// 	console.log(degrees);
+
+				// 	return degrees;
+				// } else {
+				// 	text = document.querySelector(`.geo-default .geo-dec`)!?.textContent!?.trim()!;
+
+				// 	if (text) {
+				// 		console.log(text);
+				// 		return +text.split(" ")[i].slice(0, -2);
+				// 	} else {
+				// 		throw new Error(`Error: ${country.name.en}`);
+				// 	}
+				// };
+
+				const cardinals: Record<string, number> = {
+					N: 1,
+					S: -1,
+					E: 1,
+					W: -1,
+				};
+
+				if (text) {
+					let array: number[] | string[] = text.split(/[°′″]/);
+
+					const letter: string = array.pop()!;
+
+					array = array.map((value: string) => +value);
+
+
+					console.log(array);
+
+					const degrees: number = cardinals[letter] * (Math.floor((array[0] + (array[1] / 60) + ((array[2] / 3600) || 0)) * 1e8) / 1e8);
+
+					console.log(degrees);
+
+					return degrees;
+				} else {
+					text = document.querySelector(`.geo-default .geo-dec`)!?.textContent!?.trim()!;
+
+					if (text) {
+						console.log(text);
+
+						const values: string[] = text.split(" ")[i].split("°");
+
+						const degrees: number = cardinals[values[1]] * +values[0];
+
+						return degrees;
+					} else {
+						throw new Error(`Error: ${country.name.en}`);
+					}
+				};
+			});
+		}
+
+
+		// @ts-ignore
+		if (!latitude || !longitude) {
+			throw new Error(country.name.en);
+		} else {
+			// console.log(`${country.name.en} (${latitude}, ${longitude})`);
+		}
+
+		return {
+			...country,
+			capitalWikipediaURLName,
+			capitalCoordinates: [
+				latitude,
+				longitude,
+			],
+		};
+	}));
+
+	await Deno.writeTextFile("./wikipedia-data-2.json", JSON.stringify(wikipediaData2, null, "\t"));
+});
 

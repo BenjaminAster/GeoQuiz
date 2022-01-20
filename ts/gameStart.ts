@@ -103,6 +103,7 @@ let selectedQuestionMode: { _: string } = (() => {
 		"countryName",
 		"countryNameAndFlag",
 		"flag",
+		"capital",
 	];
 
 	const initialQuestionMode: string = questionModes.includes(
@@ -138,6 +139,7 @@ let selectedAnswerMode: { _: string } = (() => {
 
 	const answerModes: string[] = [
 		"showOnMap",
+		"showCapitalOnMap",
 	];
 
 	const initialAnswerMode: string = answerModes.includes(
@@ -197,22 +199,6 @@ let selectedAnswerMode: { _: string } = (() => {
 			stopGame();
 		}
 	});
-
-	// window.addEventListener("game-restarted", async () => {
-	// 	// stopGame();
-
-	// 	// startGame();
-
-
-	// 	document.body.setAttribute("_game-state", "start");
-	// 	stopGame();
-
-	// 	window.setTimeout(async () => {
-	// 		await startGame();
-	// 		history.pushState({ page: "game" }, document.title, "./");
-	// 	}, 1000);
-
-	// })
 
 	if (history.state?.page === "game") {
 		startGame();

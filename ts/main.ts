@@ -50,7 +50,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		async installApp() {
 			installPromptEvent?.prompt?.();
 		},
-		async refresh(clearLocalStorage: boolean = true) {
+		async update(clearLocalStorage: boolean = true) {
 			if (clearLocalStorage) localStorage.clear();
 
 			await new Promise<void>(async (resolve: () => void) => {

@@ -72,61 +72,6 @@ game {
 				}
 			}
 
-			// [_action="giveUp"] {
-			// 	// display: grid;
-			// 	// place-items: center;
-
-			// 	// position: absolute;
-			// 	// inset: 0;
-			// 	// display: inline-block;
-			// 	display: inline-flex;
-			// 	align-items: center;
-			// 	position: relative;
-			// 	font-family: inherit;
-
-			// 	padding: 0;
-
-			// 	min-inline-size: 3rem;
-			// 	background: var(--col-3);
-			// 	font-size: inherit;
-			// 	border: none;
-
-			// 	give-up-text {
-			// 		display: inline-block;
-			// 		padding: var(--padding);
-			// 		width: 0rem;
-			// 		clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-			// 		// box-sizing: border-box;
-			// 		word-break: keep-all;
-			// 		// width: 0%;
-			// 		overflow: hidden;
-			// 		// width: 100%;
-			// 		transition: width 0.3s;
-			// 		outline: 1px solid deepPink;
-			// 	}
-
-			// 	icon {
-			// 		padding: var(--padding);
-			// 		display: inline-block;
-			// 	}
-
-			// 	// transition: background-color 0.3s, width 0.3s;
-			// 	transition: background-color 0.3s;
-
-			// 	&:hover {
-			// 		background-color: var(--col-4);
-			// 		// width: max-content;
-
-			// 		give-up-text {
-			// 			// display: inline-block;
-			// 			// width: max-content;
-			// 			clip-path: initial;
-			// 			width: 100%;
-			// 			// width: 5rem;
-			// 		}
-			// 	}
-			// }
-
 			back-arrow button::before {
 				font-size: 3rem;
 			}

@@ -86,10 +86,14 @@ export default {
 			en: "flag",
 			de: "Flagge",
 		},
+		capital: {
+			en: "capital",
+			de: "Hauptstadt",
+		},
 		moreWillBeAdded: {
 			en: "More options will be added in the future.",
 			de: "Mehr Optionen werden in Zukunft hinzugefügt.",
-		}
+		},
 	},
 	answerMode: {
 		chooseMode: {
@@ -99,6 +103,10 @@ export default {
 		showOnMap: {
 			en: "find country on world map",
 			de: "Land auf Weltkarte finden",
+		},
+		showCapitalOnMap: {
+			en: "find capital on world map",
+			de: "Hauptstadt auf Weltkarte finden",
 		},
 		typeName: {
 			en: "type the country name",

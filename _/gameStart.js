@@ -68,6 +68,7 @@ let selectedQuestionMode = (() => {
 		"countryName",
 		"countryNameAndFlag",
 		"flag",
+		"capital",
 	];
 	const initialQuestionMode = questionModes.includes(storage.get("questionMode")) ? storage.get("questionMode") : questionModes[1];
 	for (const questionMode of questionModes) {
@@ -90,6 +91,7 @@ let selectedAnswerMode = (() => {
 	const getClone = getTemplateCloner(answerModeSelect);
 	const answerModes = [
 		"showOnMap",
+		"showCapitalOnMap",
 	];
 	const initialAnswerMode = answerModes.includes(storage.get("answerMode")) ? storage.get("answerMode") : answerModes[0];
 	for (const answerMode of answerModes) {

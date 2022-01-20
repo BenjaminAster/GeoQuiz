@@ -24,7 +24,17 @@ document.querySelector("end-screen [_action=backToStartScreen]").addEventListene
 const game = async (data, settings) => {
 	document.body.setAttribute("_game-state", "game");
 	document.querySelector("game after-canvas").style.display = "none";
-	newGame();
+	const whatToShow = (() => {
+		switch (settings.questionMode) {
+			case ("countryName"): return { country: true };
+			case ("flag"): return { flag: true };
+			case ("countryNameAndFlag"): return { country: true, flag: true };
+			case ("capital"): return { capital: true };
+		}
+	})();
+	newGame({
+		capital: settings.answerMode === "showCapitalOnMap",
+	});
 	if (!firstGamePlayed) {
 		initWorldMap(data);
 		firstGamePlayed = true;
@@ -38,15 +48,9 @@ const game = async (data, settings) => {
 	};
 	const countries = shuffleArray(data.filter(({ continent }) => settings.continents.includes(continent)));
 	let correctCountries = 0;
-	const whatToShow = (() => {
-		switch (settings.questionMode) {
-			case ("countryName"): return { countryName: true };
-			case ("flag"): return { flag: true };
-			case ("countryNameAndFlag"): return { countryName: true, flag: true };
-		}
-	})();
-	beforeCanvasEl.querySelector("flag").hidden = !whatToShow.flag;
-	beforeCanvasEl.querySelector("country").hidden = !whatToShow.countryName;
+	for (const type of ["flag", "country", "capital"]) {
+		beforeCanvasEl.querySelector(type).hidden = !whatToShow[type];
+	}
 	running = true;
 	onNewGame = () => {
 		requestAnimationFrame(() => {
@@ -60,9 +64,10 @@ const game = async (data, settings) => {
 		beforeCanvasEl.querySelector("percentage").textContent = Math.floor(correctCountries / countries.length * 100).toString();
 		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
 		beforeCanvasEl.querySelector("incorrect").textContent = (i - correctCountries).toString();
-		if (whatToShow.countryName) {
+		if (whatToShow.country)
 			document.querySelector("game country").textContent = country.name[settings.language];
-		}
+		if (whatToShow.capital)
+			document.querySelector("game capital").textContent = country.capital[settings.language];
 		let flagBlobURI;
 		if (whatToShow.flag) {
 			flagBlobURI = URL.createObjectURL(new Blob([country.flagSVG], { type: "image/svg+xml" }));
