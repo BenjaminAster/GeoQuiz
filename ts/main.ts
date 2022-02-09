@@ -88,7 +88,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		window.addEventListener("keydown", (event: KeyboardEvent) => {
 			if (event.key === "F5" && !event.ctrlKey) {
 				event.preventDefault();
-				actions.refresh(false);
+				actions.update(false);
 			}
 		});
 	}

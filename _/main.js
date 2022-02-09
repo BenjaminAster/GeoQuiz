@@ -58,7 +58,7 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		window.addEventListener("keydown", (event) => {
 			if (event.key === "F5" && !event.ctrlKey) {
 				event.preventDefault();
-				actions.refresh(false);
+				actions.update(false);
 			}
 		});
 	}

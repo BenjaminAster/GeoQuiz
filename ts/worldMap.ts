@@ -100,21 +100,21 @@ export default (countriesData: CountriesData) => {
 		let prevX: number = -1;
 		let prevY: number = -1;
 
-		window.addEventListener("pointermove", (event: MouseEvent) => {
+		const onPointerMove = (pageX: number, pageY: number, hovering: boolean = false) => {
 			if (prevX >= 0) {
-				mouseX = event.pageX - canvas.parentElement.offsetLeft;
-				mouseY = event.pageY - canvas.parentElement.offsetTop - (
+				mouseX = pageX - canvas.parentElement.offsetLeft;
+				mouseY = pageY - canvas.parentElement.offsetTop - (
 					// @ts-ignore
 					navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0
 				);
 
 				const dragMultiplier: number = 2;
 
-				if (event.buttons === 1) {
-					centerX -= dragMultiplier * ((event.pageX - prevX) / (canvas.width / 2)) / (
+				if (!hovering) {
+					centerX -= dragMultiplier * ((pageX - prevX) / (canvas.width / 2)) / (
 						(scalePerZoom ** zoom) / 180
 					);
-					centerY += dragMultiplier * ((event.pageY - prevY) / (canvas.height / 2)) / (
+					centerY += dragMultiplier * ((pageY - prevY) / (canvas.height / 2)) / (
 						(canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180
 					);
 
@@ -123,9 +123,89 @@ export default (countriesData: CountriesData) => {
 				}
 			}
 
-			prevX = event.pageX;
-			prevY = event.pageY;
+			prevX = pageX;
+			prevY = pageY;
+		};
+
+		canvas.addEventListener("mousemove", (event: MouseEvent) => {
+			onPointerMove(event.pageX, event.pageY, (event.buttons !== 1));
 		});
+
+		{
+			let currentTouchDistance: number;
+
+			canvas.addEventListener("touchstart", (event: TouchEvent) => {
+				if (event.touches.length === 2) {
+					currentTouchDistance = Math.hypot(
+						event.touches[0].pageX - event.touches[1].pageX,
+						event.touches[0].pageY - event.touches[1].pageY
+					);
+				}
+			});
+
+			canvas.addEventListener("touchend", (event: TouchEvent) => {
+				if (event.touches.length === 1) {
+					currentTouchDistance = null;
+				} else if (event.touches.length === 0) {
+					prevX = -1;
+					prevY = -1;
+				}
+			});
+
+			canvas.addEventListener("touchmove", (event: TouchEvent) => {
+
+				if (event.touches.length === 2) {
+					event.preventDefault();
+
+					const newTouchDistance = Math.hypot(
+						event.touches[0].pageX - event.touches[1].pageX,
+						event.touches[0].pageY - event.touches[1].pageY
+					);
+
+
+					const midpointX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
+					const midpointY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
+
+					const x: number = midpointX - canvas.parentElement.offsetLeft;
+					const y: number = midpointY - canvas.parentElement.offsetTop - (
+						// @ts-ignore
+						navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0
+					);
+
+					const pointX: number = ((x / (canvas.width / 2) - 1) / (
+						(scalePerZoom ** zoom) / 180
+					)) + centerX;
+					const pointY: number = ((y / (canvas.height / 2) - 1) / (
+						(canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180
+					)) + centerY;
+
+					// let delta = Math.min(Math.max(event.deltaY * 5, -100), 100) / 100;
+					// zoom -= delta;
+
+					// if (zoom < 0) {
+					// 	delta += zoom;
+					// 	zoom = 0;
+					// }
+
+					const zoomMultiplier: number = 0.1;
+
+					const delta: number = (newTouchDistance - currentTouchDistance) * zoomMultiplier;
+
+					zoom += delta;
+
+					// zoom = Math.min(Math.max(zoom, -1), 1);
+
+					currentTouchDistance = newTouchDistance;
+
+					centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
+					centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
+
+				} else if (event.touches.length === 1) {
+					onPointerMove(event.touches[0].pageX, event.touches[0].pageY);
+				}
+			});
+		}
+
 	}
 
 	canvas.addEventListener("wheel", (event: WheelEvent) => {
@@ -155,10 +235,6 @@ export default (countriesData: CountriesData) => {
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
 	}, { passive: false });
-
-	// canvas.addEventListener("wheel", (event: WheelEvent) => {
-	// 	event.preventDefault();
-	// });
 
 	{
 		const draw = () => {

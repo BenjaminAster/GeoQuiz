@@ -59,21 +59,62 @@ export default (countriesData) => {
 	{
 		let prevX = -1;
 		let prevY = -1;
-		window.addEventListener("pointermove", (event) => {
+		const onPointerMove = (pageX, pageY, hovering = false) => {
 			if (prevX >= 0) {
-				mouseX = event.pageX - canvas.parentElement.offsetLeft;
-				mouseY = event.pageY - canvas.parentElement.offsetTop - (navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0);
+				mouseX = pageX - canvas.parentElement.offsetLeft;
+				mouseY = pageY - canvas.parentElement.offsetTop - (navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0);
 				const dragMultiplier = 2;
-				if (event.buttons === 1) {
-					centerX -= dragMultiplier * ((event.pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
-					centerY += dragMultiplier * ((event.pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
+				if (!hovering) {
+					centerX -= dragMultiplier * ((pageX - prevX) / (canvas.width / 2)) / ((scalePerZoom ** zoom) / 180);
+					centerY += dragMultiplier * ((pageY - prevY) / (canvas.height / 2)) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / 180);
 					centerX = Math.min(Math.max(centerX, -180), 180);
 					centerY = Math.min(Math.max(centerY, -90), 90);
 				}
 			}
-			prevX = event.pageX;
-			prevY = event.pageY;
+			prevX = pageX;
+			prevY = pageY;
+		};
+		canvas.addEventListener("mousemove", (event) => {
+			onPointerMove(event.pageX, event.pageY, (event.buttons !== 1));
 		});
+		{
+			let currentTouchDistance;
+			canvas.addEventListener("touchstart", (event) => {
+				if (event.touches.length === 2) {
+					currentTouchDistance = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, event.touches[0].pageY - event.touches[1].pageY);
+				}
+			});
+			canvas.addEventListener("touchend", (event) => {
+				if (event.touches.length === 1) {
+					currentTouchDistance = null;
+				}
+				else if (event.touches.length === 0) {
+					prevX = -1;
+					prevY = -1;
+				}
+			});
+			canvas.addEventListener("touchmove", (event) => {
+				if (event.touches.length === 2) {
+					event.preventDefault();
+					const newTouchDistance = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, event.touches[0].pageY - event.touches[1].pageY);
+					const midpointX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
+					const midpointY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
+					const x = midpointX - canvas.parentElement.offsetLeft;
+					const y = midpointY - canvas.parentElement.offsetTop - (navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0);
+					const pointX = ((x / (canvas.width / 2) - 1) / ((scalePerZoom ** zoom) / 180)) + centerX;
+					const pointY = ((y / (canvas.height / 2) - 1) / ((canvas.width / canvas.height) * (scalePerZoom ** zoom) / -180)) + centerY;
+					const zoomMultiplier = 0.1;
+					const delta = (newTouchDistance - currentTouchDistance) * zoomMultiplier;
+					zoom += delta;
+					currentTouchDistance = newTouchDistance;
+					centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
+					centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
+				}
+				else if (event.touches.length === 1) {
+					onPointerMove(event.touches[0].pageX, event.touches[0].pageY);
+				}
+			});
+		}
 	}
 	canvas.addEventListener("wheel", (event) => {
 		event.preventDefault();
