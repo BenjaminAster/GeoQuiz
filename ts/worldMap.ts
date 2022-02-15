@@ -29,6 +29,8 @@ let newGameCallback: Function;
 
 let settings: Record<string, any>;
 
+let render: boolean = true
+
 const resize = () => {
 	if (running) {
 		canvas.width = canvas.clientWidth;
@@ -142,6 +144,7 @@ export default (countriesData: CountriesData) => {
 
 		canvas.addEventListener("mousemove", (event: MouseEvent) => {
 			onPointerMove(event.pageX, event.pageY, (event.buttons !== 1));
+			render = true
 		});
 
 		{
@@ -154,6 +157,7 @@ export default (countriesData: CountriesData) => {
 						event.touches[0].pageY - event.touches[1].pageY
 					);
 				}
+				render = true
 			}, { passive: false });
 
 			canvas.addEventListener("touchend", (event: TouchEvent) => {
@@ -163,6 +167,7 @@ export default (countriesData: CountriesData) => {
 					prevX = -1;
 					prevY = -1;
 				}
+				render = true
 			}, { passive: false });
 
 			canvas.addEventListener("touchmove", (event: TouchEvent) => {
@@ -216,6 +221,8 @@ export default (countriesData: CountriesData) => {
 				} else if (event.touches.length === 1) {
 					onPointerMove(event.touches[0].pageX, event.touches[0].pageY);
 				}
+
+				render = true
 			}, { passive: false });
 		}
 
@@ -247,6 +254,7 @@ export default (countriesData: CountriesData) => {
 
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
+		render = true
 	}, { passive: false });
 
 	{
@@ -256,8 +264,9 @@ export default (countriesData: CountriesData) => {
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
 			ctx.fillStyle = colors.background;
-
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			
+			if (render) ctx.fillRect(0, 0, canvas.width, canvas.height);
+			else return
 
 			// ctx.fillStyle = colors.gray;
 			// ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -267,7 +276,7 @@ export default (countriesData: CountriesData) => {
 
 			{
 				let hoveredCountry: string;
-
+	
 				for (const drawPolygons of [...(settings.capital ? [] : [false]), true]) {
 
 					countryLoop: for (const country of (drawPolygons ? data : [...data].reverse())) {
@@ -322,6 +331,8 @@ export default (countriesData: CountriesData) => {
 					}
 				}
 			}
+
+			render = false
 
 			if (settings.capital) {
 				const radius: number = 5 + zoom;
@@ -401,9 +412,9 @@ export default (countriesData: CountriesData) => {
 			clicked = false;
 
 			if (running) {
-				// setTimeout(() => {
-				window.requestAnimationFrame(draw);
-				// }, 1000);
+				setInterval(() => {
+					window.requestAnimationFrame(draw);
+				}, 1000 / 30);
 			} else {
 				// onNewGame(() => {
 				// 	window.requestAnimationFrame(draw);
@@ -436,12 +447,14 @@ export default (countriesData: CountriesData) => {
 			) {
 				clicked = true;
 			}
+			render = true
 		});
 		canvas.addEventListener("pointerdown", (event: MouseEvent) => {
 			pointerDown = {
 				x: event.pageX - canvas.parentElement.offsetLeft,
 				y: event.pageY - canvas.parentElement.offsetTop,
 			};
+			render = true
 		});
 	}
 };
