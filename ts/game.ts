@@ -24,11 +24,11 @@ export type CountriesData = {
 let firstGamePlayed: boolean = false;
 let running: boolean = false;
 
-const beforeCanvasEl: HTMLElement = document.querySelector("game before-canvas");
+const beforeCanvasEl: HTMLElement = document.querySelector(".game .before-canvas");
 
 let onNewGame: Function;
 
-beforeCanvasEl.querySelector<HTMLButtonElement>("back-arrow button").addEventListener(
+beforeCanvasEl.querySelector<HTMLButtonElement>(".back-arrow button").addEventListener(
 	"click", () => {
 		running = false;
 		stopGame();
@@ -37,7 +37,7 @@ beforeCanvasEl.querySelector<HTMLButtonElement>("back-arrow button").addEventLis
 	}
 );
 
-beforeCanvasEl.querySelector<HTMLButtonElement>("restart button").addEventListener(
+beforeCanvasEl.querySelector<HTMLButtonElement>(".restart button").addEventListener(
 	"click", () => {
 
 		running = false;
@@ -47,14 +47,14 @@ beforeCanvasEl.querySelector<HTMLButtonElement>("restart button").addEventListen
 	}
 );
 
-document.querySelector<HTMLButtonElement>("end-screen [_action=restartQuiz]").addEventListener(
+document.querySelector<HTMLButtonElement>(".end-screen [_action=restartQuiz]").addEventListener(
 	"click", () => {
 
 		onNewGame?.();
 	},
 );
 
-document.querySelector<HTMLButtonElement>("end-screen [_action=backToStartScreen]").addEventListener(
+document.querySelector<HTMLButtonElement>(".end-screen [_action=backToStartScreen]").addEventListener(
 	"click", () => {
 
 		history.back();
@@ -68,8 +68,6 @@ const game = async (data: CountriesData, settings: {
 	language: string,
 }): Promise<void> => {
 	document.body.setAttribute("_game-state", "game");
-
-	(document.querySelector("game after-canvas") as HTMLElement).style.display = "none";
 
 	const whatToShow: Record<string, boolean> = (() => {
 		switch (settings.questionMode) {
@@ -107,7 +105,7 @@ const game = async (data: CountriesData, settings: {
 
 
 	for (const type of ["flag", "country", "capital"]) {
-		beforeCanvasEl.querySelector<HTMLElement>(type).hidden = !whatToShow[type];
+		beforeCanvasEl.querySelector<HTMLElement>("." + type).hidden = !whatToShow[type];
 	}
 
 	running = true;
@@ -121,23 +119,23 @@ const game = async (data: CountriesData, settings: {
 	for (const [i, country] of countries.entries()) {
 		if (!running) return;
 
-		beforeCanvasEl.querySelector("remaining").textContent = (countries.length - i).toString();
-		beforeCanvasEl.querySelector("percentage").textContent = Math.floor(
+		beforeCanvasEl.querySelector(".remaining").textContent = (countries.length - i).toString();
+		beforeCanvasEl.querySelector(".percentage").textContent = Math.floor(
 			correctCountries / countries.length * 100
 		).toString();
 
-		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
-		beforeCanvasEl.querySelector("incorrect").textContent = (i - correctCountries).toString();
+		beforeCanvasEl.querySelector(".correct").textContent = correctCountries.toString();
+		beforeCanvasEl.querySelector(".incorrect").textContent = (i - correctCountries).toString();
 
-		if (whatToShow.country) document.querySelector("game country").textContent = country.name[settings.language];
-		if (whatToShow.capital) document.querySelector("game capital").textContent = country.capital[settings.language];
+		if (whatToShow.country) document.querySelector(".game .country").textContent = country.name[settings.language];
+		if (whatToShow.capital) document.querySelector(".game .capital").textContent = country.capital[settings.language];
 
 		let flagBlobURI: string;
 
 		if (whatToShow.flag) {
 			flagBlobURI = URL.createObjectURL(new Blob([country.flagSVG], { type: "image/svg+xml" }));
 
-			(document.querySelector("game flag") as HTMLElement).style.backgroundImage = (
+			(document.querySelector(".game .flag") as HTMLElement).style.backgroundImage = (
 				`url("${flagBlobURI}")`
 			);
 		}
@@ -157,25 +155,25 @@ const game = async (data: CountriesData, settings: {
 	document.body.setAttribute("_game-state", "end");
 
 	{
-		document.querySelector("end-screen correct").textContent = correctCountries.toString();
+		document.querySelector(".end-screen .correct").textContent = correctCountries.toString();
 
-		document.querySelector("end-screen total").textContent = countries.length.toString();
+		document.querySelector(".end-screen .total").textContent = countries.length.toString();
 
-		document.querySelector("end-screen incorrect").textContent = (
+		document.querySelector(".end-screen .incorrect").textContent = (
 			countries.length - correctCountries
 		).toString();
 
 		const fraction: number = correctCountries / countries.length;
-		document.querySelector("end-screen percentage").textContent = Math.floor(
+		document.querySelector(".end-screen .percentage").textContent = Math.floor(
 			fraction * 100
 		).toString();
 
-		document.querySelector("end-screen percentage").setAttribute("data-evaluation", (
+		document.querySelector(".end-screen .percentage").setAttribute("data-evaluation", (
 			(fraction > .9) ? "good" : (fraction > .7) ? "medium" : "bad"
 		));
 
 		{
-			const continentsContainer: HTMLElement = document.querySelector("end-screen continents");
+			const continentsContainer: HTMLElement = document.querySelector(".end-screen .continents");
 			const getClone = getTemplateCloner(continentsContainer);
 
 			continentsContainer.querySelectorAll(":scope > :not(template)").forEach(
@@ -194,11 +192,11 @@ const game = async (data: CountriesData, settings: {
 			}
 		}
 
-		document.querySelector("end-screen question-mode").textContent = (
+		document.querySelector(".end-screen .question-mode").textContent = (
 			translations.endScreen.questionModes[settings.questionMode][settings.language]
 		);
 
-		document.querySelector("end-screen answer-mode").textContent = (
+		document.querySelector(".end-screen .answer-mode").textContent = (
 			translations.endScreen.answerModes[settings.answerMode][settings.language]
 		);
 	}
@@ -209,3 +207,5 @@ export default game;
 export const stopGame = () => {
 	stopDrawing();
 };
+
+

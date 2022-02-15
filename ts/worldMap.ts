@@ -4,7 +4,7 @@ import type { CountriesData } from "./game.js";
 
 let data: CountriesData;
 
-const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>("game canvas");
+const canvas: HTMLCanvasElement = document.querySelector<HTMLCanvasElement>(".game canvas");
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d", { alpha: false });
 
 let colors: Record<string, string>;
@@ -77,11 +77,24 @@ export default (countriesData: CountriesData) => {
 
 	{
 		const initColors = () => {
+			// colors = {
+			// 	background: getColor("--col-background"),
+			// 	foreground: getColor("--col-f"),
+			// 	gray: getColor("--col-3"),
+			// 	lightGray: getColor("--col-5"),
+			// 	green: getColor("--country-green"),
+			// 	red: getColor("--country-red"),
+			// };
 			colors = {
-				background: getColor("--col-18"),
-				foreground: getColor("--col-f"),
-				gray: getColor("--col-3"),
-				lightGray: getColor("--col-5"),
+				// background: getColor("--col-1"),
+				// background: "#222228",
+				background: getColor("--background"),
+				// foreground: getColor("--col-f"),
+				foreground: getColor("color"),
+				// foreground: getColor("--violet"),
+				gray: getColor("--gray-1"),
+				// lightGray: getColor("--col-2"),
+				lightGray: getColor("--gray-3"),
 				green: getColor("--country-green"),
 				red: getColor("--country-red"),
 			};
@@ -141,7 +154,7 @@ export default (countriesData: CountriesData) => {
 						event.touches[0].pageY - event.touches[1].pageY
 					);
 				}
-			});
+			}, { passive: false });
 
 			canvas.addEventListener("touchend", (event: TouchEvent) => {
 				if (event.touches.length === 1) {
@@ -150,7 +163,7 @@ export default (countriesData: CountriesData) => {
 					prevX = -1;
 					prevY = -1;
 				}
-			});
+			}, { passive: false });
 
 			canvas.addEventListener("touchmove", (event: TouchEvent) => {
 
@@ -203,7 +216,7 @@ export default (countriesData: CountriesData) => {
 				} else if (event.touches.length === 1) {
 					onPointerMove(event.touches[0].pageX, event.touches[0].pageY);
 				}
-			});
+			}, { passive: false });
 		}
 
 	}
@@ -239,12 +252,18 @@ export default (countriesData: CountriesData) => {
 	{
 		const draw = () => {
 			ctx.strokeStyle = colors.foreground;
-			ctx.fillStyle = colors.background;
 			ctx.lineWidth = 1;
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
+			ctx.fillStyle = colors.background;
 
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+			// ctx.fillStyle = colors.gray;
+			// ctx.fillRect(0, 0, canvas.width, canvas.height);
+			// ctx.fillStyle = colors.background;
+
+			// ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 			{
 				let hoveredCountry: string;

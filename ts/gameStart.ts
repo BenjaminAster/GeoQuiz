@@ -23,9 +23,9 @@ const continents: string[] = [
 const startQuizButton: HTMLButtonElement = document.querySelector("[_action=startQuiz]")
 
 const selectedContinents: { _: string[] } = (() => {
-	const continentsContainer: HTMLElement = document.querySelector("continents");
+	const continentsContainer: HTMLElement = document.querySelector(".continents");
 
-	const continentSelect: HTMLElement = continentsContainer.querySelector("options-select");
+	const continentSelect: HTMLElement = continentsContainer.querySelector(".select");
 	const getClone = getTemplateCloner(continentSelect);
 
 	const initialContinents: string[] = storage.get("continents")?.filter?.(
@@ -33,11 +33,10 @@ const selectedContinents: { _: string[] } = (() => {
 	) ?? continents;
 
 	const checkboxSelectAll: HTMLInputElement = document.querySelector(
-		"continents [_action=selectAll]"
+		".continents [_action=selectAll]"
 	);
 
 	checkboxSelectAll.checked = (initialContinents.length === continents.length);
-	continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
 
 	const continentsGetter = {
 		get _() {
@@ -83,8 +82,6 @@ const selectedContinents: { _: string[] } = (() => {
 	}
 
 	checkboxSelectAll.addEventListener("change", () => {
-		continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
-
 		if (continentsGetter._.length === 0) {
 			startQuizButton.disabled = true;
 		} else {
@@ -96,7 +93,7 @@ const selectedContinents: { _: string[] } = (() => {
 })();
 
 let selectedQuestionMode: { _: string } = (() => {
-	const questionModeSelect: HTMLElement = document.querySelector("question-mode options-select");
+	const questionModeSelect: HTMLElement = document.querySelector(".question-mode .select");
 	const getClone = getTemplateCloner(questionModeSelect);
 
 	const questionModes: string[] = [
@@ -134,7 +131,7 @@ let selectedQuestionMode: { _: string } = (() => {
 })();
 
 let selectedAnswerMode: { _: string } = (() => {
-	const answerModeSelect: HTMLElement = document.querySelector("answer-mode options-select");
+	const answerModeSelect: HTMLElement = document.querySelector(".answer-mode .select");
 	const getClone = getTemplateCloner(answerModeSelect);
 
 	const answerModes: string[] = [

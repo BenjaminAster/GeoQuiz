@@ -1,0 +1,55 @@
+:root {
+  --gray-1: #88888e18;
+  --gray-2: #88888e28;
+  --gray-3: #88888e38;
+  --violet: blueViolet;
+  --violet-bg: rgba(138, 43, 226, 0.15);
+}
+:root[color-scheme=dark] {
+  --background: #121218;
+  --gray-1: #202026;
+  --gray-2: #2e2e34;
+  --gray-3: #3c3c42;
+  --transparent-gray: #3c3c4233;
+  --blue: deepSkyBlue;
+  --blue-bg: rgba(0, 191, 255, 0.15);
+  --green: springGreen;
+  --green-bg: rgba(0, 255, 127, 0.15);
+  --red: #f24;
+  --red-bg: rgba(255, 34, 68, 0.15);
+  --orange: orange;
+  --orange-bg: rgba(255, 165, 0, 0.15);
+  --country-green: #0d4;
+  --country-red: #f24;
+  --transparent-bg: rgba(17, 17, 23, 0.5);
+  --transparent-fg: rgba(249, 249, 255, 0.07);
+  --link-blue: lightSkyBlue;
+}
+:root[color-scheme=dark] .moon {
+  display: grid;
+}
+:root[color-scheme=light] {
+  --background: #f8f8fe;
+  --gray-1: #eaeaf0;
+  --gray-2: #dcdce2;
+  --gray-3: #ceced4;
+  --transparent-gray: #ceced433;
+  --blue: blue;
+  --blue-bg: rgba(0, 0, 255, 0.15);
+  --green: #062;
+  --green-bg: rgba(0, 102, 34, 0.15);
+  --red: #d13;
+  --red-bg: rgba(221, 17, 51, 0.15);
+  --orange: #a20;
+  --orange-bg: rgba(170, 34, 0, 0.1);
+  --country-green: #5e7;
+  --country-red: #f55;
+  --transparent-bg: rgba(249, 249, 255, 0.5);
+  --transparent-fg: rgba(17, 17, 23, 0.07);
+  --link-blue: blue;
+}
+:root[color-scheme=light] .sun {
+  display: grid;
+}
+
+/*# sourceMappingURL=colors.css.map */

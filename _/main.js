@@ -1,10 +1,6 @@
 import { getTemplateCloner, languages, setLanguage, getLanguage, storage, setColorScheme, } from "./utils.js";
 import "./gameStart.js";
 import { installPromptEvent } from "./pwa.js";
-if (!new URL(location.href).searchParams.has("no-sw")) {
-	navigator.serviceWorker?.register("./service-worker.js", { scope: "./" });
-}
-const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand))?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 {
 	setColorScheme(storage.get("colorScheme") ?? "dark");
 	const actions = {
@@ -26,22 +22,6 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		async installApp() {
 			installPromptEvent?.prompt?.();
 		},
-		async update(clearLocalStorage = true) {
-			if (clearLocalStorage)
-				localStorage.clear();
-			await new Promise(async (resolve) => {
-				window.setTimeout(resolve, 500);
-				window.caches.delete(new URL((await navigator.serviceWorker?.ready).scope).pathname);
-				resolve();
-			});
-			await new Promise(async (resolve) => {
-				window.setTimeout(resolve, 500);
-				await (await navigator.serviceWorker?.ready)?.unregister?.();
-				resolve();
-			});
-			await window.fetch("/clear-site-data/", { cache: "no-store" });
-			location.reload(true);
-		},
 		share() {
 			navigator.share?.({
 				title: document.title,
@@ -54,18 +34,10 @@ const browser = navigator.userAgentData?.brands?.find(({ brand }) => ["Chromium"
 		const buttons = [...document.querySelectorAll(`[_action="${actionName}"]`)];
 		buttons.forEach((button) => button.addEventListener("click", () => func()));
 	}
-	if (location.hostname === "localhost") {
-		window.addEventListener("keydown", (event) => {
-			if (event.key === "F5" && !event.ctrlKey) {
-				event.preventDefault();
-				actions.update(false);
-			}
-		});
-	}
 }
 {
 	setLanguage();
-	const container = document.querySelector("languages options-select");
+	const container = document.querySelector(".languages .select");
 	const getClone = getTemplateCloner(container);
 	for (const language of languages) {
 		const clone = getClone({

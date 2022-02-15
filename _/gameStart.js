@@ -10,13 +10,12 @@ const continents = [
 ];
 const startQuizButton = document.querySelector("[_action=startQuiz]");
 const selectedContinents = (() => {
-	const continentsContainer = document.querySelector("continents");
-	const continentSelect = continentsContainer.querySelector("options-select");
+	const continentsContainer = document.querySelector(".continents");
+	const continentSelect = continentsContainer.querySelector(".select");
 	const getClone = getTemplateCloner(continentSelect);
 	const initialContinents = storage.get("continents")?.filter?.((continent) => continents.includes(continent)) ?? continents;
-	const checkboxSelectAll = document.querySelector("continents [_action=selectAll]");
+	const checkboxSelectAll = document.querySelector(".continents [_action=selectAll]");
 	checkboxSelectAll.checked = (initialContinents.length === continents.length);
-	continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
 	const continentsGetter = {
 		get _() {
 			return checkboxSelectAll.checked ? continents : continents.filter((...[, i]) => continentSelect.children[i + 1].querySelector("input[type=checkbox]")?.checked);
@@ -51,7 +50,6 @@ const selectedContinents = (() => {
 		continentSelect.append(clone);
 	}
 	checkboxSelectAll.addEventListener("change", () => {
-		continentsContainer.classList.toggle("all-selected", checkboxSelectAll.checked);
 		if (continentsGetter._.length === 0) {
 			startQuizButton.disabled = true;
 		}
@@ -62,7 +60,7 @@ const selectedContinents = (() => {
 	return continentsGetter;
 })();
 let selectedQuestionMode = (() => {
-	const questionModeSelect = document.querySelector("question-mode options-select");
+	const questionModeSelect = document.querySelector(".question-mode .select");
 	const getClone = getTemplateCloner(questionModeSelect);
 	const questionModes = [
 		"countryName",
@@ -87,7 +85,7 @@ let selectedQuestionMode = (() => {
 	};
 })();
 let selectedAnswerMode = (() => {
-	const answerModeSelect = document.querySelector("answer-mode options-select");
+	const answerModeSelect = document.querySelector(".answer-mode .select");
 	const getClone = getTemplateCloner(answerModeSelect);
 	const answerModes = [
 		"showOnMap",

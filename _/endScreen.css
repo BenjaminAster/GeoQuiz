@@ -1,0 +1,152 @@
+.end-screen {
+  display: none;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.end-screen .you-have {
+  font-size: 1.5rem;
+}
+.end-screen .score {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+.end-screen .score :is(.correct, .total) {
+  display: inline-block;
+  min-inline-size: 1.2em;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 0.1em 0.2em;
+  border-radius: 0.4em;
+}
+.end-screen .score .correct {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+.end-screen .score .total {
+  color: var(--blue);
+  background-color: var(--blue-bg);
+}
+.end-screen .score .out-of {
+  font-size: 1.5rem;
+}
+.end-screen .score-explanation {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-inline: 1rem;
+}
+.end-screen .score-explanation .incorrect {
+  display: inline-block;
+  font-weight: bold;
+  color: var(--red);
+  background-color: var(--red-bg);
+  min-inline-size: 1.2em;
+  border-radius: 0.4em;
+  text-align: center;
+  padding: 0.1em 0.2em;
+}
+.end-screen .percentage-container {
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+}
+.end-screen .percentage-container .percentage {
+  font-weight: bold;
+  border-radius: 0.4em;
+  padding: 0.1em 0.2em;
+}
+.end-screen .percentage-container .percentage[data-evaluation=good] {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+.end-screen .percentage-container .percentage[data-evaluation=medium] {
+  color: var(--orange);
+  background-color: var(--orange-bg);
+}
+.end-screen .percentage-container .percentage[data-evaluation=bad] {
+  color: var(--red);
+  background-color: var(--red-bg);
+}
+.end-screen .percentage-container .percentage::after {
+  content: "%";
+}
+.end-screen .continents-explanation {
+  margin-inline: 1rem;
+  margin-block-start: 0.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em 0.1em;
+}
+.end-screen .continents-explanation .continents {
+  display: contents;
+}
+.end-screen .continents-explanation .continents .continent-name {
+  padding: 0.1em 0.25em;
+  color: var(--blue);
+  background-color: var(--blue-bg);
+  border-radius: 0.4em;
+}
+.end-screen :is(.conjunction[_text*=comma], .point) {
+  margin-inline-start: -0.12em;
+}
+.end-screen .question-answer-mode {
+  margin-inline: 1rem;
+  margin-block: 0.5rem 1rem;
+  font-size: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em 0.1em;
+}
+.end-screen .question-answer-mode :is(.question-mode, .answer-mode) {
+  border-radius: 0.4em;
+  padding: 0.1em 0.2em;
+}
+.end-screen .question-answer-mode :is(.question-mode, .answer-mode) {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+.end-screen button {
+  padding: 0.5em 4rem;
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--blue);
+  min-inline-size: 25rem;
+  font-size: 1.5rem;
+  color: var(--background);
+  font-weight: bold;
+  font-family: inherit;
+  text-align: center;
+  position: relative;
+  transition: color 0.3s, background-color 0.3s;
+}
+.end-screen button .icon {
+  font-size: 2rem;
+  display: inline-block;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  block-size: 100%;
+  inline-size: 3.5rem;
+  display: grid;
+  place-items: center;
+}
+.end-screen button[_action=backToStartScreen] icon {
+  font-size: 3rem;
+}
+.end-screen button:hover {
+  background-color: var(--blue-bg);
+  color: var(--blue);
+}
+
+/*# sourceMappingURL=endScreen.css.map */

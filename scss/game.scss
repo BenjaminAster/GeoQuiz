@@ -1,0 +1,158 @@
+.game {
+	display: none;
+	flex-direction: column;
+	flex-grow: 1;
+	position: relative;
+	user-select: none;
+
+	.before-canvas {
+		display: flex;
+
+		--backdrop-filter: blur(0.5rem);
+		-webkit-backdrop-filter: var(--backdrop-filter);
+		backdrop-filter: var(--backdrop-filter);
+		background-color: var(--transparent-gray);
+
+		@supports not ((backdrop-filter: none) or (-webkit-backdrop-filter: none)) {
+			background-color: var(--gray-2);
+		}
+
+		box-shadow: 0 0 1.5rem -0.3rem var(--background);
+
+		justify-content: center;
+		align-items: center;
+		gap: 0.4rem;
+		place-items: center;
+		padding: 0.5rem;
+		// min-block-size: 4rem;
+		font-size: 2rem;
+
+		z-index: 1;
+		// margin: 0.5rem;
+		margin: 1rem;
+		border-radius: 1.1rem;
+
+		:is(.left-side, .right-side) {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+
+			& > * {
+				display: block;
+				--padding: 0 0.5rem 0.15rem;
+				padding: var(--padding);
+				font-size: inherit;
+				block-size: 100%;
+				overflow: hidden;
+				border-radius: 0.8rem;
+				// background-color: var(--gray-1);
+				background-color: var(--transparent-gray);
+			}
+
+			:is(.back-arrow, .restart) {
+				position: relative;
+				font-size: inherit;
+
+				display: inline-block;
+
+				min-inline-size: 1em;
+
+				transition: background-color 0.3s;
+
+				&:hover {
+					background-color: var(--gray-3);
+				}
+
+				button {
+					display: grid;
+					place-items: center;
+
+					position: absolute;
+					inset: 0;
+					font-family: inherit;
+
+					padding: 0;
+
+					min-inline-size: 3rem;
+					border: none {
+						radius: inherit;
+					}
+					background: none;
+					font-size: inherit;
+				}
+			}
+
+			.back-arrow button::before {
+				font-size: 3rem;
+			}
+
+			.correct-incorrect {
+				display: flex;
+				gap: 0.2rem;
+
+				.correct {
+					color: var(--green);
+				}
+				.incorrect {
+					color: var(--red);
+				}
+			}
+
+			.remaining {
+				display: block;
+				color: var(--blue);
+				background-color: var(--blue-bg);
+				min-inline-size: 1.2em;
+				text-align: center;
+			}
+
+			.percentage {
+				color: var(--green);
+				background-color: var(--green-bg);
+
+				&::after {
+					content: "%";
+				}
+			}
+		}
+
+		.flag-and-country {
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+
+			.flag {
+				&:not([hidden]) {
+					display: inline-block;
+				}
+				inline-size: 5rem;
+				block-size: 3rem;
+
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center;
+			}
+		}
+	}
+
+	.canvas-container {
+		display: inline;
+		// position: relative;
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+
+		flex-grow: 1;
+		flex-direction: column;
+
+		canvas {
+			display: block;
+			position: absolute;
+			inline-size: 100%;
+			block-size: 100%;
+		}
+	}
+}

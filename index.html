@@ -1,62 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" color-scheme="dark">
 
+
 <head>
+	<!-- meta stuff -->
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-	<base href="./" />
-
 	<meta name="color-scheme" content="dark" />
 	<meta name="theme-color" content="black" />
-	<meta name="robots" content="all" />
-	<meta name="description"
-		content="Test your knowledge about geography with this geography quiz!" />
 
-	<link rel="icon" href="./icon/icon.svg" />
-	<link rel="stylesheet" href="./_/style.css" />
-	<link rel="apple-touch-icon" href="./icon/icon.png" />
+
+	<!-- title, baseURI & SEO -->
+	<title>GeoQuiz</title>
+	<base href="./" />
+	<meta name="robots" content="all" />
+	<meta name="description" content="Test your knowledge about geography with this geography quiz!" />
+	<meta name="og:image" content="https://benjaminaster.com/geoquiz/icon/icon.png" />
+	<link rel="canonical" href="https://benjaminaster.com/geoquiz/" />
+
+	<!-- icons & PWA -->
+	<link rel="icon" href="./icon/icon.png" />
+	<link rel="apple-touch-icon" href="./icon/maskable.png" />
 	<link rel="manifest" href="./manifest.webmanifest" />
 
+	<!-- CSS -->
+	<link rel="stylesheet" href="./_/main.css" />
+	<link rel="stylesheet" href="./_/colors.css" />
+	<link rel="stylesheet" href="./_/icons.css" />
+	<link rel="stylesheet" href="./_/startScreen.css" />
+	<link rel="stylesheet" href="./_/game.css" />
+	<link rel="stylesheet" href="./_/endScreen.css" />
+
+	<!-- JavaScript -->
+	<script defer type="module" src="./_/main.js"></script>
 	<link rel="modulepreload" href="./_/utils.js" />
 	<link rel="modulepreload" href="./_/gameStart.js" />
+	<link rel="modulepreload" href="./_/pwa.js" />
 	<link rel="modulepreload" href="./_/translations.js" />
 	<link rel="modulepreload" href="./_/game.js" />
-	<link rel="modulepreload" href="./_/pwa.js" />
 	<link rel="modulepreload" href="./_/worldMap.js" />
-	<script defer type="module" src="./_/main.js"></script>
 
+	<!-- preloads -->
 	<link rel="preload" as="fetch" crossorigin="anonymous" href="./_/data.min.json" />
-
-	<title>Geography Quiz</title>
 </head>
 
 <body>
-	<titlebar>
-		<site-name _text="title"></site-name>
+	<nav class="titlebar">
+		<h2 class="site-name" _text="title"></h2>
 		<button _action="toggleTheme" title="Toggle color scheme">
-			<sun hidden class="bi-brightness-high-fill"></sun>
-			<moon hidden class="bi-moon-fill"></moon>
+			<div hidden class="sun bi-brightness-high-fill"></div>
+			<div hidden class="moon bi-moon-fill"></div>
 		</button>
-	</titlebar>
-
-	<nav>
-		<button _action="toggleTheme" title="Toggle color scheme">
-			<sun hidden class="bi-brightness-high-fill"></sun>
-			<moon hidden class="bi-moon-fill"></moon>
-		</button>
-		<button _action="popOutWindow" class="bi-window-stack" title="Pop out window"></button>
-		<button _action="toggleFullscreen" title="Toggle fullscreen">
-			<enable-fullscreen hidden class="bi-fullscreen"></enable-fullscreen>
-			<disable-fullscreen hidden class="bi-fullscreen-exit"></disable-fullscreen>
-		</button>
-		<button _action="update" class="bi-arrow-repeat" title="Update site"></button>
-		<button _action="share" class="bi-share-fill" title="Share"></button>
-		<button hidden _action="installApp" class="bi-app-indicator" title="Install app"></button>
-		<button hidden _action="openInApp" class="bi-box-arrow-up-right" title="Open in app"></button>
-		<a href="https://github.com/BenjaminAster/Geography-Quiz"
-			class="bi-github" title="View on GitHub">
-		</a>
 	</nav>
 
 	<noscript>
@@ -72,200 +66,220 @@
 	</noscript>
 
 	<main>
-		<start-screen>
-			<mobile-warning>
-				<h2>
-					<warning-sign></warning-sign>
-					<span _text="mobileWarning.header"></span>
-				</h2>
-				<p _text="mobileWarning.text"></p>
-			</mobile-warning>
+		<section class="start-screen">
+			<section class="information">
+				<nav class="main-nav">
+					<button _action="toggleTheme" title="Toggle color scheme">
+						<div hidden class="sun bi-brightness-high-fill"></div>
+						<div hidden class="moon bi-moon-fill"></div>
+					</button>
+					<button _action="popOutWindow" class="bi-window-stack" title="Pop out window"></button>
+					<button _action="toggleFullscreen" title="Toggle fullscreen">
+						<div hidden class="enable-fullscreen bi-fullscreen"></div>
+						<div hidden class="disable-fullscreen bi-fullscreen-exit"></div>
+					</button>
+					<button _action="share" class="bi-share-fill" title="Share"></button>
+					<a href="https://github.com/BenjaminAster/Geography-Quiz"
+						class="bi-github" title="View on GitHub">
+					</a>
+					<button hidden _action="installApp" class="bi-app-indicator" title="Install app"></button>
+				</nav>
 
-			<information>
 				<h2 _text="title"></h2>
 
 				<p _text="description"></p>
-			</information>
+			</section>
 
-			<languages>
-				<h3 _text="chooseLanguage"></h3>
+			<section class="mobile-warning" hidden>
+				<h2>
+					<span class="warning-sign"></span>
+					<span _text="mobileWarning.header"></span>
+				</h2>
+				<p _text="mobileWarning.text"></p>
+			</section>
 
-				<options-select>
-					<template>
-						<label>
-							<input type="radio" name="language" />
-							<button tabindex="-1">
-								<language-code _notranslate="languageCode"></language-code>
-								<language-name _content="languageName"></language-name>
-							</button>
-						</label>
-					</template>
-				</options-select>
-			</languages>
+			<section class="update-available" hidden>
+				<h2 _text="updateAvailable.header"></h2>
+				<p _text="updateAvailable.text"></p>
+				<button _action="update">
+					<span _text="updateAvailable.button"></span>
+				</button>
+			</section>
 
-			<continents>
-				<h3 _text="continents.chooseContinent"></h3>
+			<div class="settings">
+				<div class="left">
 
-				<label class="select-all">
-					<input type="checkbox" _action="selectAll" checked>
-					<button tabindex="-1" _text="continents.selectAll"></button>
-				</label>
+					<section class="languages">
+						<h3 _text="chooseLanguage"></h3>
 
-				<options-select>
-					<template>
-						<label>
-							<input type="checkbox" />
-							<button tabindex="-1">
-								<continent-name _content="continentName"></continent-name>
-							</button>
-						</label>
-					</template>
-				</options-select>
-			</continents>
+						<div class="select">
+							<template>
+								<label>
+									<input type="radio" name="language" />
+									<div>
+										<span class="language-code" _static-text="languageCode"></span>
+										<span class="language-name" _content="languageName"></span>
+									</div>
+								</label>
+							</template>
+						</div>
+					</section>
 
-			<question-mode>
-				<h3 _text="questionMode.chooseMode"></h3>
+					<section class="continents">
+						<h3 _text="continents.chooseContinent"></h3>
 
-				<options-select>
-					<template>
-						<label>
-							<input type="radio" name="questionMode" />
-							<button tabindex="-1">
-								<question-mode-name _content="questionMode"></question-mode-name>
-							</button>
-						</label>
-					</template>
-				</options-select>
+						<div>
+							<input type="checkbox" id="continentsSelectAll" _action="selectAll" checked>
 
-				<more-will-be-added _text="questionMode.moreWillBeAdded"></more-will-be-added>
-			</question-mode>
+							<label for="continentsSelectAll" _text="continents.selectAll"></label>
 
-			<answer-mode>
-				<h3 _text="answerMode.chooseMode"></h3>
+							<div class="select">
+								<template>
+									<label>
+										<input type="checkbox" />
+										<div _content="continentName"></div>
+									</label>
+								</template>
+							</div>
+						</div>
+					</section>
+				</div>
 
-				<options-select>
-					<template>
-						<label>
-							<input type="radio" name="answerMode" />
-							<button tabindex="-1">
-								<answer-mode-name _content="answerMode"></answer-mode-name>
-							</button>
-						</label>
-					</template>
-				</options-select>
+				<div class="right">
+					<section class="question-mode">
+						<h3 _text="questionMode.chooseMode"></h3>
 
-				<more-will-be-added _text="answerMode.moreWillBeAdded"></more-will-be-added>
-			</answer-mode>
+						<div class="select">
+							<template>
+								<label>
+									<input type="radio" name="questionMode" />
+									<div _content="questionMode"></div>
+								</label>
+							</template>
+						</div>
+					</section>
 
-			<start-quiz>
+					<section class="answer-mode">
+						<h3 _text="answerMode.chooseMode"></h3>
+
+						<div class="select">
+							<template>
+								<label>
+									<input type="radio" name="answerMode" />
+									<div _content="answerMode"></div>
+								</label>
+							</template>
+						</div>
+					</section>
+				</div>
+			</div>
+
+			<div class="start-quiz">
 				<button _action="startQuiz" _text="startQuiz"></button>
-			</start-quiz>
-		</start-screen>
+			</div>
+		</section>
 
-		<game>
-			<before-canvas>
-				<left-side>
-					<back-arrow>
+		<section class="game">
+			<section class="before-canvas">
+				<div class="left-side">
+					<div class="back-arrow">
 						&nbsp;
 						<button title="Back to start screen" class="bi-arrow-left-short"></button>
-					</back-arrow>
+					</div>
 
-					<restart>
+					<div class="restart">
 						&nbsp;
 						<button title="Restart game" class="bi-arrow-clockwise"></button>
-					</restart>
+					</div>
 
-					<correct-incorrect title="Correct and incorrect countries">
-						<correct></correct>
+					<div class="correct-incorrect" title="Correct and incorrect countries">
+						<span class="correct"></span>
 						&bull;
-						<incorrect></incorrect>
-					</correct-incorrect>
-				</left-side>
+						<span class="incorrect"></span>
+					</div>
+				</div>
 
-				<flag-and-country>
-					<flag></flag>
-					<country></country>
-					<capital></capital>
-				</flag-and-country>
+				<div class="flag-and-country">
+					<span class="flag"></span>
+					<span class="country"></span>
+					<span class="capital"></span>
+				</div>
 
-				<right-side>
-					<remaining title="Remaining countries"></remaining>
+				<div class="right-side">
+					<div class="remaining" title="Remaining countries"></div>
 
-					<percentage title="Percentage of right countries"></percentage>
-				</right-side>
-			</before-canvas>
+					<div class="percentage" title="Percentage of right countries"></div>
+				</div>
+			</section>
 
-			<canvas-container>
+			<div class="canvas-container">
 				<canvas></canvas>
-			</canvas-container>
+			</div>
+		</section>
 
-			<after-canvas></after-canvas>
-		</game>
+		<section class="end-screen">
+			<div class="you-have" _text="endScreen.youHave"></div>
 
-		<end-screen>
-			<you-have _text="endScreen.youHave"></you-have>
+			<div class="score">
+				<span class="correct"></span>
+				<span class="out-of" _text="endScreen.outOf"></span>
+				<span class="total"></span>
+			</div>
 
-			<score>
-				<correct></correct>
-				<out-of _text="endScreen.outOf"></out-of>
-				<total></total>
-			</score>
+			<div class="score-explanation">
+				<span class="countries-explanation" _text="endScreen.countriesExplanation"></span>
+				<span class="incorrect"></span>
+				<span class="percentage-explanation" _text="endScreen.percentageExplanation"></span>
+			</div>
 
-			<score-explanation>
-				<countries-explanation _text="endScreen.countriesExplanation"></countries-explanation>
-				<incorrect></incorrect>
-				<percentage-explanation _text="endScreen.percentageExplanation"></percentage-explanation>
-			</score-explanation>
+			<div class="percentage-container">
+				<span class="percentage" data-evaluation></span>
+				<span class="point">.</span>
+			</div>
 
-			<percentage-container>
-				<percentage data-evaluation></percentage>
-				<point>.</point>
-			</percentage-container>
-
-			<continents-explanation>
-				<your-continents-were _text="endScreen.yourContinentsWere"></your-continents-were>
-				<continents>
+			<div class="continents-explanation">
+				<span class="your-continents-were" _text="endScreen.yourContinentsWere"></span>
+				<span class="continents">
 					<template>
-						<conjunction _content="conjunction"></conjunction>
-						<continent-name _content="continent"></continent-name>
+						<span class="conjunction" _content="conjunction"></span>
+						<span class="continent-name" _content="continent"></span>
 					</template>
-				</continents>
-				<point>.</point>
-			</continents-explanation>
+				</span>
+				<span class="point">.</span>
+			</div>
 
-			<question-answer-mode>
-				<question-mode-explanation _text="endScreen.questionModeExplanation">
-				</question-mode-explanation>
-				<question-mode></question-mode>
-				<answer-mode-explanation _text="endScreen.answerModeExplanation">
-				</answer-mode-explanation>
-				<answer-mode></answer-mode>
-				<point>.</point>
-			</question-answer-mode>
+			<div class="question-answer-mode">
+				<span class="question-mode-explanation" _text="endScreen.questionModeExplanation"></span>
+				<span class="question-mode"></span>
+				<span class="answer-mode-explanation" _text="endScreen.answerModeExplanation"></span>
+				<span class="answer-mode"></span>
+				<span class="point">.</span>
+			</div>
 
 			<button _action="restartQuiz">
-				<icon class="bi-arrow-clockwise"></icon>
+				<span class="icon bi-arrow-clockwise"></span>
 
 				<span _text="endScreen.restartQuiz"></span>
 			</button>
 
 			<button _action="backToStartScreen">
-				<icon class="bi-arrow-left-short"></icon>
+				<span class="icon bi-arrow-left-short"></span>
 
 				<span _text="endScreen.backToStartScreen"></span>
 			</button>
-		</end-screen>
+		</section>
 	</main>
 
 	<footer>
 		<span _text="footer.madeWithLove"></span>
-		&bull;
+		&bullet;
 		<a _text="footer.viewOnGitHub" href="https://github.com/BenjaminAster/Geography-Quiz"></a>
-		&bull;
+		&bullet;
 		<span _text="footer.version"></span>
-		6
+		7
+		&bullet;
+		<button _action="update" _text="footer.updateSite"></button>
 	</footer>
-
 </body>
 
 </html>

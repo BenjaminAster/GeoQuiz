@@ -1,0 +1,130 @@
+.game {
+  display: none;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+  user-select: none;
+}
+.game :is(.before-canvas, .after-canvas) {
+  display: flex;
+  --backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  backdrop-filter: var(--backdrop-filter);
+  background-color: var(--transparent-gray);
+  box-shadow: 0 0 1.5rem -0.3rem var(--background);
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  place-items: center;
+  padding: 0.5rem;
+  font-size: 2rem;
+}
+@supports not ((backdrop-filter: none) or (-webkit-backdrop-filter: none)) {
+  .game :is(.before-canvas, .after-canvas) {
+    background-color: var(--gray-2);
+  }
+}
+.game .before-canvas {
+  z-index: 1;
+  margin: 1rem;
+  border-radius: 1.1rem;
+}
+.game .before-canvas :is(.left-side, .right-side) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.game .before-canvas :is(.left-side, .right-side) > * {
+  display: block;
+  --padding: 0 0.5rem 0.15rem;
+  padding: var(--padding);
+  font-size: inherit;
+  block-size: 100%;
+  overflow: hidden;
+  border-radius: 0.8rem;
+  background-color: var(--transparent-gray);
+}
+.game .before-canvas :is(.left-side, .right-side) :is(.back-arrow, .restart) {
+  position: relative;
+  font-size: inherit;
+  display: inline-block;
+  min-inline-size: 1em;
+  transition: background-color 0.3s;
+}
+.game .before-canvas :is(.left-side, .right-side) :is(.back-arrow, .restart):hover {
+  background-color: var(--gray-3);
+}
+.game .before-canvas :is(.left-side, .right-side) :is(.back-arrow, .restart) button {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: 0;
+  font-family: inherit;
+  padding: 0;
+  min-inline-size: 3rem;
+  border: none;
+  border-radius: inherit;
+  background: none;
+  font-size: inherit;
+}
+.game .before-canvas :is(.left-side, .right-side) .back-arrow button::before {
+  font-size: 3rem;
+}
+.game .before-canvas :is(.left-side, .right-side) .correct-incorrect {
+  display: flex;
+  gap: 0.2rem;
+}
+.game .before-canvas :is(.left-side, .right-side) .correct-incorrect .correct {
+  color: var(--green);
+}
+.game .before-canvas :is(.left-side, .right-side) .correct-incorrect .incorrect {
+  color: var(--red);
+}
+.game .before-canvas :is(.left-side, .right-side) .remaining {
+  display: block;
+  color: var(--blue);
+  background-color: var(--blue-bg);
+  min-inline-size: 1.2em;
+  text-align: center;
+}
+.game .before-canvas :is(.left-side, .right-side) .percentage {
+  color: var(--green);
+  background-color: var(--green-bg);
+}
+.game .before-canvas :is(.left-side, .right-side) .percentage::after {
+  content: "%";
+}
+.game .before-canvas .flag-and-country {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.game .before-canvas .flag-and-country .flag {
+  inline-size: 5rem;
+  block-size: 3rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.game .before-canvas .flag-and-country .flag:not([hidden]) {
+  display: inline-block;
+}
+.game .canvas-container {
+  display: inline;
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  flex-grow: 1;
+  flex-direction: column;
+}
+.game .canvas-container canvas {
+  display: block;
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+/*# sourceMappingURL=game.css.map */

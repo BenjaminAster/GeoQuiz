@@ -1,5 +1,5 @@
 let data;
-const canvas = document.querySelector("game canvas");
+const canvas = document.querySelector(".game canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 let colors;
 let mouseX;
@@ -41,10 +41,10 @@ export default (countriesData) => {
 	{
 		const initColors = () => {
 			colors = {
-				background: getColor("--col-18"),
-				foreground: getColor("--col-f"),
-				gray: getColor("--col-3"),
-				lightGray: getColor("--col-5"),
+				background: getColor("--background"),
+				foreground: getColor("color"),
+				gray: getColor("--gray-1"),
+				lightGray: getColor("--gray-3"),
 				green: getColor("--country-green"),
 				red: getColor("--country-red"),
 			};
@@ -83,7 +83,7 @@ export default (countriesData) => {
 				if (event.touches.length === 2) {
 					currentTouchDistance = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, event.touches[0].pageY - event.touches[1].pageY);
 				}
-			});
+			}, { passive: false });
 			canvas.addEventListener("touchend", (event) => {
 				if (event.touches.length === 1) {
 					currentTouchDistance = null;
@@ -92,7 +92,7 @@ export default (countriesData) => {
 					prevX = -1;
 					prevY = -1;
 				}
-			});
+			}, { passive: false });
 			canvas.addEventListener("touchmove", (event) => {
 				if (event.touches.length === 2) {
 					event.preventDefault();
@@ -113,7 +113,7 @@ export default (countriesData) => {
 				else if (event.touches.length === 1) {
 					onPointerMove(event.touches[0].pageX, event.touches[0].pageY);
 				}
-			});
+			}, { passive: false });
 		}
 	}
 	canvas.addEventListener("wheel", (event) => {
@@ -134,10 +134,10 @@ export default (countriesData) => {
 	{
 		const draw = () => {
 			ctx.strokeStyle = colors.foreground;
-			ctx.fillStyle = colors.background;
 			ctx.lineWidth = 1;
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
+			ctx.fillStyle = colors.background;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 			{
 				let hoveredCountry;

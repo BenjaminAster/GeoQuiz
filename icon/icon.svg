@@ -7,7 +7,7 @@
 		text {
 			dominant-baseline: central;
 			text-anchor: middle;
-			fill: springGreen;
+			fill: deepSkyBlue;
 			font: 100rem system-ui;
 			transform: translate(-35%, -50%);
 		}

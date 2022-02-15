@@ -19,14 +19,9 @@ cd ts && tsc -b -w
 
 */
 
-
-if (!new URL(location.href).searchParams.has("no-sw")) {
-	navigator.serviceWorker?.register("./service-worker.js", { scope: "./" });
-}
-
-const browser: string = (navigator as any).userAgentData?.brands?.find(
-	({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand)
-)?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
+// const browser: string = (navigator as any).userAgentData?.brands?.find(
+// 	({ brand }) => ["Chromium", "Firefox", "Safari"].includes(brand)
+// )?.brand?.toLowerCase() ?? (navigator.userAgent.match(/Firefox|Safari/i))?.[0]?.toLowerCase();
 
 {
 	/// nav buttons:
@@ -50,26 +45,6 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		async installApp() {
 			installPromptEvent?.prompt?.();
 		},
-		async update(clearLocalStorage: boolean = true) {
-			if (clearLocalStorage) localStorage.clear();
-
-			await new Promise<void>(async (resolve: () => void) => {
-				window.setTimeout(resolve, 500);
-				window.caches.delete(
-					new URL((await navigator.serviceWorker?.ready).scope).pathname
-				);
-				resolve();
-			});
-
-			await new Promise<void>(async (resolve: () => void) => {
-				window.setTimeout(resolve, 500);
-				await (await navigator.serviceWorker?.ready)?.unregister?.();
-				resolve();
-			});
-
-			await window.fetch("/clear-site-data/", { cache: "no-store" });
-			(location as any).reload(true);
-		},
 		share() {
 			navigator.share?.({
 				title: document.title,
@@ -83,15 +58,6 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 		const buttons: Element[] = [...document.querySelectorAll(`[_action="${actionName}"]`)];
 		buttons.forEach((button: Element) => button.addEventListener("click", () => func()));
 	}
-
-	if (location.hostname === "localhost") {
-		window.addEventListener("keydown", (event: KeyboardEvent) => {
-			if (event.key === "F5" && !event.ctrlKey) {
-				event.preventDefault();
-				actions.update(false);
-			}
-		});
-	}
 }
 
 {
@@ -99,7 +65,7 @@ const browser: string = (navigator as any).userAgentData?.brands?.find(
 
 	setLanguage();
 
-	const container: HTMLElement = document.querySelector("languages options-select");
+	const container: HTMLElement = document.querySelector(".languages .select");
 	const getClone = getTemplateCloner(container);
 
 	for (const language of languages) {

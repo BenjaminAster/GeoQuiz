@@ -1,0 +1,87 @@
+:root {
+	--gray-1: #88888e18;
+	--gray-2: #88888e28;
+	--gray-3: #88888e38;
+
+	$bgPercentage: 15%;
+	$violet: blueViolet;
+	--violet: #{$violet};
+	--violet-bg: #{rgba($violet, $bgPercentage)};
+
+	&[color-scheme="dark"] {
+		--background: #121218;
+		--gray-1: #202026;
+		--gray-2: #2e2e34;
+		--gray-3: #3c3c42;
+
+		--transparent-gray: #3c3c4233;
+		// --gray: #222228;
+
+		$blue: deepSkyBlue;
+		--blue: #{$blue};
+		--blue-bg: #{rgba($blue, $bgPercentage)};
+
+		$green: springGreen;
+		--green: #{$green};
+		--green-bg: #{rgba($green, $bgPercentage)};
+
+		$red: #f24;
+		--red: #{$red};
+		--red-bg: #{rgba($red, $bgPercentage)};
+
+		$orange: orange;
+		--orange: #{$orange};
+		--orange-bg: #{rgba($orange, $bgPercentage)};
+
+		--country-green: #0d4;
+		--country-red: #{$red};
+
+		--transparent-bg: #{rgba(#111117, 50%)};
+		--transparent-fg: #{rgba(#f9f9ff, 7%)};
+
+		--link-blue: lightSkyBlue;
+
+		.moon {
+			display: grid;
+		}
+	}
+
+	&[color-scheme="light"] {
+		--background: #f8f8fe;
+		--gray-1: #eaeaf0;
+		--gray-2: #dcdce2;
+		--gray-3: #ceced4;
+
+		--transparent-gray: #ceced433;
+
+		$blue: blue;
+		--blue: #{$blue};
+		--blue-bg: #{rgba($blue, $bgPercentage)};
+
+		// $green: seaGreen;
+		$green: #062;
+		--green: #{$green};
+		--green-bg: #{rgba($green, $bgPercentage)};
+
+		$red: #d13;
+		--red: #{$red};
+		--red-bg: #{rgba($red, $bgPercentage)};
+
+		// $orange: #e70;
+		$orange: #a20;
+		--orange: #{$orange};
+		--orange-bg: #{rgba($orange, 10%)};
+
+		--country-green: #5e7;
+		--country-red: #f55;
+
+		--transparent-bg: #{rgba(#f9f9ff, 50%)};
+		--transparent-fg: #{rgba(#111117, 7%)};
+
+		--link-blue: blue;
+
+		.sun {
+			display: grid;
+		}
+	}
+}

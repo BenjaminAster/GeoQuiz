@@ -1,6 +1,6 @@
 {
-	"name": "Geography Quiz",
-	"short_name": "Geography Quiz",
+	"name": "GeoQuiz",
+	"short_name": "GeoQuiz",
 	"description": "Test your knowledge about geography with this geography quiz!",
 	"start_url": "./",
 	"scope": "./",
@@ -16,17 +16,6 @@
 	"display_override": [
 		"window-controls-overlay"
 	],
-	"protocol_handlers": [
-		{
-			"protocol": "web+geographyquiz",
-			"url": "./?url=%s"
-		}
-	],
-	"prefer_related_applications": false,
-	"launch_handler": {
-		"route_to": "new-client",
-		"navigate_existing_client": "always"
-	},
 	"icons": [
 		{
 			"src": "./icon/icon.png",

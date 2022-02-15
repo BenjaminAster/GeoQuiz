@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
-		"target": "es2021",
-		"module": "es2020",
+		"target": "ESNext",
+		"module": "ESNext",
 		"lib": [
-			"es2021",
+			"ESNext",
 			"dom",
 			"dom.iterable",
 		],
@@ -12,7 +12,8 @@
 		"removeComments": true,
 		"strict": false,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"newLine": "LF",
 	},
 	"include": [
 		"./**/*.ts",

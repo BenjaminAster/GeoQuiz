@@ -3,27 +3,26 @@ import { getTemplateCloner, } from "./utils.js";
 import translations from "./translations.js";
 let firstGamePlayed = false;
 let running = false;
-const beforeCanvasEl = document.querySelector("game before-canvas");
+const beforeCanvasEl = document.querySelector(".game .before-canvas");
 let onNewGame;
-beforeCanvasEl.querySelector("back-arrow button").addEventListener("click", () => {
+beforeCanvasEl.querySelector(".back-arrow button").addEventListener("click", () => {
 	running = false;
 	stopGame();
 	history.back();
 });
-beforeCanvasEl.querySelector("restart button").addEventListener("click", () => {
+beforeCanvasEl.querySelector(".restart button").addEventListener("click", () => {
 	running = false;
 	stopGame();
 	onNewGame?.();
 });
-document.querySelector("end-screen [_action=restartQuiz]").addEventListener("click", () => {
+document.querySelector(".end-screen [_action=restartQuiz]").addEventListener("click", () => {
 	onNewGame?.();
 });
-document.querySelector("end-screen [_action=backToStartScreen]").addEventListener("click", () => {
+document.querySelector(".end-screen [_action=backToStartScreen]").addEventListener("click", () => {
 	history.back();
 });
 const game = async (data, settings) => {
 	document.body.setAttribute("_game-state", "game");
-	document.querySelector("game after-canvas").style.display = "none";
 	const whatToShow = (() => {
 		switch (settings.questionMode) {
 			case ("countryName"): return { country: true };
@@ -49,7 +48,7 @@ const game = async (data, settings) => {
 	const countries = shuffleArray(data.filter(({ continent }) => settings.continents.includes(continent)));
 	let correctCountries = 0;
 	for (const type of ["flag", "country", "capital"]) {
-		beforeCanvasEl.querySelector(type).hidden = !whatToShow[type];
+		beforeCanvasEl.querySelector("." + type).hidden = !whatToShow[type];
 	}
 	running = true;
 	onNewGame = () => {
@@ -60,18 +59,18 @@ const game = async (data, settings) => {
 	for (const [i, country] of countries.entries()) {
 		if (!running)
 			return;
-		beforeCanvasEl.querySelector("remaining").textContent = (countries.length - i).toString();
-		beforeCanvasEl.querySelector("percentage").textContent = Math.floor(correctCountries / countries.length * 100).toString();
-		beforeCanvasEl.querySelector("correct").textContent = correctCountries.toString();
-		beforeCanvasEl.querySelector("incorrect").textContent = (i - correctCountries).toString();
+		beforeCanvasEl.querySelector(".remaining").textContent = (countries.length - i).toString();
+		beforeCanvasEl.querySelector(".percentage").textContent = Math.floor(correctCountries / countries.length * 100).toString();
+		beforeCanvasEl.querySelector(".correct").textContent = correctCountries.toString();
+		beforeCanvasEl.querySelector(".incorrect").textContent = (i - correctCountries).toString();
 		if (whatToShow.country)
-			document.querySelector("game country").textContent = country.name[settings.language];
+			document.querySelector(".game .country").textContent = country.name[settings.language];
 		if (whatToShow.capital)
-			document.querySelector("game capital").textContent = country.capital[settings.language];
+			document.querySelector(".game .capital").textContent = country.capital[settings.language];
 		let flagBlobURI;
 		if (whatToShow.flag) {
 			flagBlobURI = URL.createObjectURL(new Blob([country.flagSVG], { type: "image/svg+xml" }));
-			document.querySelector("game flag").style.backgroundImage = (`url("${flagBlobURI}")`);
+			document.querySelector(".game .flag").style.backgroundImage = (`url("${flagBlobURI}")`);
 		}
 		if (country.name.en === await awaitCountryClick()) {
 			markCountry(country.name.en, true);
@@ -85,14 +84,14 @@ const game = async (data, settings) => {
 	stopDrawing();
 	document.body.setAttribute("_game-state", "end");
 	{
-		document.querySelector("end-screen correct").textContent = correctCountries.toString();
-		document.querySelector("end-screen total").textContent = countries.length.toString();
-		document.querySelector("end-screen incorrect").textContent = (countries.length - correctCountries).toString();
+		document.querySelector(".end-screen .correct").textContent = correctCountries.toString();
+		document.querySelector(".end-screen .total").textContent = countries.length.toString();
+		document.querySelector(".end-screen .incorrect").textContent = (countries.length - correctCountries).toString();
 		const fraction = correctCountries / countries.length;
-		document.querySelector("end-screen percentage").textContent = Math.floor(fraction * 100).toString();
-		document.querySelector("end-screen percentage").setAttribute("data-evaluation", ((fraction > .9) ? "good" : (fraction > .7) ? "medium" : "bad"));
+		document.querySelector(".end-screen .percentage").textContent = Math.floor(fraction * 100).toString();
+		document.querySelector(".end-screen .percentage").setAttribute("data-evaluation", ((fraction > .9) ? "good" : (fraction > .7) ? "medium" : "bad"));
 		{
-			const continentsContainer = document.querySelector("end-screen continents");
+			const continentsContainer = document.querySelector(".end-screen .continents");
 			const getClone = getTemplateCloner(continentsContainer);
 			continentsContainer.querySelectorAll(":scope > :not(template)").forEach((element) => element.remove());
 			for (const [i, continent] of settings.continents.entries()) {
@@ -103,8 +102,8 @@ const game = async (data, settings) => {
 				continentsContainer.append(clone);
 			}
 		}
-		document.querySelector("end-screen question-mode").textContent = (translations.endScreen.questionModes[settings.questionMode][settings.language]);
-		document.querySelector("end-screen answer-mode").textContent = (translations.endScreen.answerModes[settings.answerMode][settings.language]);
+		document.querySelector(".end-screen .question-mode").textContent = (translations.endScreen.questionModes[settings.questionMode][settings.language]);
+		document.querySelector(".end-screen .answer-mode").textContent = (translations.endScreen.answerModes[settings.answerMode][settings.language]);
 	}
 };
 export default game;

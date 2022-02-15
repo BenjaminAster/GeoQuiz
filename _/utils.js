@@ -36,7 +36,7 @@ export const getTemplateCloner = (container) => {
 				element.setAttribute("_text", value);
 			}
 			else {
-				element = clone.querySelector(`[_notranslate="${key}"]`);
+				element = clone.querySelector(`[_static-text="${key}"]`);
 				if (element)
 					element.innerHTML = value;
 			}
@@ -50,6 +50,7 @@ export const setLanguage = (language) => {
 	chosenLanguage = languages.includes(chosenLanguage) ? chosenLanguage : languages[0];
 	translateElement(document.body);
 	document.title = translations.title[chosenLanguage];
+	document.documentElement.lang = chosenLanguage;
 	storage.set("language", chosenLanguage);
 };
 export const setColorScheme = (scheme) => {
@@ -58,7 +59,7 @@ export const setColorScheme = (scheme) => {
 	storage.set("colorScheme", colorScheme);
 	document.querySelector("meta[name=color-scheme]").content = colorScheme;
 	document.documentElement.setAttribute("color-scheme", colorScheme);
-	document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--col-18")).trim();
+	document.querySelector("meta[name=theme-color]").content = (window.getComputedStyle(document.documentElement)?.getPropertyValue("--background")).trim();
 	const event = new CustomEvent("color-scheme-set");
 	window.dispatchEvent(event);
 };

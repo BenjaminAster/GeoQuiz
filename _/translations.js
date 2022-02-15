@@ -4,8 +4,8 @@ export const languages = [
 ];
 export default {
 	title: {
-		en: "Geography Quiz",
-		de: "Geographie Quiz",
+		en: "GeoQuiz",
+		de: "GeoQuiz",
 	},
 	description: {
 		de: "Lerne die Namen, geografischen Positionen, Flaggen und Hauptstädte der Länder der Welt!",
@@ -69,6 +69,20 @@ export default {
 			de: "Dieses Quiz funktioniert nicht auf mobilen Geräten. Bitte nutze stattdessen ein Desktop-Gerät.",
 		},
 	},
+	updateAvailable: {
+		header: {
+			en: "Update available!",
+			de: "Update verfügbar!",
+		},
+		text: {
+			en: "There is an update available for this site.",
+			de: "Für diese Seite ist ein Update verfügbar.",
+		},
+		button: {
+			en: "Update",
+			de: "Seite aktualisieren",
+		},
+	},
 	questionMode: {
 		chooseMode: {
 			en: "Choose what should be displayed:",
@@ -112,10 +126,6 @@ export default {
 			en: "type the country name",
 			de: "Ländernamen eingeben",
 		},
-		moreWillBeAdded: {
-			en: "More options will be added in the future.",
-			de: "Mehr Optionen werden in Zukunft hinzugefügt.",
-		}
 	},
 	startQuiz: {
 		en: "Start quiz",
@@ -123,16 +133,20 @@ export default {
 	},
 	footer: {
 		madeWithLove: {
-			en: `Made with <heart></heart> by Benjamin Aster`,
-			de: `Mit <heart></heart> gemacht von Benjamin Aster`,
+			en: `Made with <span class="heart" title="love"></span> by Benjamin Aster`,
+			de: `Mit <span class="heart" title="Liebe"></span> gemacht von Benjamin Aster`,
 		},
 		viewOnGitHub: {
-			en: "View on GitHub",
-			de: "Auf GitHub ansehen",
+			en: "view on GitHub",
+			de: "auf GitHub ansehen",
 		},
 		version: {
 			en: "version",
 			de: "Version",
+		},
+		updateSite: {
+			en: "update site",
+			de: "Seite aktualisieren",
 		}
 	},
 	endScreen: {
@@ -181,6 +195,10 @@ export default {
 				en: "the flags",
 				de: "die Flaggen",
 			},
+			capital: {
+				en: "the capitals",
+				de: "die Hauptstädte",
+			},
 		},
 		answerModeExplanation: {
 			en: "and you had to",
@@ -188,8 +206,12 @@ export default {
 		},
 		answerModes: {
 			showOnMap: {
-				en: "find the countries on world map",
+				en: "find the countries on the world map",
 				de: "die Länder auf der Weltkarte finden",
+			},
+			showCapitalOnMap: {
+				en: "find the capitals on the world map",
+				de: "die Hauptstädte auf der Weltkarte finden",
 			},
 		},
 		restartQuiz: {

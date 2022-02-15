@@ -1,0 +1,215 @@
+@charset "UTF-8";
+/*
+
+sass scss:_ --watch
+
+*/
+:root {
+  overflow: hidden;
+}
+
+body {
+  font-family: system-ui; 
+  margin: 0;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+  position: fixed;
+  inset: 0;
+  inset-block-start: env(titlebar-area-height, 0);
+}
+body:not([_loaded]) :is(main, footer) {
+  display: none;
+}
+body[_game-state=start] .start-screen {
+  display: flex;
+}
+body[_game-state=game] .game {
+  display: flex;
+}
+body[_game-state=game] nav {
+  /* display: none; */
+}
+body[_game-state=end] .end-screen {
+  display: flex;
+}
+body[_game-state=game] footer {
+  display: none;
+}
+
+button,
+label {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+button {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+::selection {
+  background: var(--blue);
+  color: var(--background);
+}
+
+a {
+  color: var(--link-blue);
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.6rem;
+  overflow: hidden;
+  app-region: drag;
+  position: fixed;
+  inset-block-start: env(titlebar-area-y, 0);
+  inset-inline-start: env(titlebar-area-x, 0);
+  width: env(titlebar-area-width, 0);
+  height: env(titlebar-area-height, 0);
+  background-color: var(--background);
+  user-select: none;
+}
+.titlebar button {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+  background: none;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0;
+  font-size: env(titlebar-area-height)/2;
+  transition: background-color 0.3s;
+}
+.titlebar button:hover {
+  background-color: var(--gray-2);
+}
+.titlebar .site-name {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+}
+
+nav.main-nav {
+  padding: 6px;
+  background-color: var(--gray-2);
+  font-weight: bolder;
+  display: flex;
+  flex-wrap: wrap;
+  --line-width: 4px;
+  --gap: 6px;
+  gap: var(--gap);
+  border-radius: 1rem;
+  width: fit-content;
+}
+nav.main-nav > * {
+  padding: 0;
+  aspect-ratio: 1;
+  box-sizing: content-box;
+  place-items: center;
+  color: initial;
+  inline-size: 2.3rem;
+  font-size: 1.4rem;
+  background-color: var(--gray-1);
+  border: none;
+  border-radius: 0.7rem;
+  transition: background-color 0.3s, color 0.3s;
+  position: relative;
+}
+nav.main-nav > *:not([hidden]) {
+  display: grid;
+}
+nav.main-nav > *:hover {
+  background-color: var(--blue);
+  color: var(--background);
+}
+@media all and (display-mode: fullscreen) {
+  nav.main-nav > *[_action=toggleFullscreen] .disable-fullscreen {
+    display: grid;
+  }
+}
+@media not all and (display-mode: fullscreen) {
+  nav.main-nav > *[_action=toggleFullscreen] .enable-fullscreen {
+    display: grid;
+  }
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+noscript {
+  display: block;
+  margin: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  background-color: var(--red-bg);
+  color: darkLight(salmon, darkRed);
+  border: none;
+  border-radius: 0.8rem;
+}
+
+@media (hover: none) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+footer {
+  background-color: var(--gray-1);
+  padding: 0.3rem;
+  text-align: center;
+}
+footer .heart::before {
+  content: "❤";
+  color: var(--red);
+}
+footer button {
+  text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+::-webkit-scrollbar-button:start:increment {
+  display: none;
+}
+::-webkit-scrollbar-button:end:decrement {
+  display: none;
+}
+::-webkit-scrollbar-thumb, ::-webkit-scrollbar-button {
+  background-color: var(--gray-2);
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: 0.25rem solid transparent;
+  border-radius: 0.5rem;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-button:hover {
+  background-color: var(--gray-3);
+}
+::-webkit-scrollbar-corner {
+  background: none;
+}
+
+/*# sourceMappingURL=main.css.map */
