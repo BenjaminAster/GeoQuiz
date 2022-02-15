@@ -411,11 +411,7 @@ export default (countriesData: CountriesData) => {
 
 			clicked = false;
 
-			if (running) {
-				setInterval(() => {
-					window.requestAnimationFrame(draw);
-				}, 1000 / 30);
-			} else {
+			if (!running) {
 				// onNewGame(() => {
 				// 	window.requestAnimationFrame(draw);
 				// 	// setTimeout(() => {
@@ -427,8 +423,9 @@ export default (countriesData: CountriesData) => {
 				};
 			}
 		};
-
-		draw();
+		setInterval(() => {
+			window.requestAnimationFrame(draw);
+		}, 1000 / 30);
 	}
 
 	{
