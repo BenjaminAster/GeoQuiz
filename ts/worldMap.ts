@@ -29,7 +29,7 @@ let newGameCallback: Function;
 
 let settings: Record<string, any>;
 
-let render: boolean = true
+let render: boolean = true;
 
 const resize = () => {
 	if (running) {
@@ -37,13 +37,6 @@ const resize = () => {
 		canvas.height = canvas.clientHeight;
 	}
 };
-
-
-// const onNewGame = (callback: Function) => {
-// 	newGameCallback = callback;
-// };
-
-// let _id: number;
 
 export const newGame = (newSettings: Record<string, any>) => {
 	mouseX = 0;
@@ -79,23 +72,10 @@ export default (countriesData: CountriesData) => {
 
 	{
 		const initColors = () => {
-			// colors = {
-			// 	background: getColor("--col-background"),
-			// 	foreground: getColor("--col-f"),
-			// 	gray: getColor("--col-3"),
-			// 	lightGray: getColor("--col-5"),
-			// 	green: getColor("--country-green"),
-			// 	red: getColor("--country-red"),
-			// };
 			colors = {
-				// background: getColor("--col-1"),
-				// background: "#222228",
 				background: getColor("--background"),
-				// foreground: getColor("--col-f"),
 				foreground: getColor("color"),
-				// foreground: getColor("--violet"),
 				gray: getColor("--gray-1"),
-				// lightGray: getColor("--col-2"),
 				lightGray: getColor("--gray-3"),
 				green: getColor("--country-green"),
 				red: getColor("--country-red"),
@@ -120,7 +100,7 @@ export default (countriesData: CountriesData) => {
 				mouseX = pageX - canvas.parentElement.offsetLeft;
 				mouseY = pageY - canvas.parentElement.offsetTop - (
 					// @ts-ignore
-					navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0
+					navigator.windowControlsOverlay?.getTitlebarAreaRect().height ?? 0
 				);
 
 				const dragMultiplier: number = 2;
@@ -144,7 +124,7 @@ export default (countriesData: CountriesData) => {
 
 		canvas.addEventListener("mousemove", (event: MouseEvent) => {
 			onPointerMove(event.pageX, event.pageY, (event.buttons !== 1));
-			render = true
+			render = true;
 		});
 
 		{
@@ -157,7 +137,7 @@ export default (countriesData: CountriesData) => {
 						event.touches[0].pageY - event.touches[1].pageY
 					);
 				}
-				render = true
+				render = true;
 			}, { passive: false });
 
 			canvas.addEventListener("touchend", (event: TouchEvent) => {
@@ -167,7 +147,7 @@ export default (countriesData: CountriesData) => {
 					prevX = -1;
 					prevY = -1;
 				}
-				render = true
+				render = true;
 			}, { passive: false });
 
 			canvas.addEventListener("touchmove", (event: TouchEvent) => {
@@ -185,10 +165,7 @@ export default (countriesData: CountriesData) => {
 					const midpointY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
 
 					const x: number = midpointX - canvas.parentElement.offsetLeft;
-					const y: number = midpointY - canvas.parentElement.offsetTop - (
-						// @ts-ignore
-						navigator.windowControlsOverlay?.getTitlebarAreaRect?.()?.height ?? 0
-					);
+					const y: number = midpointY - canvas.parentElement.offsetTop;
 
 					const pointX: number = ((x / (canvas.width / 2) - 1) / (
 						(scalePerZoom ** zoom) / 180
@@ -222,7 +199,7 @@ export default (countriesData: CountriesData) => {
 					onPointerMove(event.touches[0].pageX, event.touches[0].pageY);
 				}
 
-				render = true
+				render = true;
 			}, { passive: false });
 		}
 
@@ -254,7 +231,7 @@ export default (countriesData: CountriesData) => {
 
 		centerX = pointX - (pointX - centerX) * (scalePerZoom ** delta);
 		centerY = pointY - (pointY - centerY) * (scalePerZoom ** delta);
-		render = true
+		render = true;
 	}, { passive: false });
 
 	{
@@ -264,19 +241,25 @@ export default (countriesData: CountriesData) => {
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
 			ctx.fillStyle = colors.background;
-			
+
+			if (running) {
+				window.setTimeout(() => {
+					window.requestAnimationFrame(draw);
+				}, 1000 / 30);
+			} else {
+				newGameCallback = () => {
+					window.requestAnimationFrame(draw);
+				};
+			}
+
 			if (render) ctx.fillRect(0, 0, canvas.width, canvas.height);
-			else return
+			else return;
 
-			// ctx.fillStyle = colors.gray;
-			// ctx.fillRect(0, 0, canvas.width, canvas.height);
-			// ctx.fillStyle = colors.background;
-
-			// ctx.clearRect(0, 0, canvas.width, canvas.height);
+			render = false;
 
 			{
 				let hoveredCountry: string;
-	
+
 				for (const drawPolygons of [...(settings.capital ? [] : [false]), true]) {
 
 					countryLoop: for (const country of (drawPolygons ? data : [...data].reverse())) {
@@ -321,6 +304,7 @@ export default (countriesData: CountriesData) => {
 											!incorrectCountries.has(country.name.en)
 										) {
 											countryClicked(country.name.en);
+											render = true;
 										}
 										clicked = false;
 									}
@@ -331,8 +315,6 @@ export default (countriesData: CountriesData) => {
 					}
 				}
 			}
-
-			render = false
 
 			if (settings.capital) {
 				const radius: number = 5 + zoom;
@@ -351,9 +333,9 @@ export default (countriesData: CountriesData) => {
 				let hoveredCapitalCountry: string;
 
 				mouseHoverLoop: for (const country of [...data].reverse()) {
-					if (Math.sqrt(
-						(country.capitalCoordinates[1] - mousePointX) ** 2 +
-						(country.capitalCoordinates[0] - mousePointY) ** 2
+					if (Math.hypot(
+						(country.capitalCoordinates[1] - mousePointX),
+						(country.capitalCoordinates[0] - mousePointY),
 					) < radiusPoints) {
 						hoveredCapitalCountry = country.name.en;
 
@@ -410,22 +392,9 @@ export default (countriesData: CountriesData) => {
 			}
 
 			clicked = false;
-
-			if (!running) {
-				// onNewGame(() => {
-				// 	window.requestAnimationFrame(draw);
-				// 	// setTimeout(() => {
-				// 	// });
-				// });
-
-				newGameCallback = () => {
-					window.requestAnimationFrame(draw);
-				};
-			}
 		};
-		setInterval(() => {
-			window.requestAnimationFrame(draw);
-		}, 1000 / 30);
+
+		draw();
 	}
 
 	{
@@ -444,14 +413,14 @@ export default (countriesData: CountriesData) => {
 			) {
 				clicked = true;
 			}
-			render = true
+			render = true;
 		});
 		canvas.addEventListener("pointerdown", (event: MouseEvent) => {
 			pointerDown = {
 				x: event.pageX - canvas.parentElement.offsetLeft,
 				y: event.pageY - canvas.parentElement.offsetTop,
 			};
-			render = true
+			render = true;
 		});
 	}
 };

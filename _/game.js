@@ -6,108 +6,108 @@ let running = false;
 const beforeCanvasEl = document.querySelector(".game .before-canvas");
 let onNewGame;
 beforeCanvasEl.querySelector(".back-arrow button").addEventListener("click", () => {
-    running = false;
-    stopGame();
-    history.back();
+	running = false;
+	stopGame();
+	history.back();
 });
 beforeCanvasEl.querySelector(".restart button").addEventListener("click", () => {
-    running = false;
-    stopGame();
-    onNewGame?.();
+	running = false;
+	stopGame();
+	onNewGame?.();
 });
 document.querySelector(".end-screen [_action=restartQuiz]").addEventListener("click", () => {
-    onNewGame?.();
+	onNewGame?.();
 });
 document.querySelector(".end-screen [_action=backToStartScreen]").addEventListener("click", () => {
-    history.back();
+	history.back();
 });
 const game = async (data, settings) => {
-    document.body.setAttribute("_game-state", "game");
-    const whatToShow = (() => {
-        switch (settings.questionMode) {
-            case ("countryName"): return { country: true };
-            case ("flag"): return { flag: true };
-            case ("countryNameAndFlag"): return { country: true, flag: true };
-            case ("capital"): return { capital: true };
-        }
-    })();
-    newGame({
-        capital: settings.answerMode === "showCapitalOnMap",
-    });
-    if (!firstGamePlayed) {
-        initWorldMap(data);
-        firstGamePlayed = true;
-    }
-    const shuffleArray = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    };
-    const countries = shuffleArray(data.filter(({ continent }) => settings.continents.includes(continent)));
-    let correctCountries = 0;
-    for (const type of ["flag", "country", "capital"]) {
-        beforeCanvasEl.querySelector("." + type).hidden = !whatToShow[type];
-    }
-    running = true;
-    onNewGame = () => {
-        requestAnimationFrame(() => {
-            game(data, settings);
-        });
-    };
-    for (const [i, country] of countries.entries()) {
-        if (!running)
-            return;
-        beforeCanvasEl.querySelector(".remaining").textContent = (countries.length - i).toString();
-        beforeCanvasEl.querySelector(".percentage").textContent = Math.floor(correctCountries / countries.length * 100).toString();
-        beforeCanvasEl.querySelector(".correct").textContent = correctCountries.toString();
-        beforeCanvasEl.querySelector(".incorrect").textContent = (i - correctCountries).toString();
-        if (whatToShow.country)
-            document.querySelector(".game .country").textContent = country.name[settings.language];
-        if (whatToShow.capital)
-            document.querySelector(".game .capital").textContent = country.capital[settings.language];
-        let flagBlobURI;
-        if (whatToShow.flag) {
-            flagBlobURI = URL.createObjectURL(new Blob([country.flagSVG], { type: "image/svg+xml" }));
-            document.querySelector(".game .flag").style.backgroundImage = (`url("${flagBlobURI}")`);
-        }
-        if (country.name.en === await awaitCountryClick()) {
-            markCountry(country.name.en, true);
-            correctCountries++;
-        }
-        else if (running) {
-            markCountry(country.name.en, false);
-        }
-        URL.revokeObjectURL(flagBlobURI);
-    }
-    stopDrawing();
-    document.body.setAttribute("_game-state", "end");
-    {
-        document.querySelector(".end-screen .correct").textContent = correctCountries.toString();
-        document.querySelector(".end-screen .total").textContent = countries.length.toString();
-        document.querySelector(".end-screen .incorrect").textContent = (countries.length - correctCountries).toString();
-        const fraction = correctCountries / countries.length;
-        document.querySelector(".end-screen .percentage").textContent = Math.floor(fraction * 100).toString();
-        document.querySelector(".end-screen .percentage").setAttribute("data-evaluation", ((fraction > .9) ? "good" : (fraction > .7) ? "medium" : "bad"));
-        {
-            const continentsContainer = document.querySelector(".end-screen .continents");
-            const getClone = getTemplateCloner(continentsContainer);
-            continentsContainer.querySelectorAll(":scope > :not(template)").forEach((element) => element.remove());
-            for (const [i, continent] of settings.continents.entries()) {
-                const clone = getClone({
-                    conjunction: i ? ((i < settings.continents.length - 1) ? "endScreen.comma" : "endScreen.and") : null,
-                    continent: "continents." + continent,
-                });
-                continentsContainer.append(clone);
-            }
-        }
-        document.querySelector(".end-screen .question-mode").textContent = (translations.endScreen.questionModes[settings.questionMode][settings.language]);
-        document.querySelector(".end-screen .answer-mode").textContent = (translations.endScreen.answerModes[settings.answerMode][settings.language]);
-    }
+	document.body.setAttribute("_game-state", "game");
+	const whatToShow = (() => {
+		switch (settings.questionMode) {
+			case ("countryName"): return { country: true };
+			case ("flag"): return { flag: true };
+			case ("countryNameAndFlag"): return { country: true, flag: true };
+			case ("capital"): return { capital: true };
+		}
+	})();
+	newGame({
+		capital: settings.answerMode === "showCapitalOnMap",
+	});
+	if (!firstGamePlayed) {
+		initWorldMap(data);
+		firstGamePlayed = true;
+	}
+	const shuffleArray = (array) => {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	};
+	const countries = shuffleArray(data.filter(({ continent }) => settings.continents.includes(continent)));
+	let correctCountries = 0;
+	for (const type of ["flag", "country", "capital"]) {
+		beforeCanvasEl.querySelector("." + type).hidden = !whatToShow[type];
+	}
+	running = true;
+	onNewGame = () => {
+		requestAnimationFrame(() => {
+			game(data, settings);
+		});
+	};
+	for (const [i, country] of countries.entries()) {
+		if (!running)
+			return;
+		beforeCanvasEl.querySelector(".remaining").textContent = (countries.length - i).toString();
+		beforeCanvasEl.querySelector(".percentage").textContent = Math.floor(correctCountries / countries.length * 100).toString();
+		beforeCanvasEl.querySelector(".correct").textContent = correctCountries.toString();
+		beforeCanvasEl.querySelector(".incorrect").textContent = (i - correctCountries).toString();
+		if (whatToShow.country)
+			document.querySelector(".game .country").textContent = country.name[settings.language];
+		if (whatToShow.capital)
+			document.querySelector(".game .capital").textContent = country.capital[settings.language];
+		let flagBlobURI;
+		if (whatToShow.flag) {
+			flagBlobURI = URL.createObjectURL(new Blob([country.flagSVG], { type: "image/svg+xml" }));
+			document.querySelector(".game .flag").style.backgroundImage = (`url("${flagBlobURI}")`);
+		}
+		if (country.name.en === await awaitCountryClick()) {
+			markCountry(country.name.en, true);
+			correctCountries++;
+		}
+		else if (running) {
+			markCountry(country.name.en, false);
+		}
+		URL.revokeObjectURL(flagBlobURI);
+	}
+	stopDrawing();
+	document.body.setAttribute("_game-state", "end");
+	{
+		document.querySelector(".end-screen .correct").textContent = correctCountries.toString();
+		document.querySelector(".end-screen .total").textContent = countries.length.toString();
+		document.querySelector(".end-screen .incorrect").textContent = (countries.length - correctCountries).toString();
+		const fraction = correctCountries / countries.length;
+		document.querySelector(".end-screen .percentage").textContent = Math.floor(fraction * 100).toString();
+		document.querySelector(".end-screen .percentage").setAttribute("data-evaluation", ((fraction > .9) ? "good" : (fraction > .7) ? "medium" : "bad"));
+		{
+			const continentsContainer = document.querySelector(".end-screen .continents");
+			const getClone = getTemplateCloner(continentsContainer);
+			continentsContainer.querySelectorAll(":scope > :not(template)").forEach((element) => element.remove());
+			for (const [i, continent] of settings.continents.entries()) {
+				const clone = getClone({
+					conjunction: i ? ((i < settings.continents.length - 1) ? "endScreen.comma" : "endScreen.and") : null,
+					continent: "continents." + continent,
+				});
+				continentsContainer.append(clone);
+			}
+		}
+		document.querySelector(".end-screen .question-mode").textContent = (translations.endScreen.questionModes[settings.questionMode][settings.language]);
+		document.querySelector(".end-screen .answer-mode").textContent = (translations.endScreen.answerModes[settings.answerMode][settings.language]);
+	}
 };
 export default game;
 export const stopGame = () => {
-    stopDrawing();
+	stopDrawing();
 };
 //# sourceMappingURL=game.js.map
