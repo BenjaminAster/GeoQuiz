@@ -54,7 +54,7 @@ export const newGame = (newSettings: Record<string, any>) => {
 	settings = newSettings;
 
 	running = true;
-
+	render = true;
 
 	newGameCallback?.();
 
@@ -346,6 +346,7 @@ export default (countriesData: CountriesData) => {
 								!incorrectCountries.has(country.name.en)
 							) {
 								countryClicked(country.name.en);
+								render = true;
 							}
 							clicked = false;
 						}

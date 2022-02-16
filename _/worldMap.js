@@ -33,6 +33,7 @@ export const newGame = (newSettings) => {
 	incorrectCountries = new Set();
 	settings = newSettings;
 	running = true;
+	render = true;
 	newGameCallback?.();
 	resize();
 };
@@ -219,6 +220,7 @@ export default (countriesData) => {
 								&&
 									!incorrectCountries.has(country.name.en)) {
 								countryClicked(country.name.en);
+								render = true;
 							}
 							clicked = false;
 						}
